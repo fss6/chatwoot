@@ -1,0 +1,41 @@
+// =============================================================================
+// Dashboard brand overrides
+// =============================================================================
+//
+// Sobrescreve as CSS variables do design system "next" usadas em
+// `app/javascript/dashboard/components-next/` (ex.: bg-n-blue-9, text-n-slate-12,
+// outline-n-brand). Os defaults vivem em `_next-colors.scss`; este arquivo
+// e importado depois e tem prioridade.
+//
+// Estrategia: manter o NOME das CSS variables ("--blue-*") porque o codigo
+// inteiro referencia elas, e trocar apenas os VALORES RGB. Isso evita
+// renomear utilitarios Tailwind no app e mantem o conflito de merge minimo.
+//
+// Paleta atual: Violet (Radix Colors). Escolhida por:
+//   - Estar visualmente longe do azul do Chatwoot.
+//   - Nao conflitar com marcas dos canais (WhatsApp verde, Messenger azul,
+//     Telegram ciano, Instagram gradiente).
+//   - Acessibilidade WCAG AA testada em light e dark.
+//   - Vibe premium (Linear/Vercel/Notion) para posicionamento B2B SaaS.
+//
+// Cores semanticas (--ruby, --amber, --teal) NAO sao alteradas: ruby = erro,
+// amber = aviso, teal = sucesso. Em um omnichannel essas leituras sao
+// criticas (SLA estourado, CSAT, conversa nao atribuida).
+
+@layer base {
+  :root {
+    // Primary — Violet (light mode)
+    --blue-9: 110 86 207;
+    --blue-10: 101 75 198;
+    --blue-11: 100 70 192;
+    --blue-12: 47 38 95;
+  }
+
+  .dark {
+    // Primary — Violet (dark mode)
+    --blue-9: 110 86 207;
+    --blue-10: 117 93 215;
+    --blue-11: 186 167 255;
+    --blue-12: 224 215 255;
+  }
+}

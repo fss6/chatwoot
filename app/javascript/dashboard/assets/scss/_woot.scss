@@ -9,6 +9,9 @@
 // Next Colors
 @import 'next-colors';
 
+// Fork-specific brand overrides (must come after next-colors).
+@import 'brand-overrides';
+
 // Base styles for elements
 @import 'base';
 

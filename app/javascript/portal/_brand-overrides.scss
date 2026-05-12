@@ -1,0 +1,24 @@
+// =============================================================================
+// Help Center (portal) brand overrides
+// =============================================================================
+//
+// O portal publico usa a paleta padrao do Tailwind diretamente (slate-*,
+// blue-* via classes utilitarias). Boa parte da cor visual do portal vem
+// de `@portal.color` (configuravel por portal na UI) e ja e dinamica
+// via [app/views/layouts/portal.html.erb].
+//
+// Use este arquivo para overrides que devem valer GLOBALMENTE em todos os
+// portais (ex.: tipografia, cor de links, bordas de cards), independente
+// da cor configurada por portal.
+//
+// Como o portal nao usa as variaveis "next" do dashboard, overrides aqui sao
+// classes utilitarias ou regras semanticas, nao redefinicao de CSS variables
+// do design system.
+//
+// Por enquanto, vazio: visual identico ao upstream.
+
+// Exemplo (preencher depois):
+//
+//   .portal-header {
+//     @apply bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-700;
+//   }
