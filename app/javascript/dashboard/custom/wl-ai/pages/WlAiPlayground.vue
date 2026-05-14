@@ -28,6 +28,7 @@ const draft = ref('');
 const isLoadingAssistant = ref(true);
 const isSending = ref(false);
 const lastUsage = ref(null);
+const lastModel = ref(null);
 const chatEndRef = ref(null);
 
 const assistantId = computed(() => Number(route.params.assistantId));
@@ -84,6 +85,7 @@ const loadAssistant = async () => {
 const clearConversation = () => {
   messages.value = [];
   lastUsage.value = null;
+  lastModel.value = null;
 };
 
 const sendMessage = async () => {
@@ -100,6 +102,7 @@ const sendMessage = async () => {
       { role: 'assistant', content: data.message || '' },
     ];
     lastUsage.value = data.usage || null;
+    lastModel.value = data.model || null;
     draft.value = '';
     scrollToBottom();
   } catch (error) {
@@ -118,6 +121,7 @@ watch(
   () => {
     messages.value = [];
     lastUsage.value = null;
+    lastModel.value = null;
     draft.value = '';
     loadAssistant();
   }
@@ -193,16 +197,24 @@ onMounted(() => {
             <div ref="chatEndRef" class="h-px shrink-0" />
           </div>
 
-          <p
-            v-if="lastUsage && lastUsage.total_tokens != null"
-            class="text-xs text-n-slate-11 mb-0"
+          <div
+            v-if="(lastUsage && lastUsage.total_tokens != null) || lastModel"
+            class="flex flex-col gap-1 shrink-0"
           >
-            {{
-              t('WL_AI.PLAYGROUND.USAGE', {
-                total: lastUsage.total_tokens,
-              })
-            }}
-          </p>
+            <p
+              v-if="lastUsage && lastUsage.total_tokens != null"
+              class="text-xs text-n-slate-11 mb-0"
+            >
+              {{
+                t('WL_AI.PLAYGROUND.USAGE', {
+                  total: lastUsage.total_tokens,
+                })
+              }}
+            </p>
+            <p v-if="lastModel" class="text-xs text-n-slate-11 mb-0">
+              {{ t('WL_AI.PLAYGROUND.MODEL_USED', { model: lastModel }) }}
+            </p>
+          </div>
 
           <div class="flex flex-col gap-2 shrink-0 pt-2 border-t border-n-weak">
             <TextArea

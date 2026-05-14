@@ -128,7 +128,8 @@
       "BACK_TO_ASSISTANTS": "Assistants",
       "LOAD_ASSISTANT_ERROR": "Could not load assistant",
       "SEND_ERROR": "Could not get a reply",
-      "USAGE": "Last reply · about {total} tokens"
+      "USAGE": "Last reply · about {total} tokens",
+      "MODEL_USED": "Model used: {model}"
     },
     "PLAYGROUND_PICK": {
       "TITLE": "Playground — choose an assistant",

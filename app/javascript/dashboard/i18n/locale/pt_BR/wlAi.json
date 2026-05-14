@@ -128,7 +128,8 @@
       "BACK_TO_ASSISTANTS": "Assistentes",
       "LOAD_ASSISTANT_ERROR": "Não foi possível carregar o assistente",
       "SEND_ERROR": "Não foi possível obter uma resposta",
-      "USAGE": "Última resposta · cerca de {total} tokens"
+      "USAGE": "Última resposta · cerca de {total} tokens",
+      "MODEL_USED": "Modelo usado: {model}"
     },
     "PLAYGROUND_PICK": {
       "TITLE": "Playground — escolha o assistente",

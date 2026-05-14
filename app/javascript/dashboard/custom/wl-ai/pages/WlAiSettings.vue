@@ -30,11 +30,11 @@ const load = async () => {
     tokenLastFour.value = data.token_last_four;
     apiToken.value = '';
     modelOptions.value = (data.available_models || []).map(m => ({
-      value: m.id,
+      value: String(m.id),
       label: m.display_name,
     }));
-    selectedModel.value =
-      data.default_model || data.effective_default_model || '';
+    const rawModel = data.default_model || data.effective_default_model || '';
+    selectedModel.value = rawModel ? String(rawModel) : '';
   } catch {
     useAlert(t('WL_AI.SETTINGS.FETCH_ERROR'));
   } finally {
@@ -48,7 +48,7 @@ const save = async () => {
   try {
     const payload = {
       api_base: apiBase.value,
-      default_model: selectedModel.value || null,
+      default_model: selectedModel.value ? String(selectedModel.value) : null,
     };
     if (apiToken.value) {
       payload.api_token = apiToken.value;

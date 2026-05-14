@@ -22,16 +22,17 @@ module WlAi
 
       api_base = LlmPingService.normalized_api_base(credential.api_base)
       system_prompt = build_system_prompt
+      model_id = credential.effective_model
 
       Llm::Config.with_api_key(credential.api_token, api_base: api_base) do |context|
-        chat = context.chat(model: credential.effective_model)
+        chat = context.chat(model: model_id)
         chat.with_instructions(system_prompt)
         conv = @messages
         conv[0...-1].each do |msg|
           chat.add_message(role: msg[:role].to_sym, content: msg[:content].to_s)
         end
         reply = chat.ask(conv.last[:content].to_s)
-        success_payload(reply)
+        success_payload(reply, model_id)
       end
     rescue StandardError => e
       failure(e.message)
@@ -96,9 +97,10 @@ module WlAi
       parts.join("\n\n")
     end
 
-    def success_payload(reply)
+    def success_payload(reply, model_id)
       {
         message: reply.content.to_s,
+        model: model_id,
         usage: {
           prompt_tokens: reply.input_tokens,
           completion_tokens: reply.output_tokens,

@@ -11,7 +11,7 @@ class WlAiCredential extends ApiClient {
   }
 
   update(data) {
-    return axios.patch(this.url, data);
+    return axios.patch(this.url, { wl_ai_account_credential: data });
   }
 
   ping() {

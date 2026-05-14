@@ -38,15 +38,21 @@ class Api::V1::Accounts::WlAi::CredentialsController < Api::V1::Accounts::BaseCo
   end
 
   def credential_params
-    params.permit(:api_token, :api_base, :default_model, :system_instructions)
+    if params[:wl_ai_account_credential].present?
+      params.require(:wl_ai_account_credential).permit(:api_token, :api_base, :default_model, :system_instructions)
+    else
+      params.permit(:api_token, :api_base, :default_model, :system_instructions)
+    end
   end
 
   def credential_update_attributes
     permitted = credential_params
     attrs = { api_base: permitted[:api_base] }
     attrs[:api_token] = permitted[:api_token] if permitted[:api_token].present?
-    attrs[:default_model] = permitted[:default_model].presence if permitted.to_unsafe_h.stringify_keys.key?('default_model')
-    if permitted.to_unsafe_h.stringify_keys.key?('system_instructions')
+    if permitted.key?(:default_model) || permitted.key?('default_model')
+      attrs[:default_model] = permitted[:default_model].presence
+    end
+    if permitted.key?(:system_instructions) || permitted.key?('system_instructions')
       attrs[:system_instructions] = permitted[:system_instructions]
     end
     attrs
