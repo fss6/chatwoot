@@ -17,6 +17,8 @@
 class WlAiAssistant < ApplicationRecord
   belongs_to :account
   has_many :wl_ai_faq_entries, dependent: :destroy_async
+  has_many :wl_ai_assistant_inboxes, dependent: :destroy_async
+  has_many :inboxes, through: :wl_ai_assistant_inboxes
 
   validates :name, presence: true, length: { maximum: 255 }
   validates :description, presence: true, length: { maximum: 10_000 }

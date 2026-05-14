@@ -94,6 +94,7 @@ Rails.application.routes.draw do
             end
             resources :assistants, only: [:index, :show, :create, :update, :destroy] do
               resources :faq_entries, only: [:index, :create, :update, :destroy]
+              resources :inboxes, only: [:index, :create, :destroy], param: :inbox_id
               resources :playground_messages, only: [:create]
             end
           end

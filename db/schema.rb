@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_17_120000) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_17_120001) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -1316,6 +1316,16 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_17_120000) do
     t.index ["account_id"], name: "index_wl_ai_account_credentials_on_account_id", unique: true
   end
 
+  create_table "wl_ai_assistant_inboxes", force: :cascade do |t|
+    t.bigint "wl_ai_assistant_id", null: false
+    t.bigint "inbox_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inbox_id"], name: "index_wl_ai_assistant_inboxes_on_inbox_id"
+    t.index ["wl_ai_assistant_id", "inbox_id"], name: "index_wl_ai_assistant_inboxes_on_assistant_and_inbox", unique: true
+    t.index ["wl_ai_assistant_id"], name: "index_wl_ai_assistant_inboxes_on_wl_ai_assistant_id"
+  end
+
   create_table "wl_ai_assistants", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.string "name", null: false
@@ -1360,6 +1370,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_17_120000) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "inboxes", "portals"
   add_foreign_key "wl_ai_account_credentials", "accounts"
+  add_foreign_key "wl_ai_assistant_inboxes", "inboxes"
+  add_foreign_key "wl_ai_assistant_inboxes", "wl_ai_assistants"
   add_foreign_key "wl_ai_assistants", "accounts"
   add_foreign_key "wl_ai_faq_entries", "accounts"
   add_foreign_key "wl_ai_faq_entries", "wl_ai_assistants"

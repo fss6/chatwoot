@@ -30,6 +30,7 @@
       "SAVE_ERROR": "Não foi possível salvar o assistente",
       "OPTIONS": {
         "OPEN_FAQS": "Abrir FAQs",
+        "OPEN_INBOXES": "Caixas de entrada conectadas",
         "EDIT": "Editar assistente",
         "DELETE": "Excluir assistente"
       },
@@ -130,6 +131,44 @@
       "SEND_ERROR": "Não foi possível obter uma resposta",
       "USAGE": "Última resposta · cerca de {total} tokens",
       "MODEL_USED": "Modelo usado: {model}"
+    },
+    "INBOXES": {
+      "HEADER": "Caixas de entrada conectadas",
+      "TITLE_WITH_ASSISTANT": "Caixas de entrada · {name}",
+      "DESCRIPTION": "Associe caixas de entrada da conta a este assistente. Cada caixa pode estar ligada a apenas um assistente WL AI nesta conta.",
+      "ADD_NEW": "Conectar uma nova caixa de entrada",
+      "BACK_TO_ASSISTANTS": "Assistentes",
+      "LOAD_ERROR": "Não foi possível carregar as caixas de entrada conectadas",
+      "FORM_DESCRIPTION": "Escolha uma caixa que ainda não esteja ligada a um assistente WL AI.",
+      "CREATE": {
+        "TITLE": "Conectar caixa de entrada",
+        "SUCCESS_MESSAGE": "Caixa de entrada conectada com sucesso.",
+        "ERROR_MESSAGE": "Não foi possível conectar. Ela pode já estar ligada a outro assistente."
+      },
+      "FORM": {
+        "CANCEL": "Cancelar",
+        "SUBMIT": "Conectar",
+        "INBOX": {
+          "LABEL": "Caixa de entrada",
+          "PLACEHOLDER": "Selecione uma caixa de entrada",
+          "ERROR": "Selecione uma caixa de entrada."
+        }
+      },
+      "OPTIONS": {
+        "DISCONNECT": "Desconectar"
+      },
+      "DELETE": {
+        "TITLE": "Desconectar caixa de entrada?",
+        "DESCRIPTION": "Esta caixa deixará de estar associada a este assistente até você conectar de novo.",
+        "CONFIRM": "Sim, desconectar",
+        "CANCEL": "Cancelar",
+        "SUCCESS_MESSAGE": "Caixa de entrada desconectada.",
+        "ERROR_MESSAGE": "Não foi possível desconectar a caixa de entrada."
+      },
+      "EMPTY_STATE": {
+        "TITLE": "Nenhuma caixa conectada",
+        "SUBTITLE": "Conecte uma caixa para vincular este assistente a um canal de atendimento."
+      }
     },
     "PLAYGROUND_PICK": {
       "TITLE": "Playground — escolha o assistente",

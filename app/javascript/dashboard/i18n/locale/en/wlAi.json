@@ -30,6 +30,7 @@
       "SAVE_ERROR": "Could not save assistant",
       "OPTIONS": {
         "OPEN_FAQS": "Open FAQs",
+        "OPEN_INBOXES": "Connected inboxes",
         "EDIT": "Edit assistant",
         "DELETE": "Delete assistant"
       },
@@ -130,6 +131,44 @@
       "SEND_ERROR": "Could not get a reply",
       "USAGE": "Last reply · about {total} tokens",
       "MODEL_USED": "Model used: {model}"
+    },
+    "INBOXES": {
+      "HEADER": "Connected inboxes",
+      "TITLE_WITH_ASSISTANT": "Inboxes · {name}",
+      "DESCRIPTION": "Link account inboxes to this assistant. Each inbox can be connected to only one WL AI assistant on this account.",
+      "ADD_NEW": "Connect a new inbox",
+      "BACK_TO_ASSISTANTS": "Assistants",
+      "LOAD_ERROR": "Could not load connected inboxes",
+      "FORM_DESCRIPTION": "Choose an inbox that is not already linked to a WL AI assistant.",
+      "CREATE": {
+        "TITLE": "Connect inbox",
+        "SUCCESS_MESSAGE": "Inbox connected successfully.",
+        "ERROR_MESSAGE": "Could not connect the inbox. It may already be linked to another assistant."
+      },
+      "FORM": {
+        "CANCEL": "Cancel",
+        "SUBMIT": "Connect",
+        "INBOX": {
+          "LABEL": "Inbox",
+          "PLACEHOLDER": "Select an inbox",
+          "ERROR": "Please select an inbox."
+        }
+      },
+      "OPTIONS": {
+        "DISCONNECT": "Disconnect"
+      },
+      "DELETE": {
+        "TITLE": "Disconnect inbox?",
+        "DESCRIPTION": "This inbox will no longer be associated with this assistant until you connect it again.",
+        "CONFIRM": "Yes, disconnect",
+        "CANCEL": "Cancel",
+        "SUCCESS_MESSAGE": "Inbox disconnected.",
+        "ERROR_MESSAGE": "Could not disconnect the inbox."
+      },
+      "EMPTY_STATE": {
+        "TITLE": "No inboxes connected",
+        "SUBTITLE": "Connect an inbox to tie this assistant to a support channel."
+      }
     },
     "PLAYGROUND_PICK": {
       "TITLE": "Playground — choose an assistant",

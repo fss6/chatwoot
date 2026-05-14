@@ -79,6 +79,19 @@ const goToFaqs = assistantId => {
   });
 };
 
+const goToInboxes = assistantId => {
+  if (accountId.value) {
+    setWlAiLastAssistantId(accountId.value, assistantId);
+  }
+  router.push({
+    name: 'wl_ai_inboxes_index',
+    params: {
+      accountId: router.currentRoute.value.params.accountId,
+      assistantId: String(assistantId),
+    },
+  });
+};
+
 const handleCardAction = ({ action, id }) => {
   const assistant = assistants.value.find(a => a.id === id);
   if (action === 'edit' && assistant) {
@@ -155,6 +168,7 @@ onMounted(() => {
           :description="a.description"
           :updated-at="a.updated_at"
           @open-faqs="goToFaqs"
+          @open-inboxes="goToInboxes"
           @action="handleCardAction"
         />
       </div>

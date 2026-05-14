@@ -398,6 +398,7 @@ const menuItems = computed(() => {
         'wl_ai_playground_index',
         'wl_ai_playground_pick',
         'wl_ai_assistants_index',
+        'wl_ai_inboxes_index',
       ],
       children: [
         {

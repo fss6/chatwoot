@@ -12,6 +12,7 @@ import WlAiFaqsIndex from './pages/WlAiFaqsIndex.vue';
 import WlAiFaqsAssistantPicker from './pages/WlAiFaqsAssistantPicker.vue';
 import WlAiPlayground from './pages/WlAiPlayground.vue';
 import WlAiPlaygroundAssistantPicker from './pages/WlAiPlaygroundAssistantPicker.vue';
+import WlAiInboxesIndex from './pages/WlAiInboxesIndex.vue';
 
 const wlAiMeta = {
   permissions: ['administrator'],
@@ -59,6 +60,12 @@ const wlAiChildRoutes = [
     path: ':assistantId/playground',
     name: 'wl_ai_playground_index',
     component: WlAiPlayground,
+    meta: wlAiMeta,
+  },
+  {
+    path: ':assistantId/inboxes',
+    name: 'wl_ai_inboxes_index',
+    component: WlAiInboxesIndex,
     meta: wlAiMeta,
   },
 ];

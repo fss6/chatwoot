@@ -28,7 +28,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['action', 'openFaqs']);
+const emit = defineEmits(['action', 'openFaqs', 'openInboxes']);
 const { checkPermissions } = usePolicy();
 const { t } = useI18n();
 
@@ -41,6 +41,12 @@ const menuItems = computed(() => {
       value: 'faqs',
       action: 'faqs',
       icon: 'i-lucide-message-circle-question',
+    },
+    {
+      label: t('WL_AI.ASSISTANTS.OPTIONS.OPEN_INBOXES'),
+      value: 'inboxes',
+      action: 'inboxes',
+      icon: 'i-lucide-inbox',
     },
   ];
   if (checkPermissions(['administrator'])) {
@@ -73,6 +79,10 @@ const handleAction = ({ action }) => {
   toggleDropdown(false);
   if (action === 'faqs') {
     emit('openFaqs', props.id);
+    return;
+  }
+  if (action === 'inboxes') {
+    emit('openInboxes', props.id);
     return;
   }
   emit('action', { action, id: props.id });
