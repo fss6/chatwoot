@@ -49,6 +49,17 @@ const tailwindConfig = {
         460: '460',
         520: '520',
       },
+      boxShadow: {
+        ...defaultTheme.boxShadow,
+        sm: '0 1px 4px 0 rgb(0 0 0 / 0.12), 0 1px 2px -1px rgb(0 0 0 / 0.08)',
+        DEFAULT:
+          '0 3px 8px -1px rgb(0 0 0 / 0.14), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+        md: '0 8px 18px -4px rgb(0 0 0 / 0.14), 0 4px 8px -4px rgb(0 0 0 / 0.1)',
+        lg: '0 16px 28px -6px rgb(0 0 0 / 0.16), 0 8px 12px -6px rgb(0 0 0 / 0.12)',
+        xl: '0 24px 36px -8px rgb(0 0 0 / 0.18), 0 12px 16px -8px rgb(0 0 0 / 0.12)',
+        '2xl': '0 28px 55px -12px rgb(0 0 0 / 0.32)',
+        inner: 'inset 0 1px 4px 0 rgb(0 0 0 / 0.1)',
+      },
       typography: {
         bubble: {
           css: {

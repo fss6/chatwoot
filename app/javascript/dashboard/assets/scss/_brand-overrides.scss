@@ -2,40 +2,73 @@
 // Dashboard brand overrides
 // =============================================================================
 //
-// Sobrescreve as CSS variables do design system "next" usadas em
-// `app/javascript/dashboard/components-next/` (ex.: bg-n-blue-9, text-n-slate-12,
-// outline-n-brand). Os defaults vivem em `_next-colors.scss`; este arquivo
-// e importado depois e tem prioridade.
+// Sobrescreve as CSS variables do design system "next". Os defaults vivem em
+// `_next-colors.scss`; este arquivo eh importado depois e tem prioridade.
 //
-// Estrategia: manter o NOME das CSS variables ("--blue-*") porque o codigo
-// inteiro referencia elas, e trocar apenas os VALORES RGB. Isso evita
-// renomear utilitarios Tailwind no app e mantem o conflito de merge minimo.
+// Estrategia: manter o NOME das variaveis (--blue-*) porque o codigo inteiro
+// as referencia, e trocar apenas os VALORES RGB. Evita renomear utilitarios
+// Tailwind no app e mantem o conflito de merge minimo.
 //
-// Paleta atual: Violet (Radix Colors). Escolhida por:
-//   - Estar visualmente longe do azul do Chatwoot.
-//   - Nao conflitar com marcas dos canais (WhatsApp verde, Messenger azul,
-//     Telegram ciano, Instagram gradiente).
-//   - Acessibilidade WCAG AA testada em light e dark.
-//   - Vibe premium (Linear/Vercel/Notion) para posicionamento B2B SaaS.
+// Paleta atual: SLATE como neutro dominante (bg, textos, bordas) +
+// INDIGO RADIX como acento crom\u00e1tico em pontos estrategicos: botoes
+// primarios (`bg-n-brand` aponta para `--blue-9`), estado ativo da sidebar,
+// links e foco. Pattern Linear/Vercel: sobrio com personalidade.
 //
-// Cores semanticas (--ruby, --amber, --teal) NAO sao alteradas: ruby = erro,
-// amber = aviso, teal = sucesso. Em um omnichannel essas leituras sao
-// criticas (SLA estourado, CSAT, conversa nao atribuida).
+// Conteudo interno: tokens `--background-color`, `--surface-*`, `--border-*`,
+// `--card-color`, `--solid-*` ajustados para mais contraste entre canvas e
+// cartoes; ver `_content-theme.scss` para o gradiente do `main.wl-content`.
+// Area de conversas: ver `_conversation-theme.scss` (sombras lista/painel/bolhas/composer).
+//
+// Cores semanticas (--ruby, --amber, --teal) permanecem intactas: leitura
+// critica em omnichannel (SLA estourado, CSAT, erros).
 
 @layer base {
   :root {
-    // Primary — Violet (light mode)
-    --blue-9: 110 86 207;
-    --blue-10: 101 75 198;
-    --blue-11: 100 70 192;
-    --blue-12: 47 38 95;
+    // Accent — Indigo Radix (light mode)
+    --blue-9: 62 99 221; // #3E63DD : botoes primarios, item ativo, foco
+    --blue-10: 58 91 217; // #3A5BD9 : hover/pressed
+    --blue-11: 52 81 178; // #3451B2 : texto enfatico
+    --blue-12: 16 29 70; // #101D46 : texto super enfatico
+
+    // Canvas vs cards — mais contraste que o upstream (área interna).
+    --background-color: 238 240 244;
+    --surface-1: 252 252 254;
+    --surface-2: 255 255 255;
+    --surface-active: 248 249 252;
+    --border-weak: 220 223 230;
+    --border-strong: 206 210 218;
+    --card-color: 255 255 255;
+    --solid-1: 255 255 255;
+    --solid-2: 252 253 255;
+    --solid-3: 244 246 250;
   }
 
   .dark {
-    // Primary — Violet (dark mode)
-    --blue-9: 110 86 207;
-    --blue-10: 117 93 215;
-    --blue-11: 186 167 255;
-    --blue-12: 224 215 255;
+    // Accent — Indigo Radix (dark mode)
+    --blue-9: 62 99 221; // #3E63DD
+    --blue-10: 84 114 228; // #5472E4
+    --blue-11: 158 177 255; // #9EB1FF
+    --blue-12: 214 225 255; // #D6E1FF
+
+    --background-color: 20 21 24;
+    --surface-1: 28 29 34;
+    --surface-2: 32 33 39;
+    --surface-active: 42 44 52;
+    --border-weak: 48 50 58;
+    --border-strong: 58 60 70;
+    --card-color: 30 31 36;
+    --solid-1: 32 33 39;
+    --solid-2: 38 39 46;
+    --solid-3: 46 48 56;
   }
 }
+
+// Sidebar fork theme (rotulos de secao + temas opcionais).
+@import '../../custom/sidebar/sidebar-theme';
+
+// Canvas principal (gradiente + highlight interno).
+@import '../../custom/content/content-theme';
+
+// Área de conversas (lista + painel + bolhas + composer).
+@import '../../custom/conversation/conversation-theme';
+

@@ -21,6 +21,8 @@ import ChannelIcon from 'next/icon/ChannelIcon.vue';
 import SidebarAccountSwitcher from './SidebarAccountSwitcher.vue';
 import Logo from 'next/icon/Logo.vue';
 import ComposeConversation from 'dashboard/components-next/NewConversation/ComposeConversation.vue';
+import { filterSidebarMenu } from 'dashboard/custom/sidebar/filterSidebarMenu';
+import { sidebarConfig } from 'dashboard/custom/sidebar/sidebarConfig';
 
 const props = defineProps({
   isMobileSidebarOpen: {
@@ -28,13 +30,17 @@ const props = defineProps({
     default: false,
   },
 });
-
 const emit = defineEmits([
   'closeKeyShortcutModal',
   'openKeyShortcutModal',
   'showCreateAccountModal',
   'closeMobileSidebar',
 ]);
+const wlSidebarThemeClass =
+  sidebarConfig.theme && sidebarConfig.theme !== 'upstream'
+    ? `wl-sidebar wl-sidebar--${sidebarConfig.theme}`
+    : '';
+const wlUseTopBar = sidebarConfig.useTopBar === true;
 
 const { accountScopedRoute, isOnChatwootCloud } = useAccount();
 const store = useStore();
@@ -211,7 +217,7 @@ const newReportRoutes = () => [
 const reportRoutes = computed(() => newReportRoutes());
 
 const menuItems = computed(() => {
-  return [
+  const items = [
     {
       name: 'Inbox',
       label: t('SIDEBAR.INBOX'),
@@ -716,6 +722,7 @@ const menuItems = computed(() => {
       ],
     },
   ];
+  return filterSidebarMenu(items);
 });
 </script>
 
@@ -733,6 +740,7 @@ const menuItems = computed(() => {
     ]"
     class="bg-n-background flex flex-col text-sm pb-px fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak"
     :class="[
+      wlSidebarThemeClass,
       {
         'shadow-lg md:shadow-none': isMobileSidebarOpen,
         'ltr:-translate-x-full rtl:translate-x-full': !isMobileSidebarOpen,
@@ -753,7 +761,12 @@ const menuItems = computed(() => {
           'px-2': !isEffectivelyCollapsed,
         }"
       >
-        <template v-if="isEffectivelyCollapsed">
+        <template v-if="wlUseTopBar">
+          <div class="grid flex-shrink-0 place-content-center size-6">
+            <Logo class="size-4" />
+          </div>
+        </template>
+        <template v-else-if="isEffectivelyCollapsed">
           <SidebarAccountSwitcher
             is-collapsed
             @show-create-account-modal="emit('showCreateAccountModal')"
@@ -771,6 +784,7 @@ const menuItems = computed(() => {
         </template>
       </div>
       <div
+        v-if="!wlUseTopBar"
         class="flex gap-2"
         :class="isEffectivelyCollapsed ? 'flex-col items-center' : 'px-2'"
       >

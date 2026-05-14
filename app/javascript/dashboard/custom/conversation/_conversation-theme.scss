@@ -1,0 +1,109 @@
+// =============================================================================
+// Fork: área de conversas (lista + painel + bolhas + composer)
+// =============================================================================
+//
+// Seletores estáveis do upstream (sem patch em Vue):
+//   - `ChatList.vue` → .conversations-list-wrap, .conversations-list
+//   - `ConversationBox.vue` → .conversation-details-wrap
+//   - `MessagesView.vue` → .conversation-panel
+//   - `message/bubbles/Base.vue` → .left-bubble, .right-bubble
+//   - `ConversationCard.vue` (widgets) → .conversation
+//   - `ReplyBox.vue` → .reply-box (scoped: especificidade 2 classes vence)
+//
+// RTL: sombra da lista inverte no eixo horizontal.
+
+// --- Coluna da lista ---------------------------------------------------------
+.conversations-list-wrap {
+  box-shadow: 4px 0 24px -12px rgb(0 0 0 / 0.1);
+  z-index: 1;
+}
+
+#app[dir='rtl'] .conversations-list-wrap {
+  box-shadow: -4px 0 24px -12px rgb(0 0 0 / 0.1);
+}
+
+.dark .conversations-list-wrap {
+  box-shadow: 4px 0 28px -10px rgb(0 0 0 / 0.42);
+}
+
+.dark #app[dir='rtl'] .conversations-list-wrap {
+  box-shadow: -4px 0 28px -10px rgb(0 0 0 / 0.42);
+}
+
+// Linhas da lista: hover com leve elevação (não competir com .active / .selected)
+.conversations-list-wrap .conversations-list .conversation:hover:not(.active):not(.selected) {
+  box-shadow: 0 3px 10px -4px rgb(0 0 0 / 0.1);
+}
+
+.dark .conversations-list-wrap .conversations-list .conversation:hover:not(.active):not(.selected) {
+  box-shadow: 0 4px 14px -4px rgb(0 0 0 / 0.35);
+}
+
+// --- Painel da conversa (mensagens + header) ---------------------------------
+.conversation-details-wrap {
+  position: relative;
+  z-index: 0;
+  box-shadow: -6px 0 28px -14px rgb(0 0 0 / 0.09);
+}
+
+#app[dir='rtl'] .conversation-details-wrap {
+  box-shadow: 6px 0 28px -14px rgb(0 0 0 / 0.09);
+}
+
+.dark .conversation-details-wrap {
+  box-shadow: -6px 0 32px -12px rgb(0 0 0 / 0.38);
+}
+
+.dark #app[dir='rtl'] .conversation-details-wrap {
+  box-shadow: 6px 0 32px -12px rgb(0 0 0 / 0.38);
+}
+
+// Área de scroll das mensagens: sutil separação visual do composer
+.conversation-details-wrap .conversation-panel {
+  box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.55);
+}
+
+.dark .conversation-details-wrap .conversation-panel {
+  box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.05);
+}
+
+// --- Bolhas (components-next message Base) ---------------------------------
+.conversation-details-wrap .left-bubble,
+.conversation-details-wrap .right-bubble {
+  box-shadow:
+    0 2px 8px -2px rgb(0 0 0 / 0.12),
+    0 1px 3px -1px rgb(0 0 0 / 0.08);
+}
+
+.dark .conversation-details-wrap .left-bubble,
+.dark .conversation-details-wrap .right-bubble {
+  box-shadow:
+    0 2px 12px -2px rgb(0 0 0 / 0.45),
+    0 1px 4px -1px rgb(0 0 0 / 0.3);
+}
+
+// Agente (direita): um pouco mais de profundidade
+.conversation-details-wrap .right-bubble {
+  box-shadow:
+    0 4px 12px -2px rgb(0 0 0 / 0.14),
+    0 2px 6px -2px rgb(0 0 0 / 0.1);
+}
+
+.dark .conversation-details-wrap .right-bubble {
+  box-shadow:
+    0 4px 16px -2px rgb(0 0 0 / 0.48),
+    0 2px 8px -2px rgb(0 0 0 / 0.35);
+}
+
+// --- Composer (ReplyBox: scoped — 2 classes no seletor) -----------------------
+.conversation-details-wrap .reply-box {
+  box-shadow:
+    0 -4px 18px -8px rgb(0 0 0 / 0.08),
+    0 4px 14px -6px rgb(0 0 0 / 0.1);
+}
+
+.dark .conversation-details-wrap .reply-box {
+  box-shadow:
+    0 -4px 22px -6px rgb(0 0 0 / 0.35),
+    0 4px 18px -6px rgb(0 0 0 / 0.32);
+}

@@ -2,31 +2,26 @@
 // Widget brand overrides
 // =============================================================================
 //
-// O widget tem suas proprias CSS variables embutidas em `woot.scss` com os
-// MESMOS nomes do dashboard (--slate-*, --blue-*, etc.). Este arquivo
-// sobrescreve aqueles valores e e importado por ultimo em `woot.scss`,
-// ganhando prioridade sem editar o upstream.
+// O widget tem CSS variables embutidas em `woot.scss` com os MESMOS nomes do
+// dashboard. Este arquivo eh importado por ultimo em `woot.scss` e ganha
+// prioridade sem editar o upstream.
 //
-// Mantemos os valores ALINHADOS com o dashboard para a marca ser coerente
-// entre as duas superficies (agente ve uma cor, cliente final ve a mesma).
-//
-// Se um dia voce quiser uma cor diferente entre dashboard e widget, basta
-// editar este arquivo isoladamente.
+// Alinhado com o dashboard: indigo como acento sobre fundo neutro.
 
 @layer base {
   :root {
-    // Primary — Violet (light mode)
-    --blue-9: 110 86 207;
-    --blue-10: 101 75 198;
-    --blue-11: 100 70 192;
-    --blue-12: 47 38 95;
+    // Accent — Indigo Radix (light mode)
+    --blue-9: 62 99 221;
+    --blue-10: 58 91 217;
+    --blue-11: 52 81 178;
+    --blue-12: 16 29 70;
   }
 
   .dark {
-    // Primary — Violet (dark mode)
-    --blue-9: 110 86 207;
-    --blue-10: 117 93 215;
-    --blue-11: 186 167 255;
-    --blue-12: 224 215 255;
+    // Accent — Indigo Radix (dark mode)
+    --blue-9: 62 99 221;
+    --blue-10: 84 114 228;
+    --blue-11: 158 177 255;
+    --blue-12: 214 225 255;
   }
 }
