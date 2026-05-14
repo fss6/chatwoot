@@ -22,11 +22,7 @@ const props = defineProps({
   maxHeight: { type: String, default: '12rem' },
   autofocus: { type: Boolean, default: false },
   message: { type: String, default: '' },
-  messageType: {
-    type: String,
-    default: 'info',
-    validator: value => ['info', 'error', 'success'].includes(value),
-  },
+  messageWrap: { type: Boolean, default: false },
   signature: { type: String, default: '' },
   sendWithSignature: { type: Boolean, default: false }, // add this as a prop, so that we won't have to add useUISettings
   allowSignature: { type: Boolean, default: false }, // allowSignature is a kill switch, ensuring no signature methods are triggered except when this flag is true
@@ -197,8 +193,11 @@ onMounted(() => {
     </div>
     <p
       v-if="message"
-      class="min-w-0 mt-1 mb-0 text-xs truncate transition-all duration-500 ease-in-out"
-      :class="messageClass"
+      class="min-w-0 mt-1 mb-0 text-xs transition-all duration-500 ease-in-out"
+      :class="[
+        messageClass,
+        messageWrap ? 'whitespace-normal text-pretty' : 'truncate',
+      ]"
     >
       {{ message }}
     </p>

@@ -6,13 +6,11 @@ import wlAiCredential from 'dashboard/api/wlAi/credential';
 import Input from 'dashboard/components-next/input/Input.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
 import Select from 'dashboard/components-next/select/Select.vue';
-import TextArea from 'dashboard/components-next/textarea/TextArea.vue';
 
 const { t } = useI18n();
 
 const apiBase = ref('');
 const apiToken = ref('');
-const systemInstructions = ref('');
 const selectedModel = ref('');
 const modelOptions = ref([]);
 const configured = ref(false);
@@ -28,7 +26,6 @@ const load = async () => {
   try {
     const { data } = await wlAiCredential.show();
     apiBase.value = data.api_base || '';
-    systemInstructions.value = data.system_instructions || '';
     configured.value = data.configured;
     tokenLastFour.value = data.token_last_four;
     apiToken.value = '';
@@ -52,7 +49,6 @@ const save = async () => {
     const payload = {
       api_base: apiBase.value,
       default_model: selectedModel.value || null,
-      system_instructions: systemInstructions.value,
     };
     if (apiToken.value) {
       payload.api_token = apiToken.value;
@@ -121,17 +117,6 @@ onMounted(() => {
           :placeholder="t('WL_AI.SETTINGS.MODEL_PLACEHOLDER')"
         />
       </div>
-
-      <TextArea
-        v-model="systemInstructions"
-        :label="t('WL_AI.SETTINGS.SYSTEM_INSTRUCTIONS_LABEL')"
-        :placeholder="t('WL_AI.SETTINGS.SYSTEM_INSTRUCTIONS_PLACEHOLDER')"
-        :message="t('WL_AI.SETTINGS.SYSTEM_INSTRUCTIONS_HINT')"
-        :max-length="100_000"
-        :show-character-count="false"
-        min-height="6rem"
-        resize
-      />
 
       <div class="flex flex-col gap-2">
         <Input

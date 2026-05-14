@@ -411,6 +411,7 @@ en:
     context_builder:
       instructions_heading: 'Instructions'
       faq_heading: 'Reference Q&A'
+      assistant_section: 'Assistant: %{name}'
     playground:
       errors:
         parameter_missing: 'Request must include playground.messages.'

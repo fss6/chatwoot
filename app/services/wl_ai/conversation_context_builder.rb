@@ -13,26 +13,37 @@ module WlAi
     end
 
     def to_text
-      parts = []
-      cred = @account.wl_ai_account_credential
-      instructions = cred&.system_instructions.to_s.strip
-      if instructions.present?
-        parts << "## #{I18n.t('wl_ai.context_builder.instructions_heading')}\n#{instructions}"
+      sections = @account.wl_ai_assistants.order(:id).filter_map do |assistant|
+        assistant_section(assistant)
+      end
+      sections.join("\n\n")
+    end
+
+    private
+
+    def assistant_section(assistant)
+      chunks = []
+      title = I18n.t('wl_ai.context_builder.assistant_section', name: assistant.name)
+      chunks << "## #{title}"
+      chunks << assistant.description.to_s.strip
+
+      inst = assistant.instructions.to_s.strip
+      if inst.present?
+        chunks << ''
+        chunks << "### #{I18n.t('wl_ai.context_builder.instructions_heading')}"
+        chunks << inst
       end
 
-      # FAQs from all assistants, stable order: assistant id, then position.
-      faqs = @account.wl_ai_faq_entries
-        .joins(:wl_ai_assistant)
-        .order('wl_ai_assistants.id ASC, wl_ai_faq_entries.position ASC, wl_ai_faq_entries.id ASC')
+      faqs = assistant.wl_ai_faq_entries.order(:position, :id).to_a
       if faqs.any?
-        header = I18n.t('wl_ai.context_builder.faq_heading')
-        body = faqs.each_with_index.map do |faq, idx|
+        chunks << ''
+        chunks << "### #{I18n.t('wl_ai.context_builder.faq_heading')}"
+        chunks << faqs.each_with_index.map do |faq, idx|
           "Q#{idx + 1}: #{faq.question}\nA#{idx + 1}: #{faq.answer}"
         end.join("\n\n")
-        parts << "## #{header}\n#{body}"
       end
 
-      parts.join("\n\n")
+      chunks.join("\n").strip
     end
   end
 end

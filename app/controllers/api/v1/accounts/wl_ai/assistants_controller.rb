@@ -51,7 +51,7 @@ class Api::V1::Accounts::WlAi::AssistantsController < Api::V1::Accounts::BaseCon
 
   def assistant_params
     prm = params.require(:assistant)
-    permitted = prm.permit(:name, :description, :product_name)
+    permitted = prm.permit(:name, :description, :product_name, :instructions)
     if prm.key?(:config)
       permitted[:config] = wl_ai_assistant_config_from(prm[:config])
     end

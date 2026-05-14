@@ -9,6 +9,7 @@
 #  name         :string           not null
 #  description  :text             not null
 #  product_name :string
+#  instructions :text
 #  config       :jsonb            not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
@@ -19,6 +20,7 @@ class WlAiAssistant < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 255 }
   validates :description, presence: true, length: { maximum: 10_000 }
+  validates :instructions, length: { maximum: 100_000 }, allow_blank: true
   validates :product_name, length: { maximum: 255 }, allow_blank: true
 
   scope :ordered, -> { order(created_at: :desc) }
@@ -29,6 +31,7 @@ class WlAiAssistant < ApplicationRecord
       name: name,
       description: description,
       product_name: product_name,
+      instructions: instructions,
       config: config || {},
       created_at: created_at&.iso8601(3),
       updated_at: updated_at&.iso8601(3)

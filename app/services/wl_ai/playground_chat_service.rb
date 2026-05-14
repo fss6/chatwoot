@@ -21,7 +21,7 @@ module WlAi
       return failure(I18n.t('wl_ai.errors.missing_token')) if credential.blank? || credential.api_token.blank?
 
       api_base = LlmPingService.normalized_api_base(credential.api_base)
-      system_prompt = build_system_prompt(credential)
+      system_prompt = build_system_prompt
 
       Llm::Config.with_api_key(credential.api_token, api_base: api_base) do |context|
         chat = context.chat(model: credential.effective_model)
@@ -70,7 +70,7 @@ module WlAi
       nil
     end
 
-    def build_system_prompt(credential)
+    def build_system_prompt
       parts = []
       parts << "## #{I18n.t('wl_ai.playground.system.assistant_heading')}\n" \
                "#{I18n.t('wl_ai.playground.system.name_label')}: #{@assistant.name}\n" \
@@ -79,7 +79,7 @@ module WlAi
         parts << "#{I18n.t('wl_ai.playground.system.product_label')}: #{@assistant.product_name}"
       end
 
-      instructions = credential.system_instructions.to_s.strip
+      instructions = @assistant.instructions.to_s.strip
       if instructions.present?
         parts << "## #{I18n.t('wl_ai.context_builder.instructions_heading')}\n#{instructions}"
       end
