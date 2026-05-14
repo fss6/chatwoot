@@ -1,0 +1,145 @@
+{
+  "WL_AI": {
+    "SETTINGS": {
+      "TITLE": "Assistente de IA",
+      "DESCRIPTION": "Configure uma chave de API compatível com OpenAI, URL base opcional e o modelo de chat padrão para esta conta. As chaves ficam em uma tabela separada (não na conta).",
+      "API_BASE_LABEL": "URL base da API",
+      "API_BASE_PLACEHOLDER": "Deixe vazio para o padrão (OpenAI), por exemplo https://api.openai.com",
+      "MODEL_LABEL": "Modelo de chat padrão",
+      "MODEL_PLACEHOLDER": "Selecione um modelo",
+      "SYSTEM_INSTRUCTIONS_LABEL": "Instruções para a IA",
+      "SYSTEM_INSTRUCTIONS_PLACEHOLDER": "Como o assistente deve se comportar nas conversas (tom, políticas, o que evitar). Este texto é combinado com as FAQs ao montar o contexto para recursos futuros de chat.",
+      "SYSTEM_INSTRUCTIONS_HINT": "Usado como orientação de estilo de sistema junto com as FAQs da página de FAQs.",
+      "API_TOKEN_LABEL": "Token da API",
+      "API_TOKEN_PLACEHOLDER": "sk-…",
+      "TOKEN_HINT": "Já existe um token salvo (termina em {hint}). Deixe em branco para manter o atual.",
+      "SAVE": "Salvar",
+      "TEST_CONNECTION": "Testar conexão",
+      "SAVED": "Configurações salvas",
+      "SAVE_ERROR": "Não foi possível salvar as configurações",
+      "FETCH_ERROR": "Não foi possível carregar as configurações",
+      "PING_OK": "Conexão bem-sucedida",
+      "PING_ERROR": "Falha no teste de conexão"
+    },
+    "ASSISTANTS": {
+      "TITLE": "Assistentes",
+      "ADD": "Criar assistente",
+      "EMPTY": "Crie um assistente para organizar FAQs e contexto da sua equipe.",
+      "LOAD_ERROR": "Não foi possível carregar os assistentes",
+      "CREATED": "Assistente criado",
+      "UPDATED": "Assistente atualizado",
+      "DELETED": "Assistente excluído",
+      "DELETE_ERROR": "Não foi possível excluir o assistente",
+      "SAVE_ERROR": "Não foi possível salvar o assistente",
+      "OPTIONS": {
+        "OPEN_FAQS": "Abrir FAQs",
+        "EDIT": "Editar assistente",
+        "DELETE": "Excluir assistente"
+      },
+      "DELETE_CONFIRM": {
+        "TITLE": "Excluir assistente?",
+        "MESSAGE": "Isso remove o assistente e todas as FAQs dele nesta conta:",
+        "YES": "Sim, excluir",
+        "NO": "Cancelar"
+      },
+      "DIALOG": {
+        "CREATE_TITLE": "Criar assistente",
+        "EDIT_TITLE": "Editar assistente",
+        "DESCRIPTION": "Nomeie o assistente, descreva a finalidade e opcionalmente o produto. Os recursos abaixo ficam guardados para uso futuro.",
+        "NAME_LABEL": "Nome",
+        "NAME_PLACEHOLDER": "Nome do assistente",
+        "DESCRIPTION_LABEL": "Descrição",
+        "DESCRIPTION_PLACEHOLDER": "Para que serve este assistente",
+        "PRODUCT_NAME_LABEL": "Nome do produto",
+        "PRODUCT_NAME_PLACEHOLDER": "Produto ou área que o assistente cobre",
+        "FEATURES_LABEL": "Funcionalidades",
+        "FEATURE_FAQ": "Gerar FAQs a partir de conversas resolvidas (reservado)",
+        "FEATURE_MEMORY": "Capturar detalhes do cliente como memórias (reservado)",
+        "FEATURE_CITATIONS": "Incluir fontes de citação nas respostas (reservado)",
+        "SAVE": "Salvar",
+        "CANCEL": "Cancelar"
+      }
+    },
+    "FAQS": {
+      "TITLE": "FAQs para contexto",
+      "TITLE_WITH_ASSISTANT": "FAQs · {name}",
+      "DESCRIPTION": "Adicione pares de pergunta e resposta. Eles são acrescentados às instruções da IA quando a integração monta o contexto da conversa (veja Instruções na página de Configuração).",
+      "SCOPE_HINT": "Essas entradas valem apenas para este assistente. Novas FAQs são salvas para o assistente que está na URL.",
+      "ASSISTANT_FIELD_LABEL": "Assistente",
+      "MODAL_ASSISTANT_NOTE": "Esta FAQ é salva para “{name}”. Para outro assistente, volte à lista e abra a página de FAQs daquele assistente.",
+      "BACK_TO_ASSISTANTS": "Assistentes",
+      "MODAL_DESCRIPTION": "Adicione uma pergunta e uma resposta em texto rico. Esse conteúdo é enviado ao modelo como referência.",
+      "LOADING": "Carregando FAQs…",
+      "SEARCH_PLACEHOLDER": "Pesquisar FAQs…",
+      "NO_SEARCH_RESULTS": "Nenhuma FAQ corresponde à pesquisa.",
+      "COUNT": "{n} FAQ | {n} FAQs",
+      "LIST": {
+        "TABLE_HEADER": {
+          "QUESTION": "Pergunta e resposta",
+          "ACTIONS": "Ações"
+        }
+      },
+      "ADD": "Adicionar FAQ",
+      "EMPTY": "Ainda não há FAQs. Adicione entradas em que sua equipe possa confiar ao atender clientes.",
+      "QUESTION_LABEL": "Pergunta",
+      "QUESTION_PLACEHOLDER": "ex.: Qual é a política de reembolso?",
+      "ANSWER_LABEL": "Resposta",
+      "ANSWER_PLACEHOLDER": "Resposta em texto rico enviada ao modelo como referência.",
+      "EDIT": "Editar",
+      "DELETE": "Excluir",
+      "CREATE_TITLE": "Nova FAQ",
+      "EDIT_TITLE": "Editar FAQ",
+      "SAVE": "Salvar",
+      "CANCEL": "Cancelar",
+      "CREATED": "FAQ criada",
+      "UPDATED": "FAQ atualizada",
+      "DELETED": "FAQ excluída",
+      "SAVE_ERROR": "Não foi possível salvar a FAQ",
+      "LOAD_ERROR": "Não foi possível carregar as FAQs",
+      "DELETE_ERROR": "Não foi possível excluir a FAQ",
+      "DELETE_CONFIRM": {
+        "TITLE": "Excluir FAQ?",
+        "MESSAGE": "Isso remove a FAQ do contexto de IA desta conta:",
+        "YES": "Sim, excluir",
+        "NO": "Cancelar"
+      }
+    },
+    "FAQS_PICK": {
+      "TITLE": "Qual assistente?",
+      "DESCRIPTION": "As FAQs ficam por assistente. Escolha um e abra a lista de FAQs.",
+      "ASSISTANT_LABEL": "Assistente",
+      "PLACEHOLDER": "Selecione um assistente",
+      "CONTINUE": "Abrir FAQs",
+      "CANCEL": "Voltar aos assistentes",
+      "EMPTY": "Ainda não há assistentes. Crie um assistente e abra FAQs de novo pela barra lateral.",
+      "LOAD_ERROR": "Não foi possível carregar os assistentes",
+      "UNNAMED": "Assistente {id}"
+    },
+    "PLAYGROUND": {
+      "TITLE": "Playground",
+      "TITLE_WITH_ASSISTANT": "Playground · {name}",
+      "INTRO": "Use este playground para enviar mensagens ao seu assistente e verificar se ele responde com precisão, rapidez e no tom que você espera.",
+      "HINT": "As mensagens não ficam salvas no servidor depois que você sair desta página.",
+      "EMPTY_THREAD": "Escreva uma mensagem abaixo para começar.",
+      "INPUT_LABEL": "Sua mensagem",
+      "INPUT_PLACEHOLDER": "Digite uma dúvida de cliente ou um cenário…",
+      "SEND": "Enviar",
+      "CLEAR": "Limpar conversa",
+      "BACK_TO_ASSISTANTS": "Assistentes",
+      "LOAD_ASSISTANT_ERROR": "Não foi possível carregar o assistente",
+      "SEND_ERROR": "Não foi possível obter uma resposta",
+      "USAGE": "Última resposta · cerca de {total} tokens"
+    },
+    "PLAYGROUND_PICK": {
+      "TITLE": "Playground — escolha o assistente",
+      "DESCRIPTION": "Escolha qual assistente você quer testar no playground.",
+      "ASSISTANT_LABEL": "Assistente",
+      "PLACEHOLDER": "Selecione um assistente",
+      "CONTINUE": "Abrir playground",
+      "CANCEL": "Voltar aos assistentes",
+      "EMPTY": "Ainda não há assistentes. Crie um assistente e abra o Playground de novo pela barra lateral.",
+      "LOAD_ERROR": "Não foi possível carregar os assistentes",
+      "UNNAMED": "Assistente {id}"
+    }
+  }
+}

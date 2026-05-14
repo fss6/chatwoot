@@ -10,7 +10,7 @@
  * `app/javascript/dashboard/components-next/sidebar/Sidebar.vue` (computed
  * `menuItems`). Valores válidos hoje:
  *
- *   'Inbox', 'Conversation', 'Captain', 'Contacts', 'Companies',
+ *   'Inbox', 'Conversation', 'Captain', 'WlAi', 'WlAiAssistants', 'WlAiPlayground', 'WlAiSettings', 'WlAiFaqs', 'Contacts', 'Companies',
  *   'Reports', 'Campaigns', 'Portals', 'Settings'
  *
  * Se o upstream renomear/remover um grupo, este arquivo continua válido —
@@ -22,7 +22,7 @@ export const sidebarConfig = {
    * Comente/descomente conforme o que você vende neste fork.
    */
   hiddenTopLevel: [
-    // 'Captain',
+    'Captain',
     // 'Campaigns',
     // 'Portals',
   ],
@@ -41,7 +41,10 @@ export const sidebarConfig = {
    * Para desligar as seções e voltar à lista plana, defina `sections: null`.
    */
   sections: [
-    { label: 'ATENDIMENTO', items: ['Inbox', 'Conversation', 'Captain'] },
+    {
+      label: 'ATENDIMENTO',
+      items: ['Inbox', 'Conversation', 'Captain', 'WlAi'],
+    },
     { label: 'CRM', items: ['Contacts', 'Companies'] },
     { label: 'INSIGHTS', items: ['Reports', 'Campaigns'] },
     { label: 'ADMIN', items: ['Portals', 'Settings'] },

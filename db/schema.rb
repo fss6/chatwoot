@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_07_000000) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_16_120000) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -1305,6 +1305,40 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_07_000000) do
     t.index ["account_id", "url"], name: "index_webhooks_on_account_id_and_url", unique: true
   end
 
+  create_table "wl_ai_account_credentials", force: :cascade do |t|
+    t.integer "account_id", null: false
+    t.string "api_base"
+    t.string "api_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "default_model"
+    t.text "system_instructions"
+    t.index ["account_id"], name: "index_wl_ai_account_credentials_on_account_id", unique: true
+  end
+
+  create_table "wl_ai_assistants", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.string "name", null: false
+    t.text "description", null: false
+    t.string "product_name"
+    t.jsonb "config", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_wl_ai_assistants_on_account_id"
+  end
+
+  create_table "wl_ai_faq_entries", force: :cascade do |t|
+    t.integer "account_id", null: false
+    t.string "question", null: false
+    t.text "answer", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "wl_ai_assistant_id", null: false
+    t.index ["account_id"], name: "index_wl_ai_faq_entries_on_account_id"
+    t.index ["wl_ai_assistant_id"], name: "index_wl_ai_faq_entries_on_wl_ai_assistant_id"
+  end
+
   create_table "working_hours", force: :cascade do |t|
     t.bigint "inbox_id"
     t.bigint "account_id"
@@ -1324,6 +1358,10 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_07_000000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "inboxes", "portals"
+  add_foreign_key "wl_ai_account_credentials", "accounts"
+  add_foreign_key "wl_ai_assistants", "accounts"
+  add_foreign_key "wl_ai_faq_entries", "accounts"
+  add_foreign_key "wl_ai_faq_entries", "wl_ai_assistants"
   create_trigger("accounts_after_insert_row_tr", :generated => true, :compatibility => 1).
       on("accounts").
       after(:insert).

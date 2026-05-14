@@ -388,6 +388,45 @@ const menuItems = computed(() => {
       ],
     },
     {
+      name: 'WlAi',
+      icon: 'i-lucide-sparkles',
+      label: t('SIDEBAR.WL_AI'),
+      activeOn: [
+        'wl_ai_settings_index',
+        'wl_ai_faqs_index',
+        'wl_ai_faqs_pick',
+        'wl_ai_playground_index',
+        'wl_ai_playground_pick',
+        'wl_ai_assistants_index',
+      ],
+      children: [
+        {
+          name: 'WlAiAssistants',
+          label: t('SIDEBAR.WL_AI_ASSISTANTS'),
+          activeOn: ['wl_ai_assistants_index'],
+          to: accountScopedRoute('wl_ai_assistants_index'),
+        },
+        {
+          name: 'WlAiPlayground',
+          label: t('SIDEBAR.WL_AI_PLAYGROUND'),
+          activeOn: ['wl_ai_playground_index', 'wl_ai_playground_pick'],
+          to: accountScopedRoute('wl_ai_playground_pick'),
+        },
+        {
+          name: 'WlAiFaqs',
+          label: t('SIDEBAR.WL_AI_FAQS'),
+          activeOn: ['wl_ai_faqs_index', 'wl_ai_faqs_pick'],
+          to: accountScopedRoute('wl_ai_faqs_pick'),
+        },
+        {
+          name: 'WlAiSettings',
+          label: t('SIDEBAR.WL_AI_SETTINGS'),
+          activeOn: ['wl_ai_settings_index'],
+          to: accountScopedRoute('wl_ai_settings_index'),
+        },
+      ],
+    },
+    {
       name: 'Contacts',
       label: t('SIDEBAR.CONTACTS'),
       icon: 'i-lucide-contact',

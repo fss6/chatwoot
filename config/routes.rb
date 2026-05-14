@@ -88,6 +88,15 @@ Rails.application.routes.draw do
               post :follow_up
             end
           end
+          namespace :wl_ai do
+            resource :credential, only: [:show, :update] do
+              post :ping
+            end
+            resources :assistants, only: [:index, :show, :create, :update, :destroy] do
+              resources :faq_entries, only: [:index, :create, :update, :destroy]
+              resources :playground_messages, only: [:create]
+            end
+          end
           resource :saml_settings, only: [:show, :create, :update, :destroy]
           resources :agent_bots, only: [:index, :create, :show, :update, :destroy] do
             delete :avatar, on: :member

@@ -1,0 +1,145 @@
+{
+  "WL_AI": {
+    "SETTINGS": {
+      "TITLE": "AI assistant (fork)",
+      "DESCRIPTION": "Configure an OpenAI-compatible API key, optional base URL, and default chat model for this account. Keys are stored in a separate table (not on accounts).",
+      "API_BASE_LABEL": "API base URL",
+      "API_BASE_PLACEHOLDER": "Leave empty for default (OpenAI), or e.g. https://api.openai.com",
+      "MODEL_LABEL": "Default chat model",
+      "MODEL_PLACEHOLDER": "Select a model",
+      "SYSTEM_INSTRUCTIONS_LABEL": "Instructions for the AI",
+      "SYSTEM_INSTRUCTIONS_PLACEHOLDER": "How the assistant should behave in conversations (tone, policies, what to avoid). This text is combined with FAQs when building context for future chat features.",
+      "SYSTEM_INSTRUCTIONS_HINT": "Used as system-style guidance together with FAQs from the FAQs page.",
+      "API_TOKEN_LABEL": "API token",
+      "API_TOKEN_PLACEHOLDER": "sk-…",
+      "TOKEN_HINT": "A token is already saved (ends with {hint}). Leave blank to keep it.",
+      "SAVE": "Save",
+      "TEST_CONNECTION": "Test connection",
+      "SAVED": "Settings saved",
+      "SAVE_ERROR": "Could not save settings",
+      "FETCH_ERROR": "Could not load settings",
+      "PING_OK": "Connection successful",
+      "PING_ERROR": "Connection test failed"
+    },
+    "ASSISTANTS": {
+      "TITLE": "Assistants",
+      "ADD": "Create assistant",
+      "EMPTY": "Create an assistant to organize FAQs and context for your team.",
+      "LOAD_ERROR": "Could not load assistants",
+      "CREATED": "Assistant created",
+      "UPDATED": "Assistant updated",
+      "DELETED": "Assistant deleted",
+      "DELETE_ERROR": "Could not delete assistant",
+      "SAVE_ERROR": "Could not save assistant",
+      "OPTIONS": {
+        "OPEN_FAQS": "Open FAQs",
+        "EDIT": "Edit assistant",
+        "DELETE": "Delete assistant"
+      },
+      "DELETE_CONFIRM": {
+        "TITLE": "Delete assistant?",
+        "MESSAGE": "This removes the assistant and all of its FAQs for this account:",
+        "YES": "Yes, delete",
+        "NO": "Cancel"
+      },
+      "DIALOG": {
+        "CREATE_TITLE": "Create assistant",
+        "EDIT_TITLE": "Edit assistant",
+        "DESCRIPTION": "Name your assistant, describe its purpose, and optionally set a product name. Feature toggles are stored for future use.",
+        "NAME_LABEL": "Name",
+        "NAME_PLACEHOLDER": "Assistant name",
+        "DESCRIPTION_LABEL": "Description",
+        "DESCRIPTION_PLACEHOLDER": "What this assistant is for",
+        "PRODUCT_NAME_LABEL": "Product name",
+        "PRODUCT_NAME_PLACEHOLDER": "Product or area this assistant supports",
+        "FEATURES_LABEL": "Features",
+        "FEATURE_FAQ": "Generate FAQs from resolved conversations (reserved)",
+        "FEATURE_MEMORY": "Capture key customer details as memories (reserved)",
+        "FEATURE_CITATIONS": "Include citation sources in responses (reserved)",
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      }
+    },
+    "FAQS": {
+      "TITLE": "FAQs for context",
+      "TITLE_WITH_ASSISTANT": "FAQs · {name}",
+      "DESCRIPTION": "Add question and answer pairs. They are appended to the AI instructions when your integration builds conversation context (see Instructions on the Configuration page).",
+      "SCOPE_HINT": "These entries apply only to this assistant. New FAQs are saved for the assistant in the URL.",
+      "ASSISTANT_FIELD_LABEL": "Assistant",
+      "MODAL_ASSISTANT_NOTE": "This FAQ is saved for “{name}”. To add FAQs for another assistant, go back to Assistants and open that assistant’s FAQ page.",
+      "BACK_TO_ASSISTANTS": "Assistants",
+      "MODAL_DESCRIPTION": "Add a question and a rich-text answer. This content is sent to the model as reference context.",
+      "LOADING": "Loading FAQs…",
+      "SEARCH_PLACEHOLDER": "Search FAQs…",
+      "NO_SEARCH_RESULTS": "No FAQs match your search.",
+      "COUNT": "{n} FAQ | {n} FAQs",
+      "LIST": {
+        "TABLE_HEADER": {
+          "QUESTION": "Question & answer",
+          "ACTIONS": "Actions"
+        }
+      },
+      "ADD": "Add FAQ",
+      "EMPTY": "No FAQs yet. Add entries your team can rely on when assisting customers.",
+      "QUESTION_LABEL": "Question",
+      "QUESTION_PLACEHOLDER": "e.g. What is your refund policy?",
+      "ANSWER_LABEL": "Answer",
+      "ANSWER_PLACEHOLDER": "Rich text answer shown to the model as reference.",
+      "EDIT": "Edit",
+      "DELETE": "Delete",
+      "CREATE_TITLE": "New FAQ",
+      "EDIT_TITLE": "Edit FAQ",
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "CREATED": "FAQ created",
+      "UPDATED": "FAQ updated",
+      "DELETED": "FAQ deleted",
+      "SAVE_ERROR": "Could not save FAQ",
+      "LOAD_ERROR": "Could not load FAQs",
+      "DELETE_ERROR": "Could not delete FAQ",
+      "DELETE_CONFIRM": {
+        "TITLE": "Delete FAQ?",
+        "MESSAGE": "This removes the FAQ from AI context for this account:",
+        "YES": "Yes, delete",
+        "NO": "Cancel"
+      }
+    },
+    "FAQS_PICK": {
+      "TITLE": "Which assistant?",
+      "DESCRIPTION": "FAQs are stored per assistant. Choose one, then open its FAQ list.",
+      "ASSISTANT_LABEL": "Assistant",
+      "PLACEHOLDER": "Select an assistant",
+      "CONTINUE": "Open FAQs",
+      "CANCEL": "Back to assistants",
+      "EMPTY": "No assistants yet. Create an assistant first, then open FAQs again from the sidebar.",
+      "LOAD_ERROR": "Could not load assistants",
+      "UNNAMED": "Assistant {id}"
+    },
+    "PLAYGROUND": {
+      "TITLE": "Playground",
+      "TITLE_WITH_ASSISTANT": "Playground · {name}",
+      "INTRO": "Use this playground to send messages to your assistant and check that it answers accurately, quickly, and in the tone you expect.",
+      "HINT": "Messages are not saved on the server after you leave this page.",
+      "EMPTY_THREAD": "Write a message below to start.",
+      "INPUT_LABEL": "Your message",
+      "INPUT_PLACEHOLDER": "Type a customer question or scenario…",
+      "SEND": "Send",
+      "CLEAR": "Clear conversation",
+      "BACK_TO_ASSISTANTS": "Assistants",
+      "LOAD_ASSISTANT_ERROR": "Could not load assistant",
+      "SEND_ERROR": "Could not get a reply",
+      "USAGE": "Last reply · about {total} tokens"
+    },
+    "PLAYGROUND_PICK": {
+      "TITLE": "Playground — choose an assistant",
+      "DESCRIPTION": "Pick which assistant you want to test in the playground.",
+      "ASSISTANT_LABEL": "Assistant",
+      "PLACEHOLDER": "Select an assistant",
+      "CONTINUE": "Open playground",
+      "CANCEL": "Back to assistants",
+      "EMPTY": "No assistants yet. Create an assistant first, then open Playground again from the sidebar.",
+      "LOAD_ERROR": "Could not load assistants",
+      "UNNAMED": "Assistant {id}"
+    }
+  }
+}
