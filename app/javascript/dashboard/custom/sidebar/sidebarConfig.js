@@ -10,7 +10,7 @@
  * `app/javascript/dashboard/components-next/sidebar/Sidebar.vue` (computed
  * `menuItems`). Valores válidos hoje:
  *
- *   'Inbox', 'Conversation', 'Captain', 'WlAi', 'WlAiAssistants', 'WlAiPlayground', 'WlAiSettings', 'WlAiFaqs', 'Contacts', 'Companies',
+ *   'Inbox', 'Conversation', 'Captain', 'WlAi', 'WlAiAssistants', 'WlAiPlayground', 'WlAiSettings', 'WlAiFaqs', 'WlBotFlows', 'WlBotFlowsList', 'Contacts', 'Companies',
  *   'Reports', 'Campaigns', 'Portals', 'Settings'
  *
  * Se o upstream renomear/remover um grupo, este arquivo continua válido —
@@ -43,7 +43,7 @@ export const sidebarConfig = {
   sections: [
     {
       label: 'ATENDIMENTO',
-      items: ['Inbox', 'Conversation', 'Captain', 'WlAi'],
+      items: ['Inbox', 'Conversation', 'Captain', 'WlAi', 'WlBotFlows'],
     },
     { label: 'CRM', items: ['Contacts', 'Companies'] },
     { label: 'INSIGHTS', items: ['Reports', 'Campaigns'] },

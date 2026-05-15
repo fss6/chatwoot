@@ -1,0 +1,175 @@
+{
+  "WL_BOT_FLOWS": {
+    "TITLE": "Bot flows",
+    "NEW_FLOW": "New flow",
+    "EMPTY": "No bot flows yet.",
+    "STATUS": {
+      "DRAFT": "Draft",
+      "PUBLISHED": "Published",
+      "PAUSED": "Paused",
+      "ARCHIVED": "Archived"
+    },
+    "TABLE": {
+      "NAME": "Name",
+      "INBOX": "Inbox",
+      "STATUS": "Status",
+      "UPDATED": "Last updated",
+      "ACTIONS": "Actions"
+    },
+    "ACTIONS": {
+      "EDIT": "Edit",
+      "DUPLICATE": "Duplicate",
+      "PUBLISH": "Publish",
+      "PAUSE": "Pause",
+      "DELETE": "Delete",
+      "LOGS": "Logs",
+      "SAVE": "Save changes",
+      "BACK": "Back"
+    },
+    "EDITOR": {
+      "ADD_GROUP": "New group",
+      "ADD_ACTION": "Add action",
+      "ACTIONS_TITLE": "Actions",
+      "PROPERTIES": "Properties",
+      "SELECT_ACTION": "Select an action to edit its properties.",
+      "SELECT_GROUP": "Select a group to edit its name.",
+      "REMOVE_ACTION": "Remove action",
+      "REMOVE_GROUP": "Remove group",
+      "CANNOT_REMOVE_LAST_GROUP": "The flow must have at least one group.",
+      "ENTRY_GROUP": "Start group",
+      "GOES_TO": "→",
+      "NEXT_GROUP": "Then go to",
+      "THEN": "Then",
+      "END_FLOW": "End flow",
+      "START_BADGE": "Start"
+    },
+    "ACTION_TYPES": {
+      "SEND_MESSAGE": "Send message",
+      "WAIT_MESSAGE": "Wait for contact message",
+      "WAIT_SECONDS": "Wait seconds",
+      "CONDITION": "Conditional branch",
+      "GO_TO_GROUP": "Go to group",
+      "TRANSFER_TEAM": "Transfer to team",
+      "ASSIGN_AGENT": "Assign agent",
+      "FINISH": "Finish conversation",
+      "ADD_LABEL": "Add label",
+      "REMOVE_LABEL": "Remove label",
+      "SET_ATTRIBUTE": "Set custom attribute",
+      "WEBHOOK": "Send webhook",
+      "ASK": "Question"
+    },
+    "LOGS": {
+      "TITLE": "Execution logs",
+      "CONVERSATION": "Conversation",
+      "GROUP": "Group",
+      "ACTION": "Action",
+      "STATUS": "Status",
+      "ERROR": "Error",
+      "EMPTY": "No logs yet."
+    },
+    "FORM": {
+      "NAME": "Flow name",
+      "INBOX": "Inbox",
+      "GROUP_NAME": "Group name",
+      "MESSAGE_TEXT": "Message text",
+      "SAVE_AS": "Save response as variable",
+      "SECONDS": "Seconds",
+      "TIMEOUT_SECONDS": "Timeout (seconds)",
+      "TEAM_ID": "Team ID",
+      "AGENT_ID": "Agent ID",
+      "LABELS": "Labels (comma separated)",
+      "TARGET_GROUP": "Target group ID",
+      "WEBHOOK_URL": "Webhook URL",
+      "ASK_SUBTYPE": "Question type",
+      "ASK_OPTIONS": "Options",
+      "TIMEOUT_GROUP": "On timeout, go to",
+      "INVALID_GROUP": "On invalid response, go to",
+      "WAIT_RESPONSE": "Wait for response (synchronous)",
+      "WEBHOOK_TIMEOUT": "Timeout (seconds)",
+      "SUCCESS_GROUP": "On success, go to",
+      "FAILURE_GROUP": "On failure, go to"
+    },
+    "MESSAGES": {
+      "SAVED": "Flow saved.",
+      "PUBLISHED": "Flow published.",
+      "PAUSED": "Flow paused.",
+      "DELETED": "Flow archived.",
+      "ERROR": "Something went wrong."
+    },
+    "CONDITION": {
+      "MODAL_TITLE": "Conditional branch",
+      "MODAL_DESCRIPTION": "Define the cases that will be evaluated to choose the next step.",
+      "HELP_TEXT": "Tip: use Wait for contact message with a save_as variable, then branch on that variable or contact fields. Direct group links on the canvas are visual only.",
+      "PANEL_HINT": "Configure comparison rules and connect each branch handle on the canvas to a target group.",
+      "EDIT": "Edit conditional",
+      "SAVE": "Save",
+      "IF": "If",
+      "AND": "and",
+      "LOGIC_AND": "AND",
+      "LOGIC_OR": "OR",
+      "RULE_LABEL": "Branch name",
+      "ADD_RULE": "Add branch",
+      "REMOVE_RULE": "Remove branch",
+      "ADD_CONDITION": "Add condition",
+      "REMOVE_CONDITION": "Remove",
+      "TARGET_GROUP": "Go to group",
+      "SELECT_GROUP": "Select group…",
+      "VARIABLE_NAME": "Variable name",
+      "CUSTOM_ATTRIBUTE": "Custom attribute…",
+      "CUSTOM_ATTRIBUTE_KEY": "Attribute key",
+      "VALUE": "Value",
+      "FALLBACK_SECTION": "Default case",
+      "FALLBACK_LABEL": "Default case",
+      "SOURCES": {
+        "SESSION_VARIABLE": "Session variable",
+        "CONTACT": "Contact field",
+        "CONVERSATION": "Conversation",
+        "INBOX": "Inbox",
+        "DATETIME": "Date / time"
+      },
+      "CONTACT_ATTRS": {
+        "NAME": "Name",
+        "EMAIL": "Email",
+        "PHONE_NUMBER": "Phone number"
+      },
+      "CONVERSATION_ATTRS": {
+        "LABELS": "Labels"
+      },
+      "INBOX_ATTRS": {
+        "WORKING_NOW": "Is within business hours"
+      },
+      "DATETIME_ATTRS": {
+        "HOUR": "Current hour (0–23)",
+        "DAY_OF_WEEK": "Day of week (0=Sun)",
+        "DATE": "Current date (YYYY-MM-DD)"
+      },
+      "OPERATORS": {
+        "EQUALS": "equals",
+        "NOT_EQUALS": "does not equal",
+        "CONTAINS": "contains",
+        "NOT_CONTAINS": "does not contain",
+        "STARTS_WITH": "starts with",
+        "ENDS_WITH": "ends with",
+        "EXISTS": "is present",
+        "NOT_EXISTS": "is not present",
+        "GREATER_THAN": "is greater than",
+        "LESS_THAN": "is less than",
+        "INCLUDES": "includes",
+        "NOT_INCLUDES": "does not include"
+      }
+    },
+    "ASK": {
+      "SUBTYPE_TEXT": "Free text",
+      "SUBTYPE_BUTTONS": "Buttons",
+      "SUBTYPE_LIST": "List menu",
+      "OPTION_LABEL": "Option label",
+      "ADD_OPTION": "Add option",
+      "TIMEOUT_BRANCH": "Timeout",
+      "INVALID_BRANCH": "Invalid response"
+    },
+    "WEBHOOK": {
+      "SUCCESS_BRANCH": "Success (2xx)",
+      "FAILURE_BRANCH": "Failure / timeout"
+    }
+  }
+}

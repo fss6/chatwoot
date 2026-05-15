@@ -10,6 +10,7 @@ import helpcenterRoutes from './helpcenter/helpcenter.routes';
 import campaignsRoutes from './campaigns/campaigns.routes';
 import { routes as captainRoutes } from './captain/captain.routes';
 import { routes as wlAiRoutes } from 'dashboard/custom/wl-ai/wlAi.routes';
+import { routes as wlBotFlowsRoutes } from 'dashboard/custom/wl-bot-flows/wlBotFlows.routes';
 import AppContainer from './Dashboard.vue';
 import Suspended from './suspended/Index.vue';
 import NoAccounts from './noAccounts/Index.vue';
@@ -23,6 +24,7 @@ export default {
       children: [
         ...captainRoutes,
         ...wlAiRoutes,
+        ...wlBotFlowsRoutes,
         ...inboxRoutes,
         ...conversation.routes,
         ...settings.routes,

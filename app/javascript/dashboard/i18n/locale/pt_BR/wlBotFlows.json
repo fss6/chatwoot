@@ -1,0 +1,81 @@
+{
+  "WL_BOT_FLOWS": {
+    "TITLE": "Fluxos de bot",
+    "NEW_FLOW": "Novo fluxo",
+    "EMPTY": "Nenhum fluxo de bot ainda.",
+    "STATUS": {
+      "DRAFT": "Rascunho",
+      "PUBLISHED": "Publicado",
+      "PAUSED": "Pausado",
+      "ARCHIVED": "Arquivado"
+    },
+    "TABLE": {
+      "NAME": "Nome",
+      "INBOX": "Inbox",
+      "STATUS": "Status",
+      "UPDATED": "Última atualização",
+      "ACTIONS": "Ações"
+    },
+    "ACTIONS": {
+      "EDIT": "Editar",
+      "DUPLICATE": "Duplicar",
+      "PUBLISH": "Publicar",
+      "PAUSE": "Pausar",
+      "DELETE": "Excluir",
+      "LOGS": "Logs",
+      "SAVE": "Salvar alterações",
+      "BACK": "Voltar"
+    },
+    "EDITOR": {
+      "ADD_GROUP": "Novo grupo",
+      "ADD_ACTION": "Adicionar ação",
+      "ACTIONS_TITLE": "Ações",
+      "PROPERTIES": "Propriedades",
+      "SELECT_ACTION": "Selecione uma ação para editar suas propriedades.",
+      "SELECT_GROUP": "Selecione um grupo para editar o nome."
+    },
+    "ACTION_TYPES": {
+      "SEND_MESSAGE": "Enviar mensagem",
+      "WAIT_MESSAGE": "Aguardar mensagem do contato",
+      "WAIT_SECONDS": "Aguardar segundos",
+      "CONDITION": "Condição",
+      "GO_TO_GROUP": "Ir para grupo",
+      "TRANSFER_TEAM": "Transferir para equipe",
+      "ASSIGN_AGENT": "Atribuir agente",
+      "FINISH": "Concluir atendimento",
+      "ADD_LABEL": "Adicionar etiqueta",
+      "REMOVE_LABEL": "Remover etiqueta",
+      "SET_ATTRIBUTE": "Definir atributo personalizado",
+      "WEBHOOK": "Enviar webhook"
+    },
+    "LOGS": {
+      "TITLE": "Logs de execução",
+      "CONVERSATION": "Conversa",
+      "GROUP": "Grupo",
+      "ACTION": "Ação",
+      "STATUS": "Status",
+      "ERROR": "Erro",
+      "EMPTY": "Nenhum log ainda."
+    },
+    "FORM": {
+      "NAME": "Nome do fluxo",
+      "INBOX": "Inbox",
+      "GROUP_NAME": "Nome do grupo",
+      "MESSAGE_TEXT": "Texto da mensagem",
+      "SAVE_AS": "Salvar resposta como variável",
+      "SECONDS": "Segundos",
+      "TEAM_ID": "ID da equipe",
+      "AGENT_ID": "ID do agente",
+      "LABELS": "Etiquetas (separadas por vírgula)",
+      "TARGET_GROUP": "ID do grupo de destino",
+      "WEBHOOK_URL": "URL do webhook"
+    },
+    "MESSAGES": {
+      "SAVED": "Fluxo salvo.",
+      "PUBLISHED": "Fluxo publicado.",
+      "PAUSED": "Fluxo pausado.",
+      "DELETED": "Fluxo arquivado.",
+      "ERROR": "Algo deu errado."
+    }
+  }
+}

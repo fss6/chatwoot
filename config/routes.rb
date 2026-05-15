@@ -98,6 +98,16 @@ Rails.application.routes.draw do
               resources :playground_messages, only: [:create]
             end
           end
+          namespace :wl_bot_flows do
+            resources :flows, only: [:index, :show, :create, :update, :destroy] do
+              member do
+                post :publish
+                post :pause
+                post :duplicate
+              end
+              resources :execution_logs, only: [:index], controller: 'execution_logs'
+            end
+          end
           resource :saml_settings, only: [:show, :create, :update, :destroy]
           resources :agent_bots, only: [:index, :create, :show, :update, :destroy] do
             delete :avatar, on: :member

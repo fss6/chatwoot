@@ -428,6 +428,11 @@ pt_BR:
           Responda apenas com um único objeto JSON, sem cercas de markdown nem outro texto. Formato:
           {"handoff":false,"message":"sua resposta ao cliente","reason":""}
           Defina "handoff" como true somente quando o cliente pedir claramente para falar com um humano, atendente ao vivo ou ser transferido. Quando "handoff" for true, coloque em "message" um breve reconhecimento (uma frase) e em "reason" uma justificativa curta para a equipe de suporte (pode ficar vazia). Quando "handoff" for false, coloque a resposta completa ao cliente em "message" e deixe "reason" vazio.
+  wl_bot_flows:
+    errors:
+      wl_ai_assistant_present: 'Esta inbox tem um assistente WL AI vinculado. Desconecte-o antes de publicar um fluxo de bot.'
+      captain_active: 'O Captain está ativo nesta inbox. Desative o Captain antes de publicar um fluxo de bot.'
+      dialogflow_active: 'O Dialogflow está ativo nesta inbox. Desative-o antes de publicar um fluxo de bot.'
   public_portal:
     search:
       search_placeholder: Pesquisar por artigo por título ou corpo...

@@ -99,6 +99,7 @@ class Account < ApplicationRecord
   has_one :wl_ai_account_credential, dependent: :destroy
   has_many :wl_ai_assistants, dependent: :destroy_async
   has_many :wl_ai_faq_entries, through: :wl_ai_assistants
+  has_many :wl_bot_flows, dependent: :destroy_async
 
   has_one_attached :contacts_export
 

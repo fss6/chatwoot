@@ -388,6 +388,28 @@ const menuItems = computed(() => {
       ],
     },
     {
+      name: 'WlBotFlows',
+      icon: 'i-lucide-workflow',
+      label: t('SIDEBAR.WL_BOT_FLOWS'),
+      activeOn: [
+        'wl_bot_flows_index',
+        'wl_bot_flow_editor',
+        'wl_bot_flow_logs',
+      ],
+      children: [
+        {
+          name: 'WlBotFlowsList',
+          label: t('SIDEBAR.WL_BOT_FLOWS_LIST'),
+          activeOn: [
+            'wl_bot_flows_index',
+            'wl_bot_flow_editor',
+            'wl_bot_flow_logs',
+          ],
+          to: accountScopedRoute('wl_bot_flows_index'),
+        },
+      ],
+    },
+    {
       name: 'WlAi',
       icon: 'i-lucide-sparkles',
       label: t('SIDEBAR.WL_AI'),

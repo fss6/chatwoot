@@ -1,0 +1,12 @@
+json.id flow.id
+json.name flow.name
+json.status flow.status
+json.inbox_id flow.inbox_id
+json.inbox_name flow.inbox&.name
+json.agent_bot_id flow.agent_bot_id
+json.draft_json flow.draft_json
+json.published_json flow.published_json
+json.published_version flow.published_version
+json.published_at flow.published_at
+json.created_at flow.created_at
+json.updated_at flow.updated_at

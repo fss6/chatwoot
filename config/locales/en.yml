@@ -550,6 +550,11 @@ en:
       subject: 'Finish setting up %{custom_domain}'
     ssl_status:
       custom_domain_not_configured: 'Custom domain is not configured'
+  wl_bot_flows:
+    errors:
+      wl_ai_assistant_present: 'This inbox has a WL AI assistant linked. Disconnect it before publishing a bot flow.'
+      captain_active: 'Captain is active on this inbox. Disable Captain before publishing a bot flow.'
+      dialogflow_active: 'Dialogflow is enabled on this inbox. Disable it before publishing a bot flow.'
   super_admin:
     push_diagnostics:
       user_not_found: 'User not found.'

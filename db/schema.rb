@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_17_120001) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_18_120003) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -1350,6 +1350,62 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_17_120001) do
     t.index ["wl_ai_assistant_id"], name: "index_wl_ai_faq_entries_on_wl_ai_assistant_id"
   end
 
+  create_table "wl_bot_execution_logs", force: :cascade do |t|
+    t.bigint "wl_bot_session_id", null: false
+    t.string "group_id"
+    t.string "action_id"
+    t.string "action_type"
+    t.jsonb "input", default: {}, null: false
+    t.jsonb "output", default: {}, null: false
+    t.integer "status", default: 0, null: false
+    t.text "error_message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["wl_bot_session_id", "created_at"], name: "idx_on_wl_bot_session_id_created_at_2bdee3657f"
+    t.index ["wl_bot_session_id"], name: "index_wl_bot_execution_logs_on_wl_bot_session_id"
+  end
+
+  create_table "wl_bot_flows", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "inbox_id"
+    t.bigint "agent_bot_id"
+    t.string "name", null: false
+    t.integer "status", default: 0, null: false
+    t.jsonb "draft_json", default: {}, null: false
+    t.jsonb "published_json", default: {}, null: false
+    t.integer "published_version", default: 0, null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "inbox_id"], name: "index_wl_bot_flows_on_account_id_and_inbox_id"
+    t.index ["account_id", "status"], name: "index_wl_bot_flows_on_account_id_and_status"
+    t.index ["account_id"], name: "index_wl_bot_flows_on_account_id"
+    t.index ["agent_bot_id"], name: "index_wl_bot_flows_on_agent_bot_id"
+    t.index ["inbox_id"], name: "index_wl_bot_flows_on_inbox_id"
+  end
+
+  create_table "wl_bot_sessions", force: :cascade do |t|
+    t.bigint "wl_bot_flow_id", null: false
+    t.bigint "chatwoot_account_id", null: false
+    t.bigint "chatwoot_conversation_id", null: false
+    t.bigint "chatwoot_contact_id"
+    t.string "current_group_id"
+    t.integer "current_action_index", default: 0, null: false
+    t.integer "status", default: 0, null: false
+    t.jsonb "variables", default: {}, null: false
+    t.datetime "waiting_since"
+    t.datetime "timeout_at"
+    t.datetime "finished_at"
+    t.datetime "transferred_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chatwoot_account_id", "chatwoot_conversation_id"], name: "index_wl_bot_sessions_on_account_and_conversation", unique: true
+    t.index ["wl_bot_flow_id", "status"], name: "index_wl_bot_sessions_on_wl_bot_flow_id_and_status"
+    t.index ["wl_bot_flow_id"], name: "index_wl_bot_sessions_on_wl_bot_flow_id"
+  end
+
   create_table "working_hours", force: :cascade do |t|
     t.bigint "inbox_id"
     t.bigint "account_id"
@@ -1375,6 +1431,11 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_17_120001) do
   add_foreign_key "wl_ai_assistants", "accounts"
   add_foreign_key "wl_ai_faq_entries", "accounts"
   add_foreign_key "wl_ai_faq_entries", "wl_ai_assistants"
+  add_foreign_key "wl_bot_execution_logs", "wl_bot_sessions"
+  add_foreign_key "wl_bot_flows", "accounts"
+  add_foreign_key "wl_bot_flows", "agent_bots"
+  add_foreign_key "wl_bot_flows", "inboxes"
+  add_foreign_key "wl_bot_sessions", "wl_bot_flows"
   create_trigger("accounts_after_insert_row_tr", :generated => true, :compatibility => 1).
       on("accounts").
       after(:insert).

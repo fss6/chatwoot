@@ -325,6 +325,8 @@
     "WL_AI_SETTINGS": "Configuration",
     "WL_AI_FAQS": "FAQs",
     "WL_AI_PLAYGROUND": "Playground",
+    "WL_BOT_FLOWS": "Bot flows",
+    "WL_BOT_FLOWS_LIST": "Flows",
     "HOME": "Home",
     "AGENTS": "Agents",
     "AGENT_BOTS": "Bots",

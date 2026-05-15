@@ -42,6 +42,7 @@ import mfa from './mfa.json';
 import onboarding from './onboarding.json';
 import yearInReview from './yearInReview.json';
 import wlAi from './wlAi.json';
+import wlBotFlows from './wlBotFlows.json';
 
 export default {
   ...advancedFilters,
@@ -88,4 +89,5 @@ export default {
   ...onboarding,
   ...yearInReview,
   ...wlAi,
+  ...wlBotFlows,
 };
