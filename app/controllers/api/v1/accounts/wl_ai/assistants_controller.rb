@@ -58,15 +58,18 @@ class Api::V1::Accounts::WlAi::AssistantsController < Api::V1::Accounts::BaseCon
     permitted
   end
 
-  def wl_ai_assistant_config_from(raw)
-    keys = %w[feature_faq feature_memory feature_citations]
-    case raw
-    when ActionController::Parameters
-      raw.permit(*keys).to_h
-    when Hash
-      raw.stringify_keys.slice(*keys)
-    else
-      {}
+    def wl_ai_assistant_config_from(raw)
+      keys = %w[feature_faq feature_memory feature_citations handoff_message transfer_match_mode llm_handoff_enabled]
+      case raw
+      when ActionController::Parameters
+        raw.permit(*keys, transfer_keywords: []).to_h.stringify_keys.slice(*(keys + ['transfer_keywords']))
+      when Hash
+        h = raw.stringify_keys
+        out = h.slice(*keys)
+        out['transfer_keywords'] = h['transfer_keywords'] if h['transfer_keywords'].is_a?(Array)
+        out
+      else
+        {}
+      end
     end
-  end
 end

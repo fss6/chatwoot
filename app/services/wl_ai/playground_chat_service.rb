@@ -21,7 +21,7 @@ module WlAi
       return failure(I18n.t('wl_ai.errors.missing_token')) if credential.blank? || credential.api_token.blank?
 
       api_base = LlmPingService.normalized_api_base(credential.api_base)
-      system_prompt = build_system_prompt
+      system_prompt = AssistantPromptBuilder.system_prompt_for(@assistant)
       model_id = credential.effective_model
 
       Llm::Config.with_api_key(credential.api_token, api_base: api_base) do |context|
@@ -69,32 +69,6 @@ module WlAi
       end
 
       nil
-    end
-
-    def build_system_prompt
-      parts = []
-      parts << "## #{I18n.t('wl_ai.playground.system.assistant_heading')}\n" \
-               "#{I18n.t('wl_ai.playground.system.name_label')}: #{@assistant.name}\n" \
-               "#{I18n.t('wl_ai.playground.system.description_label')}: #{@assistant.description}"
-      if @assistant.product_name.present?
-        parts << "#{I18n.t('wl_ai.playground.system.product_label')}: #{@assistant.product_name}"
-      end
-
-      instructions = @assistant.instructions.to_s.strip
-      if instructions.present?
-        parts << "## #{I18n.t('wl_ai.context_builder.instructions_heading')}\n#{instructions}"
-      end
-
-      faqs = @assistant.wl_ai_faq_entries.order(:position, :id)
-      if faqs.any?
-        header = I18n.t('wl_ai.context_builder.faq_heading')
-        body = faqs.each_with_index.map do |faq, idx|
-          "Q#{idx + 1}: #{faq.question}\nA#{idx + 1}: #{faq.answer}"
-        end.join("\n\n")
-        parts << "## #{header}\n#{body}"
-      end
-
-      parts.join("\n\n")
     end
 
     def success_payload(reply, model_id)

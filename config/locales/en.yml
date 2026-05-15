@@ -237,6 +237,8 @@ en:
   conversations:
     captain:
       handoff: 'Transferring to another agent for further assistance.'
+    wl_ai:
+      handoff: 'Transferring you to a human agent for further assistance.'
     messages:
       instagram_story_content: '%{story_sender} mentioned you in the story: '
       instagram_deleted_story_content: This story is no longer available.
@@ -255,6 +257,8 @@ en:
         resolved_by_tool: 'Conversation was marked resolved by %{user_name}: %{reason}'
         open: 'Conversation was marked open by %{user_name}'
         open_with_reason: 'Conversation was marked open by %{user_name} (%{reason})'
+        auto_opened_after_agent_reply: 'Conversation was marked open automatically after an agent reply'
+      wl_ai:
         auto_opened_after_agent_reply: 'Conversation was marked open automatically after an agent reply'
       agent_bot:
         error_moved_to_open: 'Conversation was marked open by system due to an error with the agent bot.'
@@ -408,6 +412,16 @@ en:
     errors:
       missing_token: 'No API token configured for this account.'
       invalid_model: 'is not a supported OpenAI chat model for this installation.'
+    transfer_intent:
+      default_keywords:
+        - human
+        - humano
+        - atendente
+        - agent
+        - speak to someone
+        - talk to a person
+        - transfer me
+        - human agent
     context_builder:
       instructions_heading: 'Instructions'
       faq_heading: 'Reference Q&A'
@@ -427,6 +441,11 @@ en:
         name_label: 'Name'
         description_label: 'Description'
         product_label: 'Product'
+        json_handoff_block: |-
+          ## Response format (required)
+          Reply with a single JSON object only, no markdown fences or other text. Shape:
+          {"handoff":false,"message":"your reply to the customer","reason":""}
+          Set "handoff" to true only when the customer clearly asks to speak with a human, live agent, or to be transferred. When "handoff" is true, set "message" to a short acknowledgment (one sentence) and put a brief justification for the support team in "reason" (may be empty). When "handoff" is false, put the full customer-facing reply in "message" and leave "reason" empty.
   public_portal:
     search:
       search_placeholder: Search for article by title or body...

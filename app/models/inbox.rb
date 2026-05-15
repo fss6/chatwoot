@@ -45,6 +45,7 @@ class Inbox < ApplicationRecord
   include OutOfOffisable
   include AccountCacheRevalidator
   include InboxAgentAvailability
+  include WlAi::InboxAssociation
 
   # Not allowing characters:
   validates :name, presence: true
@@ -69,8 +70,6 @@ class Inbox < ApplicationRecord
   has_many :messages, dependent: :destroy_async
 
   has_one :inbox_assignment_policy, dependent: :destroy
-  has_one :wl_ai_assistant_inbox, dependent: :destroy
-  has_one :wl_ai_assistant, through: :wl_ai_assistant_inbox
   has_one :assignment_policy, through: :inbox_assignment_policy
   has_one :agent_bot_inbox, dependent: :destroy_async
   has_one :agent_bot, through: :agent_bot_inbox

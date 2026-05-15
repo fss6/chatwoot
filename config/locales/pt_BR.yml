@@ -221,6 +221,8 @@ pt_BR:
   conversations:
     captain:
       handoff: 'Transferindo para que outro agente dê assistência.'
+    wl_ai:
+      handoff: 'Vamos transferir seu atendimento para um agente humano.'
     messages:
       instagram_story_content: '%{story_sender} mencionou você na conversa: '
       instagram_deleted_story_content: Este Story não está mais disponível.
@@ -238,6 +240,8 @@ pt_BR:
         resolved_by_tool: 'A conversa foi marcada como resolvida por %{user_name}: %{reason}'
         open: 'A conversa foi aberta por %{user_name}'
         open_with_reason: 'A conversa foi marcada como aberta por %{user_name} (%{reason})'
+        auto_opened_after_agent_reply: 'A conversa foi marcada como aberta automaticamente após a resposta de um agente'
+      wl_ai:
         auto_opened_after_agent_reply: 'A conversa foi marcada como aberta automaticamente após a resposta de um agente'
       agent_bot:
         error_moved_to_open: 'A conversa foi marcada como aberta pelo sistema devido a um erro com o robô de atendimento.'
@@ -384,6 +388,46 @@ pt_BR:
     custom_tool:
       slug_generation_failed: 'Não foi possível gerar um slug único após 5 tentativas'
       limit_exceeded: 'Você pode criar no máximo %{limit} ferramentas personalizadas por conta'
+  wl_ai:
+    errors:
+      missing_token: 'Nenhum token de API configurado para esta conta.'
+      invalid_model: 'não é um modelo de chat OpenAI suportado nesta instalação.'
+    transfer_intent:
+      default_keywords:
+        - humano
+        - atendente
+        - atendente humano
+        - falar com pessoa
+        - falar com um agente
+        - transferir
+        - human
+        - speak to someone
+        - talk to a person
+        - transfer me
+    context_builder:
+      instructions_heading: 'Instruções'
+      faq_heading: 'Perguntas e respostas de referência'
+      assistant_section: 'Assistente: %{name}'
+    playground:
+      errors:
+        parameter_missing: 'A requisição deve incluir playground.messages.'
+        messages_required: 'Envie pelo menos uma mensagem.'
+        too_many_messages: 'Há mensagens demais neste turno.'
+        invalid_role: 'Cada mensagem deve usar o papel "user" ou "assistant".'
+        invalid_content: 'A mensagem %{index} está vazia ou longa demais.'
+        must_start_with_user: 'A conversa deve começar com uma mensagem do usuário.'
+        must_end_with_user: 'A última mensagem deve ser do usuário.'
+        alternation: 'As mensagens de usuário e assistente devem alternar.'
+      system:
+        assistant_heading: 'Perfil do assistente'
+        name_label: 'Nome'
+        description_label: 'Descrição'
+        product_label: 'Produto'
+        json_handoff_block: |-
+          ## Formato da resposta (obrigatório)
+          Responda apenas com um único objeto JSON, sem cercas de markdown nem outro texto. Formato:
+          {"handoff":false,"message":"sua resposta ao cliente","reason":""}
+          Defina "handoff" como true somente quando o cliente pedir claramente para falar com um humano, atendente ao vivo ou ser transferido. Quando "handoff" for true, coloque em "message" um breve reconhecimento (uma frase) e em "reason" uma justificativa curta para a equipe de suporte (pode ficar vazia). Quando "handoff" for false, coloque a resposta completa ao cliente em "message" e deixe "reason" vazio.
   public_portal:
     search:
       search_placeholder: Pesquisar por artigo por título ou corpo...
