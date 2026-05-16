@@ -50,7 +50,7 @@ import {
   removeSignature,
   getEffectiveChannelType,
 } from 'dashboard/helper/editorHelper';
-import { useCopilotReply } from 'dashboard/composables/useCopilotReply';
+import { useComposerAssist } from 'dashboard/composables/useComposerAssist';
 import { useKbd } from 'dashboard/composables/utils/useKbd';
 import { isFileTypeAllowedForChannel } from 'shared/helpers/FileHelper';
 
@@ -93,7 +93,7 @@ export default {
 
     const replyEditor = useTemplateRef('replyEditor');
     const messageEditor = useTemplateRef('messageEditor');
-    const copilot = useCopilotReply();
+    const copilot = useComposerAssist();
     const shortcutKey = useKbd(['$mod', '+', 'enter']);
 
     return {

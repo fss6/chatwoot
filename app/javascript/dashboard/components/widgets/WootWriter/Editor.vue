@@ -17,6 +17,11 @@ import TagAgents from '../conversation/TagAgents.vue';
 import VariableList from '../conversation/VariableList.vue';
 import TagTools from '../conversation/TagTools.vue';
 import CopilotMenuBar from './CopilotMenuBar.vue';
+import WlAiMenuBar from 'dashboard/custom/composer/WlAiMenuBar.vue';
+import {
+  isCaptainTasksComposerEnabled,
+  isWlAiComposerEnabled,
+} from 'dashboard/custom/composer/composerConfig';
 
 import { useEmitter } from 'dashboard/composables/emitter';
 import { useI18n } from 'vue-i18n';
@@ -115,6 +120,12 @@ const emit = defineEmits([
 const { t } = useI18n();
 const { captainTasksEnabled } = useCaptain();
 
+const composerAiEnabled = computed(
+  () =>
+    isWlAiComposerEnabled() ||
+    (isCaptainTasksComposerEnabled() && captainTasksEnabled.value)
+);
+
 const TYPING_INDICATOR_IDLE_TIME = 4000;
 const MAXIMUM_FILE_UPLOAD_SIZE = 4; // in MB
 const DEFAULT_FORMATTING = 'Context::Default';
@@ -132,7 +143,7 @@ const editorSchema = computed(() => {
     : effectiveChannelType.value;
   const formatting = getFormattingForEditor(
     formatType,
-    captainTasksEnabled.value
+    composerAiEnabled.value
   );
   return buildMessageSchema(formatting.marks, formatting.nodes);
 });
@@ -143,7 +154,7 @@ const editorMenuOptions = computed(() => {
     : effectiveChannelType.value || DEFAULT_FORMATTING;
   const formatting = getFormattingForEditor(
     formatType,
-    captainTasksEnabled.value
+    composerAiEnabled.value
   );
 
   return formatting.menu;
@@ -862,6 +873,7 @@ useEmitter(BUS_EVENTS.INSERT_INTO_RICH_EDITOR, insertContentIntoEditor);
     class="relative w-full"
     :class="{
       'opacity-50 cursor-not-allowed pointer-events-none': disabled,
+      'wl-ai-composer-editor': composerAiEnabled && isWlAiComposerEnabled(),
     }"
   >
     <TagAgents
@@ -889,8 +901,18 @@ useEmitter(BUS_EVENTS.INSERT_INTO_RICH_EDITOR, insertContentIntoEditor);
       :search-key="toolSearchKey"
       @select-tool="content => insertSpecialContent('tool', content)"
     />
+    <WlAiMenuBar
+      v-if="showSelectionMenu && isWlAiComposerEnabled()"
+      v-on-click-outside="handleClickOutside"
+      :has-selection="isTextSelected"
+      :is-editor-menu-popover="isEditorMenuPopover"
+      :editor-content="modelValue"
+      :conversation-id="conversationId"
+      class="copilot-editor-menu"
+      @execute-copilot-action="handleCopilotAction"
+    />
     <CopilotMenuBar
-      v-if="showSelectionMenu"
+      v-else-if="showSelectionMenu && isCaptainTasksComposerEnabled()"
       v-on-click-outside="handleClickOutside"
       :has-selection="isTextSelected"
       :is-editor-menu-popover="isEditorMenuPopover"
@@ -959,6 +981,10 @@ useEmitter(BUS_EVENTS.INSERT_INTO_RICH_EDITOR, insertContentIntoEditor);
         @apply fill-n-violet-9 text-n-violet-9 stroke-none;
       }
     }
+  }
+
+  &.wl-ai-composer-editor .ProseMirror-menubar .ProseMirror-copilot svg {
+    @apply fill-n-brand text-n-brand stroke-none;
   }
 
   .ProseMirror-menubar:not(:has(*)) {

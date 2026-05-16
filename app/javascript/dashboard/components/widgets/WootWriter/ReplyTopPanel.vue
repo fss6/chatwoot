@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useKeyboardEvents } from 'dashboard/composables/useKeyboardEvents';
 import { useCaptain } from 'dashboard/composables/useCaptain';
 import { useTrack } from 'dashboard/composables';
@@ -9,6 +9,12 @@ import { CAPTAIN_EVENTS } from 'dashboard/helper/AnalyticsHelper/events';
 import NextButton from 'dashboard/components-next/button/Button.vue';
 import EditorModeToggle from './EditorModeToggle.vue';
 import CopilotMenuBar from './CopilotMenuBar.vue';
+import WlAiMenuBar from 'dashboard/custom/composer/WlAiMenuBar.vue';
+import {
+  isCaptainTasksComposerEnabled,
+  isWlAiComposerEnabled,
+  getComposerTriggerIcon,
+} from 'dashboard/custom/composer/composerConfig';
 
 export default {
   name: 'ReplyTopPanel',
@@ -16,6 +22,7 @@ export default {
     NextButton,
     EditorModeToggle,
     CopilotMenuBar,
+    WlAiMenuBar,
   },
   directives: {
     OnClickOutside: vOnClickOutside,
@@ -75,6 +82,11 @@ export default {
     };
 
     const { captainTasksEnabled } = useCaptain();
+    const showComposerAiMenu = computed(
+      () =>
+        isWlAiComposerEnabled() ||
+        (isCaptainTasksComposerEnabled() && captainTasksEnabled.value)
+    );
     const showCopilotMenu = ref(false);
 
     const handleCopilotAction = (actionKey, data) => {
@@ -114,6 +126,10 @@ export default {
       handleReplyClick,
       handleNoteClick,
       REPLY_EDITOR_MODES,
+      showComposerAiMenu,
+      isWlAiComposerEnabled,
+      isCaptainTasksComposerEnabled,
+      getComposerTriggerIcon,
       captainTasksEnabled,
       handleCopilotAction,
       showCopilotMenu,
@@ -140,6 +156,21 @@ export default {
         ? `${-this.charactersRemaining} ${CHAR_LENGTH_WARNING.NEGATIVE}`
         : `${this.charactersRemaining} ${CHAR_LENGTH_WARNING.UNDER_50}`;
     },
+    composerTriggerIcon() {
+      return getComposerTriggerIcon();
+    },
+    composerTriggerButtonClass() {
+      if (isWlAiComposerEnabled()) {
+        return {
+          'text-n-brand hover:enabled:!bg-n-blue-3': !this.showCopilotMenu,
+          'text-n-brand bg-n-blue-3': this.showCopilotMenu,
+        };
+      }
+      return {
+        'text-n-violet-9 hover:enabled:!bg-n-violet-3': !this.showCopilotMenu,
+        'text-n-violet-9 bg-n-violet-3': this.showCopilotMenu,
+      };
+    },
   },
 };
 </script>
@@ -160,37 +191,47 @@ export default {
           {{ characterLengthWarning }}
         </span>
       </div>
-    </div>
-    <div v-if="captainTasksEnabled" class="flex items-center gap-2">
-      <div class="relative">
+      <div v-if="showComposerAiMenu" class="flex items-center gap-2">
+        <div class="relative">
+          <NextButton
+            ghost
+            :disabled="disabled || isEditorDisabled"
+            :class="composerTriggerButtonClass"
+            sm
+            :icon="composerTriggerIcon"
+            @click="toggleCopilotMenu"
+          />
+          <WlAiMenuBar
+            v-if="showCopilotMenu && isWlAiComposerEnabled()"
+            v-on-click-outside="handleClickOutside"
+            :has-selection="false"
+            :editor-content="editorContent"
+            :conversation-id="conversationId"
+            class="ltr:right-0 rtl:left-0 bottom-full mb-2"
+            @execute-copilot-action="handleCopilotAction"
+          />
+          <CopilotMenuBar
+            v-else-if="
+              showCopilotMenu &&
+              isCaptainTasksComposerEnabled() &&
+              captainTasksEnabled
+            "
+            v-on-click-outside="handleClickOutside"
+            :has-selection="false"
+            :editor-content="editorContent"
+            :conversation-id="conversationId"
+            class="ltr:right-0 rtl:left-0 bottom-full mb-2"
+            @execute-copilot-action="handleCopilotAction"
+          />
+        </div>
         <NextButton
           ghost
-          :disabled="disabled || isEditorDisabled"
-          :class="{
-            'text-n-violet-9 hover:enabled:!bg-n-violet-3': !showCopilotMenu,
-            'text-n-violet-9 bg-n-violet-3': showCopilotMenu,
-          }"
+          class="text-n-slate-11"
           sm
-          icon="i-ph-sparkle-fill"
-          @click="toggleCopilotMenu"
-        />
-        <CopilotMenuBar
-          v-if="showCopilotMenu"
-          v-on-click-outside="handleClickOutside"
-          :has-selection="false"
-          :editor-content="editorContent"
-          :conversation-id="conversationId"
-          class="ltr:right-0 rtl:left-0 bottom-full mb-2"
-          @execute-copilot-action="handleCopilotAction"
+          icon="i-lucide-maximize-2"
+          @click="$emit('toggleEditorSize')"
         />
       </div>
-      <NextButton
-        ghost
-        class="text-n-slate-11"
-        sm
-        icon="i-lucide-maximize-2"
-        @click="$emit('toggleEditorSize')"
-      />
     </div>
   </div>
 </template>

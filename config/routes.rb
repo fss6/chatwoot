@@ -89,6 +89,11 @@ Rails.application.routes.draw do
             end
           end
           namespace :wl_ai do
+            scope :composer, controller: 'composer_tasks' do
+              post :reply_suggestion
+              post :summarize
+              post :rewrite
+            end
             resource :credential, only: [:show, :update] do
               post :ping
             end

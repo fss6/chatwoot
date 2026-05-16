@@ -1,7 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import CopilotEditor from 'dashboard/components/widgets/WootWriter/CopilotEditor.vue';
 import CaptainLoader from 'dashboard/components/widgets/conversation/copilot/CaptainLoader.vue';
+import WlAiLoader from 'dashboard/custom/composer/WlAiLoader.vue';
+import { isWlAiComposerEnabled } from 'dashboard/custom/composer/composerConfig';
 
 defineProps({
   showCopilotEditor: {
@@ -25,6 +28,14 @@ const emit = defineEmits([
   'contentReady',
   'send',
 ]);
+
+const { t } = useI18n();
+
+const generatingLabel = computed(() =>
+  isWlAiComposerEnabled()
+    ? t('WL_AI.COMPOSER.GENERATING')
+    : t('CONVERSATION.REPLYBOX.COPILOT_THINKING')
+);
 
 const copilotEditorContent = ref('');
 
@@ -73,12 +84,20 @@ const onSend = () => {
     <div
       v-else-if="isGeneratingContent"
       key="loading-state"
-      class="bg-n-iris-5 rounded min-h-[4.75rem] w-full mb-4 p-4 flex items-start"
+      class="rounded min-h-[4.75rem] w-full mb-4 p-4 flex items-start"
+      :class="isWlAiComposerEnabled() ? 'bg-n-blue-3' : 'bg-n-iris-5'"
     >
       <div class="flex items-center gap-2">
-        <CaptainLoader class="text-n-iris-10 size-4" />
-        <span class="text-sm text-n-iris-10">
-          {{ $t('CONVERSATION.REPLYBOX.COPILOT_THINKING') }}
+        <WlAiLoader
+          v-if="isWlAiComposerEnabled()"
+          class="text-n-brand size-4"
+        />
+        <CaptainLoader v-else class="text-n-iris-10 size-4" />
+        <span
+          class="text-sm"
+          :class="isWlAiComposerEnabled() ? 'text-n-blue-11' : 'text-n-iris-10'"
+        >
+          {{ generatingLabel }}
         </span>
       </div>
     </div>

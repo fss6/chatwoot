@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import NextButton from 'dashboard/components-next/button/Button.vue';
 import { useI18n } from 'vue-i18n';
 import { useKbd } from 'dashboard/composables/utils/useKbd';
+import { isWlAiComposerEnabled } from 'dashboard/custom/composer/composerConfig';
 
 defineProps({
   isGeneratingContent: {
@@ -41,7 +42,11 @@ const handleSubmit = () => {
     />
     <NextButton
       :label="acceptLabel"
-      class="bg-n-iris-9 text-white"
+      :class="
+        isWlAiComposerEnabled()
+          ? 'bg-n-brand text-white'
+          : 'bg-n-iris-9 text-white'
+      "
       solid
       sm
       :disabled="isGeneratingContent"

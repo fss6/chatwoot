@@ -426,6 +426,12 @@ en:
       instructions_heading: 'Instructions'
       faq_heading: 'Reference Q&A'
       assistant_section: 'Assistant: %{name}'
+    composer:
+      errors:
+        conversation_not_found: 'Conversation not found.'
+        no_assistant: 'Configure at least one WL AI assistant (or link one to this inbox).'
+        empty_response: 'The model returned an empty response. Try again.'
+        invalid_operation: 'That rewrite operation is not supported.'
     playground:
       errors:
         parameter_missing: 'Request must include playground.messages.'

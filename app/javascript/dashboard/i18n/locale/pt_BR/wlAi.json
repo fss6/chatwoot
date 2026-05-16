@@ -170,6 +170,25 @@
         "SUBTITLE": "Conecte uma caixa para vincular este assistente a um canal de atendimento."
       }
     },
+    "COMPOSER": {
+      "IMPROVE_REPLY": "Melhorar resposta",
+      "CHANGE_TONE": {
+        "TITLE": "Alterar tom",
+        "OPTIONS": {
+          "PROFESSIONAL": "Profissional",
+          "CASUAL": "Casual",
+          "STRAIGHTFORWARD": "Direto",
+          "CONFIDENT": "Confiante",
+          "FRIENDLY": "Amigável"
+        }
+      },
+      "GRAMMAR": "Corrigir gramática e ortografia",
+      "SUGGESTION": "Sugerir uma resposta",
+      "SUMMARIZE": "Resumir a conversa",
+      "OPEN_PLAYGROUND": "Abrir playground de IA",
+      "GENERATE_ERROR": "Não foi possível gerar o conteúdo. Verifique as configurações de IA e tente novamente.",
+      "GENERATING": "Gerando conteúdo…"
+    },
     "PLAYGROUND_PICK": {
       "TITLE": "Playground — escolha o assistente",
       "DESCRIPTION": "Escolha qual assistente você quer testar no playground.",

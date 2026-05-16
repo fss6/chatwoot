@@ -80,6 +80,10 @@ Antes de mesclar:
 | WL AI — spec | `spec/services/wl_ai/message_templates_hook_integration_spec.rb` | NEW | Enfileiramento do job com env ligado/desligado. |
 | WL AI — handoff para humano | `app/jobs/wl_ai/bot_handoff_job.rb`, `app/services/wl_ai/human_transfer_intent_detector.rb`, `app/services/wl_ai/message_templates/hook_extension.rb`, `app/services/wl_ai/conversation_reply_service.rb`, `app/services/wl_ai/assistant_prompt_builder.rb`, `app/controllers/api/v1/accounts/wl_ai/assistants_controller.rb`, `config/locales/en.yml` | NEW + PATCH | `BotHandoffJob`: nota privada opcional, mensagem pública, `bot_handoff!`, OOO. Gatilho por keywords (`transfer_keywords` / defaults i18n) antes do LLM; `llm_handoff_enabled` + resposta JSON para handoff via LLM. API `config` alargada. |
 | WL AI — handoff specs | `spec/jobs/wl_ai/bot_handoff_job_spec.rb`, `spec/services/wl_ai/human_transfer_intent_detector_spec.rb`, `spec/services/wl_ai/conversation_reply_service_spec.rb`, `spec/services/wl_ai/message_templates_hook_integration_spec.rb` | NEW + PATCH | Cobertura job, detector, reply JSON, hook keyword vs reply. |
+| Composer AI config | `app/javascript/dashboard/custom/composer/composerConfig.js` | NEW | `useWlAiComposer: true`, `useCaptainTasks: false` — gate do menu sparkle. |
+| WL AI — composer backend | `app/services/wl_ai/composer_*_service.rb`, `composer_tasks_controller.rb`, `lib/wl_ai/prompts/*.liquid`, `config/routes.rb` | NEW + PATCH | `POST …/wl_ai/composer/{reply_suggestion,summarize,rewrite}`; credencial `wl_ai_account_credential`; assistente da inbox ou primeiro da conta. |
+| WL AI — composer frontend | `custom/composer/WlAiMenuBar.vue`, `composables/useWlAiComposer.js`, `useComposerAssist.js`, `api/wlAi/composerTasks.js`, `i18n/en/wlAi.json` | NEW | Menu sparkle + preview (`CopilotEditorSection` via `ReplyBox`); “Open playground” → rota `wl_ai_playground_pick`. |
+| WL AI — composer wiring | `ReplyTopPanel.vue`, `ReplyBox.vue`, `Editor.vue` | PATCH | Patches cirúrgicos: menu Wl AI vs Captain Tasks conforme `composerConfig`. |
 
 ### Tipos
 
@@ -102,6 +106,222 @@ Convenção: `vX.Y.Z-fss6.N` onde `X.Y.Z` é a versão upstream de referência e
 - `v0.1.7-fss6.0` — Paleta trocada de slate puro para **slate + indigo acento** (Linear-ish). `--blue-*` agora é Indigo Radix; `bg-n-brand` (botões primários) passa a obedecer ao fork via patch de 1 linha em `theme/colors.js`. Section pill da sidebar fica **monocromático com `inset` outline** (mais visível). Estado ativo da sidebar ganha **tint indigo + barra lateral** ("brilho" do fork) aplicado em `nav .bg-n-alpha-2` (atenção: classe exata, não substring — caso contrário casa `hover:bg-n-alpha-2` em todo item).
 - `v0.1.9-fss6.0` — **Tema de conteúdo interno**: tokens de superfície/borda em `_brand-overrides.scss`; `theme.extend.boxShadow` no Tailwind (sombras mais fortes em `shadow-sm` etc.); `main.wl-content` + `_content-theme.scss` (gradiente perceptível no canvas principal).
 - `v0.1.10-fss6.0` — **Tema da área de conversas**: `_conversation-theme.scss` importado em `_brand-overrides.scss` — sombras na coluna da lista, no painel de detalhe, nas bolhas e no composer (`reply-box`), com variantes dark e RTL.
+
+## Mapa: IA no composer (`ReplyTopPanel` / menu sparkle)
+
+Referência para white-label sem violar licença Enterprise nem aumentar conflitos
+com upstream. Atualizado a partir do fluxo upstream (`captain_tasks`) vs produto
+fork (`Wl AI`).
+
+### Fluxo atual (upstream — Captain Tasks, MIT)
+
+```
+ReplyTopPanel (v-if captainTasksEnabled)
+  └─ botão sparkle → CopilotMenuBar
+       ├─ reply_suggestion  ─┐
+       ├─ summarize         ─┼─ emit executeCopilotAction
+       ├─ ask_copilot       ─┤
+       └─ improve / tone…   ─┘
+            ↓
+ReplyBox.executeCopilotAction → useCopilotReply.execute
+  ├─ ask_copilot → UI settings is_copilot_panel_open (só renderiza com isEnterprise + captain_integration)
+  └─ demais → useCaptain.processEvent → POST /api/v1/accounts/:id/captain/tasks/*
+            ↓
+CopilotEditorSection (preview inline + follow-up + accept → ReplyBox.message)
+```
+
+| Peça | Caminho | Licença | Notas |
+|------|---------|---------|-------|
+| Gate UI | `useCaptain.captainTasksEnabled` → feature `captain_tasks` | MIT | Default `enabled: true` em `config/features.yml` |
+| Menu | `WootWriter/CopilotMenuBar.vue` | MIT | i18n `INTEGRATION_SETTINGS.OPEN_AI.REPLY_OPTIONS.*` |
+| Top panel | `WootWriter/ReplyTopPanel.vue` | MIT | Também botão maximize → `toggleEditorSize` |
+| Seleção no editor | `WootWriter/Editor.vue` (popover `CopilotMenuBar`) | MIT | Mesmo evento |
+| Orquestração | `composables/useCopilotReply.js` | MIT | Analytics `CAPTAIN_EVENTS.*` |
+| API client | `api/captain/tasks.js` | MIT | rewrite, summarize, reply_suggestion, follow_up |
+| Backend | `lib/captain/*_service.rb`, `TasksController` | MIT | EE faz `prepend` em `BaseTaskService` (quotas cloud) |
+| Painel lateral | `components/copilot/CopilotContainer.vue` | EE UI | `isEnterprise` + `captain_integration` |
+
+**Outros consumidores de `captainTasksEnabled` no dashboard** (rebrand ou desligar junto):
+
+- `LabelSuggestion.vue` — sugestão de labels via `TasksAPI.labelSuggestion`
+- `MessagesView.vue` — exibe label suggestions
+- `useConversationHotKeys.js` — atalhos CMD AI assist
+- `Editor.vue` — schema/menu do ProseMirror quando tasks ativo
+
+**Estado deste fork hoje**
+
+- Sidebar: `hiddenTopLevel: ['Captain']` — produto Captain EE escondido.
+- Wl AI: rotas `custom/wl-ai/*`, API `wl_ai/*`, auto-reply na inbox (prepend hooks).
+- Composer: **ainda usa upstream** `captain_tasks` + `CopilotMenuBar` se a feature estiver on.
+- Wl AI **não** expõe ainda endpoints de assist ao agente no composer (só playground + auto-reply).
+
+---
+
+### Opção A — Recomendada: menu sparkle → **Wl AI** (produto próprio)
+
+Substituir dependência de `/captain/tasks` no reply box por API e UX da marca, sem
+tocar em `enterprise/`.
+
+#### Comportamento alvo
+
+| Ação no menu | Comportamento |
+|--------------|---------------|
+| Sugerir resposta | LLM com histórico da conversa + assistente Wl AI (inbox ou default da conta) |
+| Resumir conversa | LLM resumo (nota privada ou preview no `CopilotEditorSection`) |
+| Melhorar / tom / gramática | Rewrite do draft atual (opcional fase 2) |
+| “Perguntar…” | Navegar para `wl_ai_playground_pick` com `conversationId` query, ou drawer próprio — **não** abrir `CopilotContainer` EE |
+
+#### Arquivos novos (NEW — zero conflito sync)
+
+| Arquivo | Função |
+|---------|--------|
+| `app/javascript/dashboard/custom/composer/WlAiMenuBar.vue` | Menu sparkle (fork de `CopilotMenuBar`, i18n `WL_AI.COMPOSER.*`) |
+| `app/javascript/dashboard/composables/useWlAiComposer.js` | `execute(action, data)` espelhando `useCopilotReply` (generate, follow-up, accept) |
+| `app/javascript/dashboard/api/wlAi/composerTasks.js` | Cliente HTTP |
+| `app/controllers/api/v1/accounts/wl_ai/composer_tasks_controller.rb` | `reply_suggestion`, `summarize`, `rewrite` |
+| `app/services/wl_ai/composer_reply_suggestion_service.rb` | Prompt + `ConversationContextBuilder` / histórico |
+| `app/services/wl_ai/composer_summarize_service.rb` | Resumo da conversa |
+| `app/services/wl_ai/composer_rewrite_service.rb` | Melhorar draft (fase 2) |
+| `config/locales/en.yml` + `i18n/locale/en.json` | Strings `WL_AI.COMPOSER.*` (sem “Copilot”/“Captain”) |
+
+Reutilizar sem copiar EE:
+
+- `WlAi::ConversationContextBuilder` (já previsto para “reply assist”)
+- `wl_ai_account_credential` + `Llm::Config` (mesmo stack de `PlaygroundChatService`)
+- `CopilotEditorSection.vue` + fluxo `accept` do `ReplyBox` (só trocar composable)
+
+#### Patches cirúrgicos (PATCH)
+
+| Arquivo | Mudança |
+|---------|---------|
+| `custom/composer/WlReplyTopPanel.vue` | Wrapper que importa lógica do upstream **ou** patch mínimo em `ReplyTopPanel.vue` via `v-if` fork |
+| `ReplyBox.vue` | `executeCopilotAction` → `wlAiComposer.execute` quando flag fork ativa (1 branch no método) |
+| `config/routes.rb` | `namespace :wl_ai { resource :composer_tasks, only: [] do post … end }` |
+| `sidebarConfig.js` | Já esconde `Captain`; manter `WlAi` em ATENDIMENTO |
+
+**Alternativa ainda mais limpa para sync:** não patchar `ReplyTopPanel.vue`; criar
+`WlReplyTopPanelActions.vue` montado em `ReplyBox.vue` ao lado do painel via
+`v-if="wlAiComposerEnabled"` e esconder bloco `captainTasksEnabled` do upstream com
+`sidebarConfig`-style flag em `custom/composer/composerConfig.js`:
+
+```js
+export const composerConfig = {
+  useWlAiComposer: true,      // menu sparkle Wl AI
+  useCaptainTasks: false,     // desliga CopilotMenuBar upstream
+};
+```
+
+#### Fases de implementação
+
+| Fase | Escopo | Esforço |
+|------|--------|---------|
+| **A0** | `composerConfig` + esconder sparkle upstream (`useCaptainTasks: false`) | Baixo |
+| **A1** | Backend `reply_suggestion` + `summarize` + API + `useWlAiComposer` + menu | Médio |
+| **A2** | Reutilizar `CopilotEditorSection` + follow-up | Médio |
+| **A3** | `rewrite` / tom / gramática | Médio |
+| **A4** | Atalhos (`useConversationHotKeys`) + `LabelSuggestion` Wl AI ou off | Baixo–médio |
+| **A5** | “Perguntar” → playground com contexto da conversa | Baixo |
+
+#### Licença / upstream
+
+- Código novo em `app/` + `custom/` → MIT do fork.
+- Não copiar `enterprise/lib/enterprise/captain/*`.
+- Sync: conflitos só em `ReplyBox.vue` / `routes.rb` se patches forem cirúrgicos.
+
+---
+
+### Opção B — Híbrida: manter **`captain_tasks`** (MIT) só com rebrand
+
+Menos trabalho imediato; menu continua ligado ao Captain upstream.
+
+| O quê | Como |
+|-------|------|
+| Textos | `replaceInstallationName` nos labels do menu; chaves `en.json` só onde necessário |
+| Esconder “Ask Copilot” | Fork de `CopilotMenuBar` em `custom/composer/` ou prop `hideAskCopilot` via wrapper |
+| Sidebar | Manter `Captain` hidden; não confundir com tasks MIT |
+| Label suggestions | Manter `LabelSuggestion.vue` ou desligar com feature flag conta |
+| API key | Conta precisa OpenAI hook / `CAPTAIN_OPEN_AI_*` — independente de `wl_ai` credential |
+
+| Prós | Contras |
+|------|---------|
+| Quase zero backend novo | Marca “Open AI / Copilot” no código upstream |
+| Sync simples | Duas stacks de credencial (hook OpenAI vs `wl_ai_account_credential`) |
+| Funciona sem Wl AI composer API | Conflito conceitual: vendes Wl AI mas composer usa Captain |
+
+**Patches mínimos**
+
+- `custom/composer/CopilotMenuBarFork.vue` — copia enxuta de `CopilotMenuBar.vue` sem `ask_copilot`
+- `ReplyTopPanel.vue` — 1 linha import do fork (PATCH) **ou** substituir componente no `ReplyBox`
+- `en.json` — overlay `WL_AI` não necessário se só `replaceInstallationName`
+
+---
+
+### Opção C — Enterprise licenciado (referência)
+
+Só se o cliente tiver assinatura Chatwoot EE.
+
+| Recurso | Requisito |
+|---------|-----------|
+| Painel Copilot lateral | `isEnterprise` + `captain_integration` |
+| Assistants / docs search em reply | EE `ReplySuggestionService` prepend |
+| Quotas cloud | `Enterprise::Captain::BaseTaskService` |
+
+White-label: `INSTALLATION_NAME` + branding; **não** redistribuir `enterprise/`.
+No fork atual, `Captain` já está em `hiddenTopLevel` — reativar só para clientes EE.
+
+---
+
+### Matriz de decisão
+
+| Critério | Opção A (Wl AI) | Opção B (captain_tasks) | Opção C (EE) |
+|----------|-----------------|-------------------------|--------------|
+| Licença EE | Não precisa | Não precisa | Contrato |
+| Marca única | Sim | Parcial | Parcial |
+| Uma credencial LLM (`wl_ai`) | Sim | Não (hook + wl_ai) | Depende |
+| Conflito sync | Baixo se `custom/` | Muito baixo | N/A |
+| Esforço | A1–A3 médio | Baixo | Comercial |
+
+**Recomendação do fork:** **Opção A** para o composer + manter Wl AI inbox/playground;
+**Opção B** só como ponte curta (A0: `useCaptainTasks: false` até A1 pronto).
+
+**Status (implementado):** Opção A fases A0–A3 (menu, suggest, summarize, rewrite/improve/tone). Follow-up no preview ainda não (igual Captain). Label suggestions continuam em `captain_tasks` se a feature estiver on na conta.
+
+---
+
+### Diagrama alvo (Opção A)
+
+```mermaid
+flowchart TD
+  RTP[ReplyTopPanel / Wl sparkle]
+  MENU[WlAiMenuBar]
+  RB[ReplyBox]
+  UWC[useWlAiComposer]
+  API[POST wl_ai/composer_tasks]
+  SVC[WlAi Composer*Service]
+  CREDS[wl_ai_account_credential]
+  SEC[CopilotEditorSection]
+  RTP --> MENU
+  MENU --> RB
+  RB --> UWC
+  UWC --> API
+  API --> SVC
+  SVC --> CREDS
+  UWC --> SEC
+  SEC -->|accept| RB
+```
+
+---
+
+### Checklist pré-sync upstream
+
+Ao mesclar `upstream/develop`, rever se estes arquivos upstream mudaram:
+
+- [ ] `ReplyTopPanel.vue`, `CopilotMenuBar.vue`, `ReplyBox.vue`
+- [ ] `useCopilotReply.js`, `useCaptain.js`
+- [ ] `Editor.vue` (popover AI)
+- [ ] `Sidebar.vue` (`menuItems` names: `WlAi`, `Captain`)
+- [ ] `config/features.yml` (`captain_tasks`)
+- [ ] `lib/captain/*` (contratos API tasks)
 
 ## Gotchas conhecidos
 

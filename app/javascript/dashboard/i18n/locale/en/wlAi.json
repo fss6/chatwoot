@@ -170,6 +170,25 @@
         "SUBTITLE": "Connect an inbox to tie this assistant to a support channel."
       }
     },
+    "COMPOSER": {
+      "IMPROVE_REPLY": "Improve reply",
+      "CHANGE_TONE": {
+        "TITLE": "Change tone",
+        "OPTIONS": {
+          "PROFESSIONAL": "Professional",
+          "CASUAL": "Casual",
+          "STRAIGHTFORWARD": "Straightforward",
+          "CONFIDENT": "Confident",
+          "FRIENDLY": "Friendly"
+        }
+      },
+      "GRAMMAR": "Fix grammar & spelling",
+      "SUGGESTION": "Suggest a reply",
+      "SUMMARIZE": "Summarize the conversation",
+      "OPEN_PLAYGROUND": "Open AI playground",
+      "GENERATE_ERROR": "Could not generate content. Check WL AI settings and try again.",
+      "GENERATING": "Generating content…"
+    },
     "PLAYGROUND_PICK": {
       "TITLE": "Playground — choose an assistant",
       "DESCRIPTION": "Pick which assistant you want to test in the playground.",
