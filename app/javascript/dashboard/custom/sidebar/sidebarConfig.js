@@ -23,9 +23,34 @@ export const sidebarConfig = {
    */
   hiddenTopLevel: [
     'Captain',
+    'Portals',
     // 'Campaigns',
-    // 'Portals',
   ],
+
+  /**
+   * Subitens a esconder dentro de um grupo de primeiro nível (o grupo em si
+   * continua visível). Chaves e valores usam o campo `name` de cada item em
+   * `Sidebar.vue` → `menuItems`.
+   *
+   * - Chave = nome do grupo de topo → esconde esses `name`s em qualquer
+   *   profundidade abaixo dele (filho direto ou subgrupo inteiro).
+   * - Chave com ponto (`Grupo.Subgrupo`) → esconde só entre os filhos
+   *   imediatos daquele subgrupo (útil para itens dinâmicos, ex. pastas).
+   *
+   * Exemplos (Conversation):
+   *   'All', 'Mentions', 'Participating', 'Unattended',
+   *   'Folders', 'Teams', 'Channels', 'Labels'
+   *
+   * Exemplos (Settings):
+   *   'Settings Billing', 'Settings Audit Logs', 'Settings Sla', …
+   *
+   * Exemplos (WlAi):
+   *   'WlAiPlayground', 'WlAiFaqs', 'WlAiSettings'
+   */
+  hiddenChildren: {
+    // Conversation: ['Mentions', 'Participating', 'Teams'],
+    Settings: ['Settings Custom Roles', 'Settings Sla', 'Settings Security'],
+  },
 
   /**
    * Seções rotuladas. Cada entrada vira um rótulo discreto acima do primeiro
@@ -46,8 +71,7 @@ export const sidebarConfig = {
       items: ['Inbox', 'Conversation', 'Captain', 'WlAi'],
     },
     { label: 'CRM', items: ['Contacts', 'Companies'] },
-    { label: 'INSIGHTS', items: ['Reports', 'Campaigns'] },
-    { label: 'ADMIN', items: ['Portals', 'Settings'] },
+    { label: 'ADMIN', items: ['Portals', 'Reports', 'Campaigns', 'Settings'] },
   ],
 
   /**

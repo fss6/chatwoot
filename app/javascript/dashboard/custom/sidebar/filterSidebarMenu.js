@@ -1,6 +1,63 @@
 import { sidebarConfig } from './sidebarConfig';
 
 /**
+ * @param {string[]} path — caminho de `name`s desde o grupo de topo (ex. ['Conversation', 'Teams'])
+ * @param {Record<string, string[]>} hiddenChildren
+ * @returns {Set<string>}
+ */
+const getHiddenNamesForPath = (path, hiddenChildren) => {
+  const hidden = new Set();
+  if (!path.length || !hiddenChildren) return hidden;
+
+  (hiddenChildren[path[0]] || []).forEach(name => hidden.add(name));
+
+  if (path.length > 1) {
+    (hiddenChildren[path.join('.')] || []).forEach(name => hidden.add(name));
+  }
+
+  return hidden;
+};
+
+/**
+ * Remove filhos/subitens cujo `name` está em `hiddenChildren`, recursivamente.
+ *
+ * @param {Array<{ name: string, children?: Array }>} children
+ * @param {Record<string, string[]>} hiddenChildren
+ * @param {string[]} parentPath
+ * @returns {Array}
+ */
+const filterMenuChildren = (children, hiddenChildren, parentPath) => {
+  if (!children?.length) return children;
+
+  const hidden = getHiddenNamesForPath(parentPath, hiddenChildren);
+
+  return children
+    .filter(child => !hidden.has(child.name))
+    .map(child => {
+      if (!child.children?.length) return child;
+
+      const childPath = [...parentPath, child.name];
+      return {
+        ...child,
+        children: filterMenuChildren(child.children, hiddenChildren, childPath),
+      };
+    });
+};
+
+const applyHiddenChildren = (items, hiddenChildren) => {
+  if (!hiddenChildren || typeof hiddenChildren !== 'object') return items;
+
+  return items.map(item => {
+    if (!item.children?.length) return item;
+
+    return {
+      ...item,
+      children: filterMenuChildren(item.children, hiddenChildren, [item.name]),
+    };
+  });
+};
+
+/**
  * Aplica as customizações deste fork (esconder, reordenar, seccionar) sobre o
  * array de `menuItems` produzido pelo `Sidebar.vue` do upstream.
  *
@@ -55,7 +112,8 @@ const applyOrder = (items, order) => {
 
 export function filterSidebarMenu(items) {
   const hidden = new Set(sidebarConfig.hiddenTopLevel || []);
-  const filtered = items.filter(item => !hidden.has(item.name));
+  let filtered = items.filter(item => !hidden.has(item.name));
+  filtered = applyHiddenChildren(filtered, sidebarConfig.hiddenChildren);
 
   if (
     Array.isArray(sidebarConfig.sections) &&
