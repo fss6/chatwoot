@@ -15,6 +15,14 @@ module WlAi
 
     private
 
+    def event_name
+      operation.to_s
+    end
+
+    def follow_up_original_context
+      content.to_s
+    end
+
     def generate_message
       case operation.to_s
       when 'fix_spelling_grammar'

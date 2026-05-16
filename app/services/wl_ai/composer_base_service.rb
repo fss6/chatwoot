@@ -15,7 +15,7 @@ module WlAi
       message = generate_message
       return failure(I18n.t('wl_ai.composer.errors.empty_response')) if message.blank?
 
-      success(message)
+      success(message, follow_up_original_context)
     rescue ActiveRecord::RecordNotFound
       failure(I18n.t('wl_ai.composer.errors.conversation_not_found'))
     rescue StandardError => e
@@ -47,18 +47,45 @@ module WlAi
     end
 
     def llm_complete(system_prompt, user_content)
+      llm_complete_messages(
+        [
+          { role: 'system', content: system_prompt },
+          { role: 'user', content: user_content.to_s }
+        ]
+      )
+    end
+
+    def llm_complete_messages(messages)
       api_base = LlmPingService.normalized_api_base(credential.api_base)
       model_id = credential.effective_model
       reply_text = nil
 
       Llm::Config.with_api_key(credential.api_token, api_base: api_base) do |context|
         chat = context.chat(model: model_id)
-        chat.with_instructions(system_prompt)
-        reply = chat.ask(user_content.to_s)
+        system_msg = messages.find { |m| m[:role] == 'system' }
+        chat.with_instructions(system_msg[:content]) if system_msg
+
+        conversation_messages = messages.reject { |m| m[:role] == 'system' }
+        next if conversation_messages.empty?
+
+        if conversation_messages.length > 1
+          conversation_messages[0...-1].each do |msg|
+            chat.add_message(role: msg[:role].to_sym, content: msg[:content])
+          end
+        end
+        reply = chat.ask(conversation_messages.last[:content])
         reply_text = reply.content.to_s.strip
       end
 
       reply_text
+    end
+
+    def event_name
+      raise NotImplementedError
+    end
+
+    def follow_up_original_context
+      raise NotImplementedError
     end
 
     def prompt_from_file(file_name)
@@ -77,8 +104,22 @@ module WlAi
       LlmFormatter::ConversationLlmFormatter.new(conversation).format(token_limit: TOKEN_LIMIT)
     end
 
-    def success(message)
-      { message: message }
+    def success(message, original_context)
+      result = { message: message }
+      if original_context.present?
+        result[:follow_up_context] = build_follow_up_context(original_context, message)
+      end
+      result
+    end
+
+    def build_follow_up_context(original_context, response_message)
+      {
+        'event_name' => event_name.to_s,
+        'original_context' => original_context,
+        'last_response' => response_message,
+        'conversation_history' => [],
+        'channel_type' => conversation.inbox.channel_type
+      }
     end
 
     def failure(error)

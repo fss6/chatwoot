@@ -6,7 +6,7 @@ import CaptainLoader from 'dashboard/components/widgets/conversation/copilot/Cap
 import WlAiLoader from 'dashboard/custom/composer/WlAiLoader.vue';
 import { isWlAiComposerEnabled } from 'dashboard/custom/composer/composerConfig';
 
-defineProps({
+const props = defineProps({
   showCopilotEditor: {
     type: Boolean,
     default: false,
@@ -16,6 +16,10 @@ defineProps({
     default: false,
   },
   generatedContent: {
+    type: String,
+    default: '',
+  },
+  placeholder: {
     type: String,
     default: '',
   },
@@ -36,6 +40,13 @@ const generatingLabel = computed(() =>
     ? t('WL_AI.COMPOSER.GENERATING')
     : t('CONVERSATION.REPLYBOX.COPILOT_THINKING')
 );
+
+const editorPlaceholder = computed(() => {
+  if (props.placeholder) return props.placeholder;
+  return isWlAiComposerEnabled()
+    ? t('WL_AI.COMPOSER.FOLLOW_UP_PLACEHOLDER')
+    : t('CONVERSATION.FOOTER.COPILOT_MSG_INPUT');
+});
 
 const copilotEditorContent = ref('');
 
@@ -73,6 +84,7 @@ const onSend = () => {
       key="copilot-editor"
       v-model="copilotEditorContent"
       class="copilot-editor"
+      :placeholder="editorPlaceholder"
       :generated-content="generatedContent"
       :min-height="4"
       :enabled-menu-options="[]"

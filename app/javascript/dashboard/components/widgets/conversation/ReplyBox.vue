@@ -1299,7 +1299,6 @@ export default {
           :show-copilot-editor="copilot.showEditor.value"
           :is-generating-content="copilot.isGenerating.value"
           :generated-content="copilot.generatedContent.value"
-          :placeholder="$t('CONVERSATION.FOOTER.COPILOT_MSG_INPUT')"
           @focus="onFocus"
           @blur="onBlur"
           @clear-selection="clearEditorSelection"

@@ -178,7 +178,8 @@ tocar em `enterprise/`.
 | `app/javascript/dashboard/custom/composer/WlAiMenuBar.vue` | Menu sparkle (fork de `CopilotMenuBar`, i18n `WL_AI.COMPOSER.*`) |
 | `app/javascript/dashboard/composables/useWlAiComposer.js` | `execute(action, data)` espelhando `useCopilotReply` (generate, follow-up, accept) |
 | `app/javascript/dashboard/api/wlAi/composerTasks.js` | Cliente HTTP |
-| `app/controllers/api/v1/accounts/wl_ai/composer_tasks_controller.rb` | `reply_suggestion`, `summarize`, `rewrite` |
+| `app/controllers/api/v1/accounts/wl_ai/composer_tasks_controller.rb` | `reply_suggestion`, `summarize`, `rewrite`, `follow_up` |
+| `app/services/wl_ai/composer_follow_up_service.rb` | Refinar resultado gerado (follow-up no mini-editor) |
 | `app/services/wl_ai/composer_reply_suggestion_service.rb` | Prompt + `ConversationContextBuilder` / histórico |
 | `app/services/wl_ai/composer_summarize_service.rb` | Resumo da conversa |
 | `app/services/wl_ai/composer_rewrite_service.rb` | Melhorar draft (fase 2) |
@@ -217,7 +218,7 @@ export const composerConfig = {
 |------|--------|---------|
 | **A0** | `composerConfig` + esconder sparkle upstream (`useCaptainTasks: false`) | Baixo |
 | **A1** | Backend `reply_suggestion` + `summarize` + API + `useWlAiComposer` + menu | Médio |
-| **A2** | Reutilizar `CopilotEditorSection` + follow-up | Médio |
+| **A2** | Reutilizar `CopilotEditorSection` + follow-up | Médio — **feito** |
 | **A3** | `rewrite` / tom / gramática | Médio |
 | **A4** | Atalhos (`useConversationHotKeys`) + `LabelSuggestion` Wl AI ou off | Baixo–médio |
 | **A5** | “Perguntar” → playground com contexto da conversa | Baixo |

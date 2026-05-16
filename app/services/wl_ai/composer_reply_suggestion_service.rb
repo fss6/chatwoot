@@ -4,6 +4,14 @@ module WlAi
   class ComposerReplySuggestionService < ComposerBaseService
     private
 
+    def event_name
+      'reply_suggestion'
+    end
+
+    def follow_up_original_context
+      formatted_conversation
+    end
+
     def generate_message
       system_prompt = render_liquid(
         prompt_from_file('reply'),

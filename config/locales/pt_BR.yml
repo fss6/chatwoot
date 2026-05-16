@@ -414,6 +414,7 @@ pt_BR:
         no_assistant: 'Configure pelo menos um assistente de IA (ou vincule um a esta caixa de entrada).'
         empty_response: 'O modelo retornou uma resposta vazia. Tente novamente.'
         invalid_operation: 'Essa operação de reescrita não é suportada.'
+        follow_up_context_missing: 'O contexto de refinamento está ausente ou é inválido.'
     playground:
       errors:
         parameter_missing: 'A requisição deve incluir playground.messages.'

@@ -93,6 +93,7 @@ Rails.application.routes.draw do
               post :reply_suggestion
               post :summarize
               post :rewrite
+              post :follow_up
             end
             resource :credential, only: [:show, :update] do
               post :ping

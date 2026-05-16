@@ -33,6 +33,18 @@ class WlAiComposerTasksAPI extends ApiClient {
       { signal }
     );
   }
+
+  followUp({ followUpContext, message, conversationDisplayId }, signal) {
+    return axios.post(
+      `${this.url}/follow_up`,
+      {
+        follow_up_context: followUpContext,
+        message,
+        conversation_display_id: conversationDisplayId,
+      },
+      { signal }
+    );
+  }
 }
 
 export default new WlAiComposerTasksAPI();

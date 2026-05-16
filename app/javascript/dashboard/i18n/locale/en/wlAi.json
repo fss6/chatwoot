@@ -187,7 +187,8 @@
       "SUMMARIZE": "Summarize the conversation",
       "OPEN_PLAYGROUND": "Open AI playground",
       "GENERATE_ERROR": "Could not generate content. Check WL AI settings and try again.",
-      "GENERATING": "Generating content…"
+      "GENERATING": "Generating content…",
+      "FOLLOW_UP_PLACEHOLDER": "Add instructions to refine this result, or ask a follow-up question… Press Enter to send"
     },
     "PLAYGROUND_PICK": {
       "TITLE": "Playground — choose an assistant",

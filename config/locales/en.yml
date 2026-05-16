@@ -432,6 +432,7 @@ en:
         no_assistant: 'Configure at least one WL AI assistant (or link one to this inbox).'
         empty_response: 'The model returned an empty response. Try again.'
         invalid_operation: 'That rewrite operation is not supported.'
+        follow_up_context_missing: 'Follow-up context is missing or invalid.'
     playground:
       errors:
         parameter_missing: 'Request must include playground.messages.'

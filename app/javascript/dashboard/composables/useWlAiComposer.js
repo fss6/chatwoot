@@ -15,6 +15,13 @@ const REWRITE_ACTIONS = [
   'friendly',
 ];
 
+function parseComposerResponse(result) {
+  return {
+    message: result.data?.message || '',
+    followUpContext: result.data?.follow_up_context || null,
+  };
+}
+
 /**
  * Agent-assist state for the reply composer (Wl AI fork).
  * Mirrors the surface API of useCopilotReply for ReplyBox integration.
@@ -62,11 +69,11 @@ export function useWlAiComposer() {
     const id = conversationId.value;
     if (action === 'summarize') {
       const result = await WlAiComposerTasksAPI.summarize(id, signal);
-      return result.data?.message || '';
+      return parseComposerResponse(result);
     }
     if (action === 'reply_suggestion') {
       const result = await WlAiComposerTasksAPI.replySuggestion(id, signal);
-      return result.data?.message || '';
+      return parseComposerResponse(result);
     }
     if (REWRITE_ACTIONS.includes(action)) {
       const result = await WlAiComposerTasksAPI.rewrite(
@@ -77,9 +84,9 @@ export function useWlAiComposer() {
         },
         signal
       );
-      return result.data?.message || '';
+      return parseComposerResponse(result);
     }
-    return '';
+    return { message: '', followUpContext: null };
   }
 
   async function execute(action, data) {
@@ -104,15 +111,13 @@ export function useWlAiComposer() {
     isContentReady.value = false;
 
     try {
-      const content = await processAction(
-        action,
-        data,
-        requestController.signal
-      );
+      const { message: content, followUpContext: newContext } =
+        await processAction(action, data, requestController.signal);
 
       if (requestController.signal.aborted) return;
 
       generatedContent.value = content;
+      followUpContext.value = newContext;
       if (content) {
         showEditor.value = true;
       } else {
@@ -138,8 +143,54 @@ export function useWlAiComposer() {
     }
   }
 
-  async function sendFollowUp() {
-    // Follow-up refinement is not implemented for Wl AI composer yet.
+  async function sendFollowUp(message) {
+    if (!followUpContext.value || !message?.trim()) return;
+
+    const requestController = new AbortController();
+    abortController.value = requestController;
+    isGenerating.value = true;
+    isContentReady.value = false;
+
+    try {
+      const result = await WlAiComposerTasksAPI.followUp(
+        {
+          followUpContext: followUpContext.value,
+          message: message.trim(),
+          conversationDisplayId: conversationId.value,
+        },
+        requestController.signal
+      );
+
+      if (requestController.signal.aborted) return;
+
+      const { message: content, followUpContext: updatedContext } =
+        parseComposerResponse(result);
+
+      if (content) {
+        generatedContent.value = content;
+        followUpContext.value = updatedContext;
+        showEditor.value = true;
+      } else {
+        useAlert(t('WL_AI.COMPOSER.GENERATE_ERROR'));
+      }
+      isGenerating.value = false;
+    } catch (error) {
+      if (
+        requestController.signal.aborted ||
+        error?.name === 'AbortError' ||
+        error?.name === 'CanceledError'
+      ) {
+        return;
+      }
+      const errorMessage =
+        error.response?.data?.error || t('WL_AI.COMPOSER.GENERATE_ERROR');
+      useAlert(errorMessage);
+      isGenerating.value = false;
+    } finally {
+      if (abortController.value === requestController) {
+        abortController.value = null;
+      }
+    }
   }
 
   function accept() {

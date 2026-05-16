@@ -36,6 +36,18 @@ class Api::V1::Accounts::WlAi::ComposerTasksController < Api::V1::Accounts::Base
     )
   end
 
+  def follow_up
+    render_composer_result(
+      WlAi::ComposerFollowUpService.new(
+        account: Current.account,
+        conversation_display_id: conversation_display_id,
+        follow_up_context: params[:follow_up_context]&.to_unsafe_h,
+        user_message: params[:message],
+        user: Current.user
+      ).call
+    )
+  end
+
   private
 
   def fetch_conversation
@@ -54,7 +66,9 @@ class Api::V1::Accounts::WlAi::ComposerTasksController < Api::V1::Accounts::Base
     if result[:error]
       render json: { error: result[:error] }, status: :unprocessable_entity
     else
-      render json: { message: result[:message] }
+      response_data = { message: result[:message] }
+      response_data[:follow_up_context] = result[:follow_up_context] if result[:follow_up_context]
+      render json: response_data
     end
   end
 end

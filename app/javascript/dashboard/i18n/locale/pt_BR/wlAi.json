@@ -187,7 +187,8 @@
       "SUMMARIZE": "Resumir a conversa",
       "OPEN_PLAYGROUND": "Abrir playground de IA",
       "GENERATE_ERROR": "Não foi possível gerar o conteúdo. Verifique as configurações de IA e tente novamente.",
-      "GENERATING": "Gerando conteúdo…"
+      "GENERATING": "Gerando conteúdo…",
+      "FOLLOW_UP_PLACEHOLDER": "Adicione instruções para refinar o resultado ou faça outra pergunta… Pressione Enter para enviar"
     },
     "PLAYGROUND_PICK": {
       "TITLE": "Playground — escolha o assistente",
