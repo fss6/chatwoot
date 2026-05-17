@@ -10,12 +10,9 @@ import CrmPipelineDealDetailHeader from 'dashboard/components/crm-pipeline/CrmPi
 import CrmPipelineDealSummaryMetrics from 'dashboard/components/crm-pipeline/CrmPipelineDealSummaryMetrics.vue';
 import CrmPipelineDealTasksSection from 'dashboard/components/crm-pipeline/CrmPipelineDealTasksSection.vue';
 import CrmPipelineDealDetailSidebar from 'dashboard/components/crm-pipeline/CrmPipelineDealDetailSidebar.vue';
-import CrmPipelineDealPanelCard from 'dashboard/components/crm-pipeline/CrmPipelineDealPanelCard.vue';
 import CrmPipelineDealDescriptionCard from 'dashboard/components/crm-pipeline/CrmPipelineDealDescriptionCard.vue';
-import CrmPipelineDealForm from 'dashboard/components/crm-pipeline/CrmPipelineDealForm.vue';
 import CrmPipelineTaskModal from 'dashboard/components/crm-pipeline/CrmPipelineTaskModal.vue';
 import CrmPipelineLoseDealModal from 'dashboard/components/crm-pipeline/CrmPipelineLoseDealModal.vue';
-import Button from 'dashboard/components-next/button/Button.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -23,17 +20,14 @@ const store = useStore();
 const { accountScopedRoute } = useAccount();
 const { t } = useI18n();
 
-const isEditing = ref(false);
 const showLoseModal = ref(false);
 const showTaskModal = ref(false);
 const editingTask = ref(null);
-const dealFormRef = ref(null);
 
 const dealId = computed(() => Number(route.params.dealId));
 const deal = computed(() => store.getters['crmPipeline/getCurrentDeal']);
 const dealTasks = computed(() => store.getters['crmPipeline/getDealTasks']);
 const uiFlags = computed(() => store.getters['crmPipeline/getUIFlags']);
-const stages = computed(() => store.getters['crmPipeline/getStages']);
 const agents = useMapGetter('agents/getAgents');
 
 const pipelineDealsRoute = computed(() =>
@@ -54,7 +48,6 @@ const refreshDeal = async () => {
 };
 
 watch(dealId, () => {
-  isEditing.value = false;
   loadDeal();
 });
 
@@ -67,22 +60,6 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   store.dispatch('crmPipeline/clearCurrentDeal');
 });
-
-const onSubmit = async formData => {
-  if (!deal.value) return;
-  await store.dispatch('crmPipeline/updateDeal', {
-    id: deal.value.id,
-    params: formData,
-    pipelineId: deal.value.pipeline.id,
-    refreshDeal: true,
-  });
-  isEditing.value = false;
-  useAlert(t('CRM_PIPELINE.DEAL.SAVED'));
-};
-
-const onSave = () => {
-  dealFormRef.value?.submit();
-};
 
 const onWin = async () => {
   if (!deal.value) return;
@@ -146,26 +123,13 @@ const onCancelTask = async task => {
 <template>
   <CrmPipelinePageLayout title="" full-width>
     <template v-if="deal || uiFlags.isFetchingDeal" #header>
-      <router-link
-        :to="pipelineDealsRoute"
-        class="inline-flex items-center gap-1.5 text-sm text-n-slate-11 transition-colors hover:text-n-slate-12 w-fit"
-      >
-        <span class="i-lucide-arrow-left size-4 shrink-0" aria-hidden="true" />
-        {{ $t('CRM_PIPELINE.DEAL.BACK_TO_PIPELINE') }}
-      </router-link>
-
-      <template v-if="deal">
-        <CrmPipelineDealDetailHeader
-          page-header
-          :deal="deal"
-          @win="onWin"
-          @lose="showLoseModal = true"
-          @edit="isEditing = true"
-        />
-        <h1 class="text-heading-1 text-n-slate-12 break-words">
-          {{ deal.title }}
-        </h1>
-      </template>
+      <CrmPipelineDealDetailHeader
+        v-if="deal"
+        :deal="deal"
+        :pipeline-deals-route="pipelineDealsRoute"
+        @win="onWin"
+        @lose="showLoseModal = true"
+      />
       <p v-else class="text-sm text-n-slate-11">
         {{ $t('CRM_PIPELINE.LOADING') }}
       </p>
@@ -182,35 +146,7 @@ const onCancelTask = async task => {
       <div class="flex flex-col gap-5 min-w-0 pb-6 lg:col-span-6 xl:col-span-7">
         <CrmPipelineDealSummaryMetrics :deal="deal" />
 
-        <CrmPipelineDealDescriptionCard v-if="!isEditing" :deal="deal" />
-
-        <CrmPipelineDealPanelCard
-          v-if="isEditing"
-          :title="$t('CRM_PIPELINE.DEAL.EDIT')"
-        >
-          <CrmPipelineDealForm
-            ref="dealFormRef"
-            variant="crm-edit"
-            :initial-values="deal"
-            :stages="stages"
-            :agents="agents"
-            @submit="onSubmit"
-          />
-          <div class="flex justify-end gap-2 mt-4 pt-4 border-t border-n-weak">
-            <Button
-              faded
-              slate
-              type="button"
-              :label="$t('CRM_PIPELINE.ACTIONS.CANCEL')"
-              @click="isEditing = false"
-            />
-            <Button
-              type="button"
-              :label="$t('CRM_PIPELINE.ACTIONS.SAVE')"
-              @click="onSave"
-            />
-          </div>
-        </CrmPipelineDealPanelCard>
+        <CrmPipelineDealDescriptionCard :deal="deal" />
 
         <CrmPipelineDealDetailSidebar :deal="deal" />
       </div>
