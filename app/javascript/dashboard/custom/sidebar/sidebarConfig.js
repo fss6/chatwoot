@@ -70,7 +70,16 @@ export const sidebarConfig = {
       label: 'ATENDIMENTO',
       items: ['Inbox', 'Conversation', 'Captain', 'WlAi'],
     },
-    { label: 'CRM', items: ['Contacts', 'Companies'] },
+    {
+      label: 'CRM',
+      items: [
+        'Contacts',
+        'Companies',
+        'CrmPipelineDeals',
+        'CrmPipelineTasks',
+        'CrmPipelineSettings',
+      ],
+    },
     { label: 'ADMIN', items: ['Portals', 'Reports', 'Campaigns', 'Settings'] },
   ],
 

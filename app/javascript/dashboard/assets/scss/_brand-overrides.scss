@@ -9,7 +9,8 @@
 // as referencia, e trocar apenas os VALORES RGB. Evita renomear utilitarios
 // Tailwind no app e mantem o conflito de merge minimo.
 //
-// Paleta atual: SLATE como neutro dominante (bg, textos, bordas) +
+// Paleta atual: SLATE Tailwind (light) como neutro dominante (`--slate-*`, base
+// oklch(98.4% 0.003 247.858) em `--slate-1`) +
 // INDIGO RADIX como acento crom\u00e1tico em pontos estrategicos: botoes
 // primarios (`bg-n-brand` aponta para `--blue-9`), estado ativo da sidebar,
 // links e foco. Pattern Linear/Vercel: sobrio com personalidade.
@@ -24,6 +25,20 @@
 
 @layer base {
   :root {
+    // Neutro — Tailwind slate (light), base oklch(98.4% 0.003 247.858) = slate-50
+    --slate-1: 248 250 252;
+    --slate-2: 241 245 249;
+    --slate-3: 226 232 240;
+    --slate-4: 203 213 225;
+    --slate-5: 148 163 184;
+    --slate-6: 100 116 139;
+    --slate-7: 71 85 105;
+    --slate-8: 51 65 85;
+    --slate-9: 30 41 59;
+    --slate-10: 15 23 42;
+    --slate-11: 100 116 139;
+    --slate-12: 15 23 42;
+
     // Accent — Indigo Radix (light mode)
     --blue-9: 62 99 221; // #3E63DD : botoes primarios, item ativo, foco
     --blue-10: 58 91 217; // #3A5BD9 : hover/pressed
@@ -31,12 +46,12 @@
     --blue-12: 16 29 70; // #101D46 : texto super enfatico
 
     // Canvas vs cards — mais contraste que o upstream (área interna).
-    --background-color: 238 240 244;
-    --surface-1: 252 252 254;
+    --background-color: 241 245 249;
+    --surface-1: 248 250 252;
     --surface-2: 255 255 255;
-    --surface-active: 248 249 252;
-    --border-weak: 220 223 230;
-    --border-strong: 206 210 218;
+    --surface-active: 248 250 252;
+    --border-weak: 226 232 240;
+    --border-strong: 203 213 225;
     --card-color: 255 255 255;
     --solid-1: 255 255 255;
     --solid-2: 252 253 255;

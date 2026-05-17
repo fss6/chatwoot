@@ -502,6 +502,9 @@ pt_BR:
     policy_actor: 'Sistema de Automação via %{policy_name}'
   automation:
     system_name: 'Sistema de Automação'
+  crm_pipeline:
+    not_enabled: 'O pipeline comercial não está habilitado para esta conta'
+    contact_mismatch: 'O contato não corresponde à conversa'
   crm:
     no_message: 'Nenhuma mensagem na conversa'
     attachment: '[Anexo: %{type}]'

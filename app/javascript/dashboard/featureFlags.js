@@ -9,6 +9,7 @@ export const FEATURE_FLAGS = {
   WHATSAPP_CAMPAIGNS: 'whatsapp_campaign',
   CANNED_RESPONSES: 'canned_responses',
   CRM: 'crm',
+  CRM_PIPELINE: 'crm_pipeline',
   CUSTOM_ATTRIBUTES: 'custom_attributes',
   INBOX_MANAGEMENT: 'inbox_management',
   INTEGRATIONS: 'integrations',

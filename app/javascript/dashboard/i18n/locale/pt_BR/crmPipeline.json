@@ -1,0 +1,174 @@
+{
+  "CRM_PIPELINE": {
+    "LOADING": "Carregando...",
+    "ACTIONS": {
+      "SAVE": "Salvar",
+      "CANCEL": "Cancelar"
+    },
+    "SIDEBAR": {
+      "TITLE": "CRM",
+      "NO_DEAL": "Nenhuma oportunidade vinculada a esta conversa.",
+      "CREATE_DEAL": "Criar oportunidade",
+      "VIEW_CRM": "Ver no CRM",
+      "VIEW_DEAL": "Ver oportunidade",
+      "STAGE": "Etapa"
+    },
+    "DEALS": {
+      "TITLE": "Oportunidades",
+      "SUBTITLE": "Acompanhe oportunidades nas etapas do seu funil de vendas.",
+      "NO_PIPELINES": "Crie um pipeline antes de gerenciar oportunidades.",
+      "COLUMN_COUNT": "{n} oportunidade | {n} oportunidades"
+    },
+    "DEAL": {
+      "CREATE": "Criar oportunidade",
+      "EDIT": "Editar oportunidade",
+      "TITLE": "Título",
+      "CONTACT": "Contato",
+      "AMOUNT": "Valor",
+      "STAGE": "Etapa",
+      "ASSIGNEE": "Responsável",
+      "UNASSIGNED": "Não atribuído",
+      "TEMPERATURE": "Temperatura",
+      "COLD": "Frio",
+      "WARM": "Morno",
+      "HOT": "Quente",
+      "NO_NEXT_STEP": "Sem próximo passo",
+      "WIN": "Marcar como ganho",
+      "LOSE": "Marcar como perdido",
+      "LOST_REASON": "Motivo da perda",
+      "LOST_REASON_PLACEHOLDER": "Descreva por que esta oportunidade foi perdida…",
+      "IN_LIST": "na lista",
+      "MEMBERS": "Membros",
+      "DESCRIPTION": "Descrição",
+      "DESCRIPTION_PLACEHOLDER": "Adicione uma descrição mais detalhada…",
+      "DETAILS": "Detalhes",
+      "SOURCE": "Origem",
+      "SOURCE_PLACEHOLDER": "ex.: indicação, site",
+      "ADD_TO_CARD": "Adicionar ao card",
+      "EXPECTED_REVENUE": "Receita esperada",
+      "PROBABILITY": "Probabilidade",
+      "EMAIL": "E-mail",
+      "PHONE": "Telefone",
+      "EXPECTED_CLOSE": "Fechamento esperado",
+      "NOTES": "Notas",
+      "PLANNED_ACTIVITIES": "Atividades planejadas",
+      "NO_PLANNED_ACTIVITIES": "Nenhuma atividade planejada",
+      "DAYS_OVERDUE": "{count} dias em atraso",
+      "DAYS_OVERDUE_ONE": "1 dia em atraso",
+      "DUE_TODAY": "Hoje",
+      "DUE_TOMORROW": "Amanhã",
+      "EDIT": "Editar",
+      "BREADCRUMB_CRM": "CRM",
+      "OPEN_CONVERSATION": "Abrir conversa",
+      "OWNER_ROLE": "Dono da oportunidade",
+      "NO_DESCRIPTION": "Nenhuma descrição ainda.",
+      "CONVERSATION_HINT": "Abra a conversa vinculada na barra lateral da caixa de entrada.",
+      "AMOUNT_NOT_INFORMED": "Não informado",
+      "NO_EXPECTED_CLOSE": "Sem previsão",
+      "NO_NEXT_STEP_ALERT": "Esta oportunidade ainda não possui próximo passo."
+    },
+    "TASKS": {
+      "TITLE": "Tarefas",
+      "SUBTITLE": "Acompanhe ligações, reuniões e próximos passos das suas oportunidades.",
+      "LIST": {
+        "TABLE_HEADER": {
+          "TITLE": "Tarefa",
+          "TYPE": "Tipo",
+          "DUE": "Vencimento",
+          "ACTION": "Ação"
+        }
+      },
+      "CREATE": "Nova tarefa",
+      "ADD_TASK": "Adicionar tarefa",
+      "NEXT_STEP": "Próximo passo",
+      "TITLE_LABEL": "Título",
+      "DESCRIPTION": "Descrição",
+      "TYPE": "Tipo",
+      "PRIORITY": "Prioridade",
+      "DUE_AT": "Data de vencimento",
+      "DUE_AT_PLACEHOLDER": "Selecione data e hora",
+      "LINK_DEAL": "Oportunidade",
+      "LINK_CONTACT": "Contato",
+      "NO_DEAL": "Sem oportunidade (vincule um contato abaixo)",
+      "CONTEXT_REQUIRED": "Vincule uma oportunidade ou contato para criar a tarefa.",
+      "CREATED": "Tarefa criada com sucesso.",
+      "CREATE_ERROR": "Não foi possível criar a tarefa. Tente novamente.",
+      "COMPLETE": "Concluir",
+      "OVERDUE": "Atrasada",
+      "EMPTY": "Nenhuma tarefa encontrada",
+      "TYPES": {
+        "follow_up": "Follow-up",
+        "call": "Ligação",
+        "send_proposal": "Enviar proposta",
+        "send_contract": "Enviar contrato",
+        "payment_check": "Cobrança",
+        "meeting": "Reunião",
+        "other": "Outro"
+      },
+      "PRIORITIES": {
+        "low": "Baixa",
+        "normal": "Normal",
+        "high": "Alta",
+        "urgent": "Urgente"
+      },
+      "TABS": {
+        "TODAY": "Hoje",
+        "OVERDUE": "Atrasadas",
+        "UPCOMING": "Próximas",
+        "DONE": "Concluídas",
+        "ALL": "Todas"
+      }
+    },
+    "ACTIVITY": {
+      "TITLE": "Atividades",
+      "EMPTY": "Nenhuma atividade ainda",
+      "SHOW": "Ver atividades",
+      "HIDE": "Ocultar atividades"
+    },
+    "SETTINGS": {
+      "TITLE": "Configurações do pipeline",
+      "SUBTITLE": "Crie funis e etapas para sua equipe comercial.",
+      "SEARCH_PLACEHOLDER": "Buscar pipelines...",
+      "COUNT": "{n} pipeline | {n} pipelines",
+      "NO_RESULTS": "Nenhum pipeline encontrado na busca.",
+      "EDIT": "Editar",
+      "LIST": {
+        "EMPTY": "Nenhum pipeline ainda. Crie seu primeiro funil de vendas.",
+        "TABLE_HEADER": {
+          "NAME": "Nome",
+          "DESCRIPTION": "Descrição",
+          "STAGES": "Etapas",
+          "ACTION": "Ações"
+        }
+      },
+      "MANAGE_PIPELINES": "Gerenciar pipelines",
+      "CREATE_PIPELINE": "Novo pipeline",
+      "SELECT_PIPELINE": "Pipeline",
+      "PIPELINE_NAME": "Nome do pipeline",
+      "PIPELINE_DESCRIPTION": "Descrição",
+      "STAGES": "Etapas",
+      "ADD_STAGE": "Adicionar etapa",
+      "STAGE_TYPE": "Tipo da etapa",
+      "STAGE_TYPE_OPEN": "Aberta",
+      "STAGE_TYPE_WON": "Ganho",
+      "STAGE_TYPE_LOST": "Perdido",
+      "NO_PIPELINES": "Nenhum pipeline ainda. Crie seu primeiro funil de vendas.",
+      "NO_STAGES": "Nenhuma etapa neste pipeline ainda.",
+      "DELETE": "Excluir",
+      "DELETE_PIPELINE": "Excluir pipeline",
+      "DELETE_PIPELINE_CONFIRM": "Excluir este pipeline? Mova ou remova as oportunidades antes.",
+      "DELETE_STAGE_CONFIRM": "Excluir esta etapa? Mova as oportunidades antes.",
+      "PIPELINE_CREATED": "Pipeline criado com sucesso.",
+      "PIPELINE_SAVED": "Pipeline salvo com sucesso.",
+      "PIPELINE_DELETED": "Pipeline excluído com sucesso.",
+      "STAGE_CREATED": "Etapa adicionada com sucesso.",
+      "PIPELINE_CREATE_ERROR": "Não foi possível salvar o pipeline. Tente novamente."
+    },
+    "CONTACT": {
+      "PLACEHOLDER": "Selecione um contato",
+      "SEARCH_PLACEHOLDER": "Buscar por nome, e-mail ou telefone",
+      "SEARCHING": "Buscando contatos...",
+      "EMPTY": "Nenhum contato encontrado"
+    }
+  }
+}

@@ -73,7 +73,9 @@ export default defineConfig({
       : undefined,
   },
   resolve: {
+    dedupe: ['date-fns'],
     alias: {
+      'date-fns': path.resolve(__dirname, 'node_modules/date-fns'),
       vue: 'vue/dist/vue.esm-bundler.js',
       components: path.resolve('./app/javascript/dashboard/components'),
       next: path.resolve('./app/javascript/dashboard/components-next'),

@@ -52,9 +52,9 @@ Antes de mesclar:
 
 | Categoria | Arquivos tocados | Tipo | Motivo |
 |---|---|---|---|
-| Brand overrides (dashboard) | `app/javascript/dashboard/assets/scss/_brand-overrides.scss` | NEW | Indigo em `--blue-*`; tokens de **superfície** (`--background-color`, `--surface-*`, `--border-*`, `--card-color`, `--solid-*`) para mais contraste canvas/cards; `@import` de `sidebar-theme`, `content-theme` e `conversation-theme`. |
+| Brand overrides (dashboard) | `app/javascript/dashboard/assets/scss/_brand-overrides.scss` | NEW | Neutro **Tailwind slate** em `--slate-*` (light; `--slate-1` = oklch(98.4% 0.003 247.858)); indigo em `--blue-*`; tokens de **superfície** (`--background-color`, `--surface-*`, `--border-*`, `--card-color`, `--solid-*`) para mais contraste canvas/cards; `@import` de `sidebar-theme`, `content-theme` e `conversation-theme`. |
 | Brand overrides (dashboard wiring) | `app/javascript/dashboard/assets/scss/_woot.scss` | PATCH | Adicionada 1 linha `@import 'brand-overrides';` após `next-colors`. |
-| Brand overrides (widget) | `app/javascript/widget/assets/scss/_brand-overrides.scss` | NEW | Mesma paleta indigo do dashboard para coerência entre superfícies. |
+| Brand overrides (widget) | `app/javascript/widget/assets/scss/_brand-overrides.scss` | NEW | Mesma paleta slate + indigo do dashboard para coerência entre superfícies. |
 | Brand overrides (widget wiring) | `app/javascript/widget/assets/scss/woot.scss` | PATCH | Adicionada 1 linha `@import 'brand-overrides';` no fim do arquivo, depois das definições embutidas de `:root`/`.dark`. |
 | Brand token (`bg-n-brand`) | `theme/colors.js` | PATCH | 1 linha: `brand: '#2781F6'` → `brand: 'rgb(var(--blue-9) / <alpha-value>)'`. Decoupla o token do hex Chatwoot e faz `bg-n-brand` seguir a paleta de `--blue-*` definida no fork. |
 | Brand overrides (portal) | `app/javascript/portal/_brand-overrides.scss` | NEW | Reservado para overrides globais do help center (vazio por enquanto; portal usa cor por instância via `@portal.color`). |
@@ -69,6 +69,7 @@ Antes de mesclar:
 | Conteúdo interno (canvas) | `app/javascript/dashboard/custom/content/_content-theme.scss` | NEW | Gradiente + `box-shadow` interno em `main.wl-content` (área principal do dashboard). |
 | Conversas (lista + painel + bolhas + composer) | `app/javascript/dashboard/custom/conversation/_conversation-theme.scss` | NEW | Elevação via `box-shadow` em `.conversations-list-wrap`, `.conversation-details-wrap`, `.conversation-panel`, bolhas `.left-bubble`/`.right-bubble`, `.reply-box`; hover nas linhas `.conversation` da lista; seletores RTL com `#app[dir='rtl']` + `.dark #app[dir='rtl']`. |
 | Tailwind shadows (fork) | `tailwind.config.js` | PATCH | `theme.extend.boxShadow` — `sm`/`md`/`lg`/`xl`/`2xl`/`inner`/`DEFAULT` mais marcados que o default Tailwind (afeta componentes com `shadow-*`). |
+| Tailwind slate-50 (portal) | `tailwind.config.js` | PATCH | `theme.extend.colors.slate.50` = `#f8fafc` (oklch(98.4% 0.003 247.858)); alinha `bg-slate-50` do help center ao neutro do fork sem editar `theme/colors.js`. |
 | Topbar custom (white-label) | `app/javascript/dashboard/custom/topbar/WlTopBar.vue` | NEW | Topbar acima do `<main>` com search + ComposeConversation + `SidebarAccountSwitcher`. Wrapper `.wl-account-switcher` marca o switcher para alinhar o dropdown à direita via CSS. Classe `wl-topbar--contrast` no `<header>`. |
 | Account switcher dropdown align (CSS) | `app/javascript/dashboard/custom/sidebar/_sidebar-theme.scss` | NEW (regra) | Posiciona as duas camadas absolutas aninhadas do `DropdownContainer` ao `inset-inline-end: 0` dentro de `.wl-account-switcher`. Zero patch upstream. |
 | Topbar mounting | `app/javascript/dashboard/routes/dashboard/Dashboard.vue` | PATCH | Importa `WlTopBar` + `sidebarConfig`; expõe `wlUseTopBar` no setup; envolve `<main>` num wrapper coluna (`flex flex-col flex-1`) com `<WlTopBar v-if="wlUseTopBar" />` no topo; `<main>` com classe `wl-content`. |

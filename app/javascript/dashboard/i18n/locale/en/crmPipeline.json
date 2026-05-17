@@ -1,0 +1,182 @@
+{
+  "CRM_PIPELINE": {
+    "LOADING": "Loading...",
+    "ACTIONS": {
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+    "SIDEBAR": {
+      "TITLE": "CRM",
+      "NO_DEAL": "No opportunity linked to this conversation.",
+      "CREATE_DEAL": "Create opportunity",
+      "VIEW_CRM": "View in CRM",
+      "VIEW_DEAL": "View deal",
+      "STAGE": "Stage"
+    },
+    "DEALS": {
+      "TITLE": "Opportunities",
+      "SUBTITLE": "Track deals across your sales pipeline stages.",
+      "NO_PIPELINES": "Create a pipeline first to start managing opportunities.",
+      "COLUMN_COUNT": "{n} opportunity | {n} opportunities"
+    },
+    "DEAL": {
+      "CREATE": "Create opportunity",
+      "EDIT": "Edit opportunity",
+      "TITLE": "Title",
+      "CONTACT": "Contact",
+      "AMOUNT": "Amount",
+      "AMOUNT_PLACEHOLDER": "0",
+      "STAGE": "Stage",
+      "ASSIGNEE": "Assignee",
+      "UNASSIGNED": "Unassigned",
+      "TEMPERATURE": "Temperature",
+      "COLD": "Cold",
+      "WARM": "Warm",
+      "HOT": "Hot",
+      "NO_NEXT_STEP": "No next step",
+      "WIN": "Mark as won",
+      "LOSE": "Mark as lost",
+      "LOST_REASON": "Lost reason",
+      "LOST_REASON_PLACEHOLDER": "Describe why this opportunity was lost…",
+      "IN_LIST": "in list",
+      "MEMBERS": "Members",
+      "DESCRIPTION": "Description",
+      "DESCRIPTION_PLACEHOLDER": "Add a more detailed description…",
+      "DETAILS": "Details",
+      "SOURCE": "Source",
+      "SOURCE_PLACEHOLDER": "e.g. referral, website",
+      "ADD_TO_CARD": "Add to card",
+      "EXPECTED_REVENUE": "Expected revenue",
+      "PROBABILITY": "Probability",
+      "EMAIL": "Email",
+      "PHONE": "Phone",
+      "EXPECTED_CLOSE": "Expected close",
+      "NOTES": "Notes",
+      "PLANNED_ACTIVITIES": "Planned activities",
+      "NO_PLANNED_ACTIVITIES": "No planned activities",
+      "DAYS_OVERDUE": "{count} days overdue",
+      "DAYS_OVERDUE_ONE": "1 day overdue",
+      "DUE_TODAY": "Today",
+      "DUE_TOMORROW": "Tomorrow",
+      "EDIT": "Edit",
+      "BREADCRUMB_CRM": "CRM",
+      "OPEN_CONVERSATION": "Open conversation",
+      "OWNER_ROLE": "Deal owner",
+      "NO_DESCRIPTION": "No description yet.",
+      "CONVERSATION_HINT": "Open the linked conversation in the inbox sidebar.",
+      "AMOUNT_NOT_INFORMED": "Not informed",
+      "NO_EXPECTED_CLOSE": "No expected date",
+      "NO_NEXT_STEP_ALERT": "This opportunity does not have a next step yet."
+    },
+    "TASKS": {
+      "TITLE": "Tasks",
+      "SUBTITLE": "Follow up on calls, meetings, and next steps for your deals.",
+      "LIST": {
+        "TABLE_HEADER": {
+          "TITLE": "Task",
+          "TYPE": "Type",
+          "DUE": "Due date",
+          "ACTION": "Action"
+        }
+      },
+      "CREATE": "New task",
+      "ADD_TASK": "Add task",
+      "NEXT_STEP": "Next step",
+      "TITLE_LABEL": "Title",
+      "DESCRIPTION": "Description",
+      "TYPE": "Type",
+      "PRIORITY": "Priority",
+      "DUE_AT": "Due date",
+      "DUE_AT_VALUE": "Due {date}",
+      "DUE_AT_PLACEHOLDER": "Select date and time",
+      "LINK_DEAL": "Opportunity",
+      "LINK_CONTACT": "Contact",
+      "NO_DEAL": "No opportunity (link a contact below)",
+      "CONTEXT_REQUIRED": "Link an opportunity or contact to create this task.",
+      "CREATED": "Task created successfully.",
+      "CREATE_ERROR": "Could not create task. Please try again.",
+      "COMPLETE": "Complete",
+      "COMPLETED": "Task completed successfully.",
+      "CANCEL_TASK": "Cancel task",
+      "CANCELLED": "Task cancelled successfully.",
+      "EDIT": "Edit task",
+      "UPDATED": "Task updated successfully.",
+      "UPDATE_ERROR": "Could not update task. Please try again.",
+      "OVERDUE": "Overdue",
+      "EMPTY": "No tasks found",
+      "TYPES": {
+        "follow_up": "Follow-up",
+        "call": "Call",
+        "send_proposal": "Send proposal",
+        "send_contract": "Send contract",
+        "payment_check": "Payment check",
+        "meeting": "Meeting",
+        "other": "Other"
+      },
+      "PRIORITIES": {
+        "low": "Low",
+        "normal": "Normal",
+        "high": "High",
+        "urgent": "Urgent"
+      },
+      "TABS": {
+        "TODAY": "Today",
+        "OVERDUE": "Overdue",
+        "UPCOMING": "Upcoming",
+        "DONE": "Done",
+        "ALL": "All"
+      }
+    },
+    "ACTIVITY": {
+      "TITLE": "Activity",
+      "EMPTY": "No activity yet",
+      "SHOW": "Show activity",
+      "HIDE": "Hide activity"
+    },
+    "SETTINGS": {
+      "TITLE": "Pipeline settings",
+      "SUBTITLE": "Create funnels and stages for your sales team.",
+      "SEARCH_PLACEHOLDER": "Search pipelines...",
+      "COUNT": "{n} pipeline | {n} pipelines",
+      "NO_RESULTS": "No pipelines match your search.",
+      "EDIT": "Edit",
+      "LIST": {
+        "EMPTY": "No pipelines yet. Create your first sales funnel.",
+        "TABLE_HEADER": {
+          "NAME": "Name",
+          "DESCRIPTION": "Description",
+          "STAGES": "Stages",
+          "ACTION": "Actions"
+        }
+      },
+      "MANAGE_PIPELINES": "Manage pipelines",
+      "CREATE_PIPELINE": "New pipeline",
+      "SELECT_PIPELINE": "Pipeline",
+      "PIPELINE_NAME": "Pipeline name",
+      "PIPELINE_DESCRIPTION": "Description",
+      "STAGES": "Stages",
+      "ADD_STAGE": "Add stage",
+      "STAGE_TYPE": "Stage type",
+      "STAGE_TYPE_OPEN": "Open",
+      "STAGE_TYPE_WON": "Won",
+      "STAGE_TYPE_LOST": "Lost",
+      "NO_PIPELINES": "No pipelines yet. Create your first sales funnel.",
+      "NO_STAGES": "No stages in this pipeline yet.",
+      "DELETE": "Delete",
+      "DELETE_PIPELINE": "Delete pipeline",
+      "DELETE_PIPELINE_CONFIRM": "Delete this pipeline? Deals must be moved or removed first.",
+      "DELETE_STAGE_CONFIRM": "Delete this stage? Deals in this stage must be moved first.",
+      "PIPELINE_CREATED": "Pipeline created successfully.",
+      "PIPELINE_SAVED": "Pipeline saved successfully.",
+      "PIPELINE_DELETED": "Pipeline deleted successfully.",
+      "STAGE_CREATED": "Stage added successfully.",
+      "PIPELINE_CREATE_ERROR": "Could not save pipeline. Please try again."
+    },
+    "CONTACT": {
+      "PLACEHOLDER": "Select a contact",
+      "SEARCH_PLACEHOLDER": "Search by name, email or phone",
+      "SEARCHING": "Searching contacts...",
+      "EMPTY": "No contacts found"
+    }
+  }
+}

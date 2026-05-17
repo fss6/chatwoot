@@ -10,6 +10,20 @@
 
 @layer base {
   :root {
+    // Neutro — Tailwind slate (light), base oklch(98.4% 0.003 247.858) = slate-50
+    --slate-1: 248 250 252;
+    --slate-2: 241 245 249;
+    --slate-3: 226 232 240;
+    --slate-4: 203 213 225;
+    --slate-5: 148 163 184;
+    --slate-6: 100 116 139;
+    --slate-7: 71 85 105;
+    --slate-8: 51 65 85;
+    --slate-9: 30 41 59;
+    --slate-10: 15 23 42;
+    --slate-11: 100 116 139;
+    --slate-12: 15 23 42;
+
     // Accent — Indigo Radix (light mode)
     --blue-9: 62 99 221;
     --blue-10: 58 91 217;

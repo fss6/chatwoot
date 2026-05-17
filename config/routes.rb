@@ -189,6 +189,28 @@ Rails.application.routes.draw do
             end
           end
 
+          namespace :crm do
+            resources :pipelines do
+              resources :stages, only: [:index, :create]
+            end
+            resources :stages, only: [:show, :update, :destroy]
+            resources :deals do
+              member do
+                post :move
+                post :win
+                post :lose
+                post :archive
+              end
+              resources :activities, only: [:index]
+            end
+            resources :tasks do
+              member do
+                post :complete
+                post :cancel
+              end
+            end
+          end
+
           resources :companies, only: [:index, :show, :create, :update, :destroy] do
             collection do
               get :search

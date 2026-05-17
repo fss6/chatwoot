@@ -24,6 +24,7 @@ import ShopifyOrdersList from 'dashboard/components/widgets/conversation/Shopify
 import SidebarActionsHeader from 'dashboard/components-next/SidebarActionsHeader.vue';
 import LinearIssuesList from 'dashboard/components/widgets/conversation/linear/IssuesList.vue';
 import LinearSetupCTA from 'dashboard/components/widgets/conversation/linear/LinearSetupCTA.vue';
+import CrmPipelineConversationSidebarCard from 'dashboard/components/crm-pipeline/CrmPipelineConversationSidebarCard.vue';
 
 const props = defineProps({
   conversationId: {
@@ -59,6 +60,10 @@ const { isCloudFeatureEnabled } = useAccount();
 
 const isLinearFeatureEnabled = computed(() =>
   isCloudFeatureEnabled(FEATURE_FLAGS.LINEAR)
+);
+
+const isCrmPipelineEnabled = computed(() =>
+  isCloudFeatureEnabled(FEATURE_FLAGS.CRM_PIPELINE)
 );
 
 const linearIntegration = useFunctionGetter(
@@ -286,6 +291,25 @@ onMounted(() => {
               <ShopifyOrdersList :contact-id="contactId" />
             </AccordionItem>
           </div>
+          <woot-feature-toggle
+            v-else-if="element.name === 'crm_pipeline'"
+            feature-key="crm_pipeline"
+          >
+            <AccordionItem
+              :title="$t('CRM_PIPELINE.SIDEBAR.TITLE')"
+              :is-open="isContactSidebarItemOpen('is_crm_pipeline_open')"
+              compact
+              @toggle="
+                value => toggleSidebarUIState('is_crm_pipeline_open', value)
+              "
+            >
+              <CrmPipelineConversationSidebarCard
+                v-if="isCrmPipelineEnabled && contactId"
+                :conversation-id="conversationId"
+                :contact-id="contactId"
+              />
+            </AccordionItem>
+          </woot-feature-toggle>
           <div v-else-if="element.name === 'contact_notes'">
             <AccordionItem
               :title="$t('CONVERSATION_SIDEBAR.ACCORDION.CONTACT_NOTES')"

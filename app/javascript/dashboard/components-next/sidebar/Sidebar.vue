@@ -508,6 +508,27 @@ const menuItems = computed(() => {
       ],
     },
     {
+      name: 'CrmPipelineDeals',
+      label: t('SIDEBAR.CRM_PIPELINE_DEALS'),
+      icon: 'i-lucide-kanban',
+      to: accountScopedRoute('crm_pipeline_deals'),
+      activeOn: ['crm_pipeline_deals'],
+    },
+    {
+      name: 'CrmPipelineTasks',
+      label: t('SIDEBAR.CRM_PIPELINE_TASKS'),
+      icon: 'i-lucide-list-checks',
+      to: accountScopedRoute('crm_pipeline_tasks'),
+      activeOn: ['crm_pipeline_tasks'],
+    },
+    {
+      name: 'CrmPipelineSettings',
+      label: t('SIDEBAR.CRM_PIPELINE_SETTINGS'),
+      icon: 'i-lucide-settings-2',
+      to: accountScopedRoute('crm_pipeline_settings'),
+      activeOn: ['crm_pipeline_settings'],
+    },
+    {
       name: 'Reports',
       label: t('SIDEBAR.REPORTS'),
       icon: 'i-lucide-chart-spline',

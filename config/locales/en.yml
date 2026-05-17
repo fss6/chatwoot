@@ -520,6 +520,9 @@ en:
     policy_actor: 'Automation System via %{policy_name}'
   automation:
     system_name: 'Automation System'
+  crm_pipeline:
+    not_enabled: 'Sales pipeline is not enabled for this account'
+    contact_mismatch: 'Contact does not match conversation'
   crm:
     no_message: 'No messages in conversation'
     attachment: '[Attachment: %{type}]'

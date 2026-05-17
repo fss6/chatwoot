@@ -49,6 +49,12 @@ const tailwindConfig = {
         460: '460',
         520: '520',
       },
+      colors: {
+        // Tailwind slate-50 = oklch(98.4% 0.003 247.858); alinha portal `bg-slate-50` ao neutro do fork.
+        slate: {
+          50: '#f8fafc',
+        },
+      },
       boxShadow: {
         ...defaultTheme.boxShadow,
         sm: '0 1px 4px 0 rgb(0 0 0 / 0.12), 0 1px 2px -1px rgb(0 0 0 / 0.08)',

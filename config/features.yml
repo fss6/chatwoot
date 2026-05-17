@@ -91,6 +91,9 @@
 - name: crm
   display_name: CRM
   enabled: true
+- name: crm_pipeline
+  display_name: Sales Pipeline
+  enabled: true
 - name: auto_resolve_conversations
   display_name: Auto Resolve Conversations
   enabled: true
