@@ -4,6 +4,7 @@ import { useStore, useMapGetter } from 'dashboard/composables/store';
 import { useAccount } from 'dashboard/composables/useAccount';
 import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 import { frontendURL } from 'dashboard/helper/URLHelper';
+import { useRouter } from 'vue-router';
 import CrmPipelineDealModal from './CrmPipelineDealModal.vue';
 import CrmPipelineTaskModal from './CrmPipelineTaskModal.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
@@ -15,12 +16,11 @@ const props = defineProps({
 });
 
 const store = useStore();
-const { accountId, isCloudFeatureEnabled } = useAccount();
+const router = useRouter();
+const { accountId, accountScopedRoute, isCloudFeatureEnabled } = useAccount();
 
 const deals = ref([]);
 const showCreateModal = ref(false);
-const selectedDeal = ref(null);
-const showDealModal = ref(false);
 const showTaskModal = ref(false);
 
 const isEnabled = computed(() =>
@@ -46,6 +46,16 @@ const fetchDeals = async () => {
 const openCreate = async () => {
   await store.dispatch('crmPipeline/fetchPipelines');
   showCreateModal.value = true;
+};
+
+const onDealCreated = deal => {
+  showCreateModal.value = false;
+  fetchDeals();
+  if (deal?.id) {
+    router.push(
+      accountScopedRoute('crm_pipeline_deal_show', { dealId: deal.id })
+    );
+  }
 };
 
 const crmDealsUrl = computed(() =>
@@ -87,8 +97,11 @@ onMounted(() => {
           type="button"
           class="text-xs text-n-brand hover:underline"
           @click="
-            selectedDeal = primaryDeal;
-            showDealModal = true;
+            router.push(
+              accountScopedRoute('crm_pipeline_deal_show', {
+                dealId: primaryDeal.id,
+              })
+            )
           "
         >
           {{ $t('CRM_PIPELINE.SIDEBAR.VIEW_DEAL') }}
@@ -126,16 +139,7 @@ onMounted(() => {
         pipeline_id: store.getters['crmPipeline/getSelectedPipeline']?.id,
       }"
       @close="showCreateModal = false"
-      @saved="fetchDeals"
-    />
-
-    <CrmPipelineDealModal
-      :show="showDealModal"
-      :deal="selectedDeal"
-      :stages="stages"
-      :agents="agents"
-      @close="showDealModal = false"
-      @saved="fetchDeals"
+      @saved="onDealCreated"
     />
 
     <CrmPipelineTaskModal

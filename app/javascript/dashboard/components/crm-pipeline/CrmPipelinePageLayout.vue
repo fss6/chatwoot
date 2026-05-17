@@ -16,28 +16,31 @@ defineProps({
           class="flex flex-col gap-3 w-full py-6 mx-auto"
           :class="fullWidth ? 'max-w-full' : 'max-w-7xl'"
         >
-          <div
-            class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
-          >
-            <div class="min-w-0">
-              <h1 class="text-heading-1 text-n-slate-12">
-                {{ title }}
-              </h1>
-              <p
-                v-if="description || $slots.description"
-                class="text-body-main text-n-slate-11 mt-1 max-w-3xl"
-              >
-                <slot name="description">{{ description }}</slot>
-              </p>
-            </div>
+          <slot v-if="$slots.header" name="header" />
+          <template v-else>
             <div
-              v-if="$slots.actions"
-              class="flex items-center gap-2 flex-shrink-0"
+              class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
             >
-              <slot name="actions" />
+              <div class="min-w-0">
+                <h1 class="text-heading-1 text-n-slate-12">
+                  {{ title }}
+                </h1>
+                <p
+                  v-if="description || $slots.description"
+                  class="text-body-main text-n-slate-11 mt-1 max-w-3xl"
+                >
+                  <slot name="description">{{ description }}</slot>
+                </p>
+              </div>
+              <div
+                v-if="$slots.actions"
+                class="flex items-center gap-2 flex-shrink-0"
+              >
+                <slot name="actions" />
+              </div>
             </div>
-          </div>
-          <slot name="toolbar" />
+            <slot name="toolbar" />
+          </template>
         </div>
       </header>
 

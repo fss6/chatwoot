@@ -10,10 +10,12 @@ export const state = {
   deals: [],
   tasks: [],
   dealTasks: [],
+  currentDeal: null,
   activities: [],
   uiFlags: {
     isFetchingPipelines: false,
     isFetchingDeals: false,
+    isFetchingDeal: false,
     isFetchingTasks: false,
     isSaving: false,
   },
@@ -36,6 +38,7 @@ export const getters = {
   },
   getTasks: $state => $state.tasks,
   getDealTasks: $state => $state.dealTasks,
+  getCurrentDeal: $state => $state.currentDeal,
   getActivities: $state => $state.activities,
   getUIFlags: $state => $state.uiFlags,
 };
@@ -67,6 +70,25 @@ export const actions = {
     } finally {
       commit('SET_UI_FLAG', { isFetchingDeals: false });
     }
+  },
+
+  fetchDeal: async ({ commit }, id) => {
+    commit('SET_UI_FLAG', { isFetchingDeal: true });
+    try {
+      const { data } = await CrmDealsAPI.show(id);
+      commit('SET_CURRENT_DEAL', data.payload);
+      return data.payload;
+    } catch (error) {
+      throwErrorMessage(error);
+      throw error;
+    } finally {
+      commit('SET_UI_FLAG', { isFetchingDeal: false });
+    }
+  },
+
+  clearCurrentDeal: ({ commit }) => {
+    commit('SET_CURRENT_DEAL', null);
+    commit('SET_DEAL_TASKS', []);
   },
 
   createDeal: async ({ commit, dispatch }, dealParams) => {
@@ -104,13 +126,23 @@ export const actions = {
     }
   },
 
-  updateDeal: async ({ commit, dispatch }, { id, params, pipelineId }) => {
+  updateDeal: async (
+    { commit, dispatch, state: storeState },
+    { id, params, pipelineId, refreshDeal = false }
+  ) => {
     commit('SET_UI_FLAG', { isSaving: true });
     try {
-      await CrmDealsAPI.update(id, { deal: params });
-      await dispatch('fetchDeals', { pipeline_id: pipelineId });
+      const { data } = await CrmDealsAPI.update(id, { deal: params });
+      if (refreshDeal || storeState.currentDeal?.id === id) {
+        commit('SET_CURRENT_DEAL', data.payload);
+      }
+      if (pipelineId) {
+        await dispatch('fetchDeals', { pipeline_id: pipelineId });
+      }
+      return data.payload;
     } catch (error) {
       throwErrorMessage(error);
+      throw error;
     } finally {
       commit('SET_UI_FLAG', { isSaving: false });
     }
@@ -306,6 +338,9 @@ export const mutations = {
   },
   SET_DEAL_TASKS($state, tasks) {
     $state.dealTasks = tasks;
+  },
+  SET_CURRENT_DEAL($state, deal) {
+    $state.currentDeal = deal;
   },
   SET_ACTIVITIES($state, activities) {
     $state.activities = activities;

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useStore, useMapGetter } from 'dashboard/composables/store';
+import { useRouter } from 'vue-router';
+import { useStore } from 'dashboard/composables/store';
 import { useAdmin } from 'dashboard/composables/useAdmin';
 import { useAccount } from 'dashboard/composables/useAccount';
 import CrmPipelinePageLayout from 'dashboard/components/crm-pipeline/CrmPipelinePageLayout.vue';
@@ -10,10 +11,9 @@ import Button from 'dashboard/components-next/button/Button.vue';
 import Select from 'dashboard/components-next/select/Select.vue';
 
 const store = useStore();
+const router = useRouter();
 const { isAdmin } = useAdmin();
 const { accountScopedRoute } = useAccount();
-const selectedDeal = ref(null);
-const showDealModal = ref(false);
 const showCreateModal = ref(false);
 
 const pipelines = computed(() => store.getters['crmPipeline/getPipelines']);
@@ -28,7 +28,7 @@ const pipelineOptions = computed(() =>
   pipelines.value.map(p => ({ value: p.id, label: p.name }))
 );
 const stages = computed(() => store.getters['crmPipeline/getStages']);
-const agents = useMapGetter('agents/getAgents');
+const agents = computed(() => store.getters['agents/getAgents'] || []);
 const uiFlags = computed(() => store.getters['crmPipeline/getUIFlags']);
 
 const loadDeals = async () => {
@@ -51,8 +51,9 @@ const onPipelineChange = async pipelineId => {
 };
 
 const onDealClick = deal => {
-  selectedDeal.value = deal;
-  showDealModal.value = true;
+  router.push(
+    accountScopedRoute('crm_pipeline_deal_show', { dealId: deal.id })
+  );
 };
 
 const onDealMoved = async ({ deal, stageId, position }) => {
@@ -64,21 +65,14 @@ const onDealMoved = async ({ deal, stageId, position }) => {
   });
 };
 
-const onWin = async deal => {
-  await store.dispatch('crmPipeline/winDeal', {
-    id: deal.id,
-    pipelineId: selectedPipeline.value?.id,
-  });
-  showDealModal.value = false;
-};
-
-const onLose = async ({ deal, lostReason }) => {
-  await store.dispatch('crmPipeline/loseDeal', {
-    id: deal.id,
-    lostReason,
-    pipelineId: selectedPipeline.value?.id,
-  });
-  showDealModal.value = false;
+const onDealCreated = async deal => {
+  showCreateModal.value = false;
+  await load();
+  if (deal?.id) {
+    router.push(
+      accountScopedRoute('crm_pipeline_deal_show', { dealId: deal.id })
+    );
+  }
 };
 
 onMounted(() => {
@@ -162,19 +156,7 @@ onMounted(() => {
     />
 
     <CrmPipelineDealModal
-      :show="showDealModal"
-      :deal="selectedDeal"
-      :stages="stages"
-      :agents="agents"
-      @close="showDealModal = false"
-      @win="onWin"
-      @lose="onLose"
-      @saved="load"
-    />
-
-    <CrmPipelineDealModal
       :show="showCreateModal"
-      is-create
       :stages="stages"
       :agents="agents"
       :initial-values="{
@@ -182,7 +164,7 @@ onMounted(() => {
         stage_id: stages[0]?.id,
       }"
       @close="showCreateModal = false"
-      @saved="load"
+      @saved="onDealCreated"
     />
   </CrmPipelinePageLayout>
 </template>

@@ -5,9 +5,7 @@ defineProps({
 </script>
 
 <template>
-  <section
-    class="rounded-2xl border border-n-weak bg-n-solid-1 shadow-sm overflow-hidden"
-  >
+  <section class="rounded-2xl border border-n-weak bg-n-solid-1 shadow-sm">
     <header
       v-if="title || $slots.header"
       class="flex items-center justify-between gap-3 px-5 py-4"

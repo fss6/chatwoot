@@ -8,6 +8,11 @@ const props = defineProps({
   tasks: { type: Array, default: () => [] },
   isLoading: { type: Boolean, default: false },
   noNextStep: { type: Boolean, default: false },
+  fillColumn: { type: Boolean, default: false },
+  titleKey: {
+    type: String,
+    default: 'CRM_PIPELINE.TASKS.TITLE',
+  },
 });
 
 const emit = defineEmits(['add', 'complete', 'cancel', 'edit']);
@@ -22,10 +27,14 @@ const showNoNextStepAlert = computed(
 </script>
 
 <template>
-  <CrmPipelineDealPanelCard>
+  <CrmPipelineDealPanelCard
+    :class="
+      fillColumn ? 'flex flex-col h-full min-h-0 overflow-hidden' : undefined
+    "
+  >
     <template #header>
       <h3 class="text-sm font-bold text-n-slate-12">
-        {{ $t('CRM_PIPELINE.TASKS.TITLE') }}
+        {{ $t(titleKey) }}
       </h3>
       <Button
         sm
@@ -40,16 +49,20 @@ const showNoNextStepAlert = computed(
       {{ $t('CRM_PIPELINE.LOADING') }}
     </p>
 
-    <div v-else-if="pendingTasks.length" class="flex flex-col gap-3">
-      <CrmPipelineTaskCard
-        v-for="task in pendingTasks"
-        :key="task.id"
-        :task="task"
-        @complete="emit('complete', $event)"
-        @cancel="emit('cancel', $event)"
-        @edit="emit('edit', $event)"
-      />
-    </div>
+    <ul
+      v-else-if="pendingTasks.length"
+      class="-mx-5 divide-y divide-n-weak border-t border-n-weak"
+      :class="fillColumn ? 'flex-1 min-h-0 overflow-y-auto' : undefined"
+    >
+      <li v-for="task in pendingTasks" :key="task.id">
+        <CrmPipelineTaskCard
+          :task="task"
+          @complete="emit('complete', $event)"
+          @cancel="emit('cancel', $event)"
+          @edit="emit('edit', $event)"
+        />
+      </li>
+    </ul>
 
     <div
       v-else-if="showNoNextStepAlert"
