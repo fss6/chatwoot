@@ -37,6 +37,62 @@ export const contactCompanyName = contact =>
 export const contactCardSubtitle = contact =>
   contactCompanyName(contact) || contact?.name || '';
 
+export const getAmountLocale = (currency = 'BRL') =>
+  currency === 'BRL' ? 'pt-BR' : undefined;
+
+export const getCurrencySymbol = (currency = 'BRL') => {
+  const part = new Intl.NumberFormat(getAmountLocale(currency), {
+    style: 'currency',
+    currency,
+  })
+    .formatToParts(0)
+    .find(p => p.type === 'currency');
+  return part?.value ?? currency;
+};
+
+export const formatAmountForInput = (amount, currency = 'BRL') => {
+  if (amount === null || amount === undefined || amount === '') return '';
+  return new Intl.NumberFormat(getAmountLocale(currency), {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(Number(amount));
+};
+
+export const formatDealAmount = (amount, currency = 'BRL') => {
+  if (amount === null || amount === undefined || amount === '') return '';
+  return new Intl.NumberFormat(getAmountLocale(currency), {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(Number(amount));
+};
+
+export const parseAmountFromInput = (value, currency = 'BRL') => {
+  if (!value?.trim()) return null;
+
+  const digits = value.replace(/[^\d,.-]/g, '');
+  if (!digits) return null;
+
+  const lastComma = digits.lastIndexOf(',');
+  const lastDot = digits.lastIndexOf('.');
+  let normalized;
+
+  const usesBrazilianFormat = currency === 'BRL' || lastComma > lastDot;
+
+  if (usesBrazilianFormat) {
+    normalized = digits.replace(/\./g, '').replace(',', '.');
+  } else if (lastDot > lastComma) {
+    normalized = digits.replace(/,/g, '');
+  } else {
+    normalized = digits.replace(',', '.');
+  }
+
+  const amount = parseFloat(normalized);
+  if (Number.isNaN(amount)) return null;
+  return Math.round(amount * 100) / 100;
+};
+
 const overdueDaysFromDueAt = dueAt => {
   if (!dueAt) return 0;
   const dueDate = startOfDay(new Date(dueAt));
@@ -66,12 +122,7 @@ export function useCrmDealCardPresentation(dealRef) {
   const formattedAmount = computed(() => {
     const dealValue = deal.value;
     if (!dealValue?.amount) return null;
-    return new Intl.NumberFormat(undefined, {
-      style: 'currency',
-      currency: dealValue.currency || 'BRL',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(dealValue.amount);
+    return formatDealAmount(dealValue.amount, dealValue.currency || 'BRL');
   });
 
   const showValueRow = computed(() =>
@@ -149,9 +200,10 @@ export function formatStageTotal(deals, currency = 'BRL') {
     0
   );
   if (!total) return null;
-  return new Intl.NumberFormat(undefined, {
+  const dealCurrency = deals.find(d => d.currency)?.currency || currency;
+  return new Intl.NumberFormat(getAmountLocale(dealCurrency), {
     style: 'currency',
-    currency: deals.find(d => d.currency)?.currency || currency,
+    currency: dealCurrency,
     maximumFractionDigits: 0,
   }).format(total);
 }

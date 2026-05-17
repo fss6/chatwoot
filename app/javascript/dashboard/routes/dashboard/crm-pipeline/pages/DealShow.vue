@@ -11,6 +11,7 @@ import CrmPipelineDealSummaryMetrics from 'dashboard/components/crm-pipeline/Crm
 import CrmPipelineDealTasksSection from 'dashboard/components/crm-pipeline/CrmPipelineDealTasksSection.vue';
 import CrmPipelineDealDetailSidebar from 'dashboard/components/crm-pipeline/CrmPipelineDealDetailSidebar.vue';
 import CrmPipelineDealPanelCard from 'dashboard/components/crm-pipeline/CrmPipelineDealPanelCard.vue';
+import CrmPipelineDealDescriptionCard from 'dashboard/components/crm-pipeline/CrmPipelineDealDescriptionCard.vue';
 import CrmPipelineDealForm from 'dashboard/components/crm-pipeline/CrmPipelineDealForm.vue';
 import CrmPipelineTaskModal from 'dashboard/components/crm-pipeline/CrmPipelineTaskModal.vue';
 import CrmPipelineLoseDealModal from 'dashboard/components/crm-pipeline/CrmPipelineLoseDealModal.vue';
@@ -181,16 +182,7 @@ const onCancelTask = async task => {
       <div class="flex flex-col gap-5 min-w-0 pb-6 lg:col-span-6 xl:col-span-7">
         <CrmPipelineDealSummaryMetrics :deal="deal" />
 
-        <CrmPipelineDealPanelCard
-          v-if="!isEditing"
-          :title="$t('CRM_PIPELINE.DEAL.DESCRIPTION')"
-        >
-          <p
-            class="text-sm text-n-slate-11 leading-relaxed whitespace-pre-wrap break-words"
-          >
-            {{ deal.description || $t('CRM_PIPELINE.DEAL.NO_DESCRIPTION') }}
-          </p>
-        </CrmPipelineDealPanelCard>
+        <CrmPipelineDealDescriptionCard v-if="!isEditing" :deal="deal" />
 
         <CrmPipelineDealPanelCard
           v-if="isEditing"
