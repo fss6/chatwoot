@@ -9,24 +9,14 @@ const props = defineProps({
 
 const { t } = useI18n();
 
-const formattedCloseDate = computed(() => {
-  if (!props.deal.expected_close_date) {
-    return t('CRM_PIPELINE.DEAL.NO_EXPECTED_CLOSE');
-  }
-  return new Date(props.deal.expected_close_date).toLocaleDateString(
-    undefined,
-    { day: 'numeric', month: 'short', year: 'numeric' }
-  );
-});
-
 const staticMetrics = computed(() => [
   {
-    label: t('CRM_PIPELINE.DEAL.SOURCE'),
-    value: props.deal.source || '—',
+    label: t('CRM_PIPELINE.DEAL.CONTACT'),
+    value: props.deal.contact?.name || '—',
   },
   {
-    label: t('CRM_PIPELINE.DEAL.EXPECTED_CLOSE'),
-    value: formattedCloseDate.value,
+    label: t('CRM_PIPELINE.DEAL.ASSIGNEE'),
+    value: props.deal.assigned_user?.name || t('CRM_PIPELINE.DEAL.UNASSIGNED'),
   },
 ]);
 </script>

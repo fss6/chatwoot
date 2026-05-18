@@ -1,5 +1,7 @@
+import camelcaseKeys from 'camelcase-keys';
 import CrmPipelinesAPI from '../../api/crm/pipelines';
 import CrmDealsAPI from '../../api/crm/deals';
+import CrmDealNotesAPI from '../../api/crm/notes';
 import CrmTasksAPI from '../../api/crm/tasks';
 import CrmStagesAPI from '../../api/crm/stages';
 import { throwErrorMessage } from '../utils/api';
@@ -11,12 +13,16 @@ export const state = {
   tasks: [],
   dealTasks: [],
   currentDeal: null,
+  dealNotes: [],
   activities: [],
   uiFlags: {
     isFetchingPipelines: false,
     isFetchingDeals: false,
     isFetchingDeal: false,
     isFetchingTasks: false,
+    isFetchingDealNotes: false,
+    isCreatingDealNote: false,
+    isDeletingDealNote: false,
     isSaving: false,
   },
 };
@@ -39,6 +45,7 @@ export const getters = {
   getTasks: $state => $state.tasks,
   getDealTasks: $state => $state.dealTasks,
   getCurrentDeal: $state => $state.currentDeal,
+  getDealNotes: $state => $state.dealNotes,
   getActivities: $state => $state.activities,
   getUIFlags: $state => $state.uiFlags,
 };
@@ -89,6 +96,47 @@ export const actions = {
   clearCurrentDeal: ({ commit }) => {
     commit('SET_CURRENT_DEAL', null);
     commit('SET_DEAL_TASKS', []);
+    commit('SET_DEAL_NOTES', []);
+  },
+
+  fetchDealNotes: async ({ commit }, dealId) => {
+    commit('SET_UI_FLAG', { isFetchingDealNotes: true });
+    try {
+      const { data } = await CrmDealNotesAPI.get(dealId);
+      const notes = camelcaseKeys(data.payload || [], { deep: true });
+      commit('SET_DEAL_NOTES', notes);
+    } catch (error) {
+      throwErrorMessage(error);
+    } finally {
+      commit('SET_UI_FLAG', { isFetchingDealNotes: false });
+    }
+  },
+
+  createDealNote: async ({ commit }, { dealId, content }) => {
+    commit('SET_UI_FLAG', { isCreatingDealNote: true });
+    try {
+      const { data } = await CrmDealNotesAPI.create(dealId, content);
+      const note = camelcaseKeys(data.payload, { deep: true });
+      commit('ADD_DEAL_NOTE', note);
+    } catch (error) {
+      throwErrorMessage(error);
+      throw error;
+    } finally {
+      commit('SET_UI_FLAG', { isCreatingDealNote: false });
+    }
+  },
+
+  deleteDealNote: async ({ commit }, { dealId, noteId }) => {
+    commit('SET_UI_FLAG', { isDeletingDealNote: true });
+    try {
+      await CrmDealNotesAPI.delete(dealId, noteId);
+      commit('REMOVE_DEAL_NOTE', noteId);
+    } catch (error) {
+      throwErrorMessage(error);
+      throw error;
+    } finally {
+      commit('SET_UI_FLAG', { isDeletingDealNote: false });
+    }
   },
 
   createDeal: async ({ commit, dispatch }, dealParams) => {
@@ -341,6 +389,15 @@ export const mutations = {
   },
   SET_CURRENT_DEAL($state, deal) {
     $state.currentDeal = deal;
+  },
+  SET_DEAL_NOTES($state, notes) {
+    $state.dealNotes = notes;
+  },
+  ADD_DEAL_NOTE($state, note) {
+    $state.dealNotes = [note, ...$state.dealNotes];
+  },
+  REMOVE_DEAL_NOTE($state, noteId) {
+    $state.dealNotes = $state.dealNotes.filter(note => note.id !== noteId);
   },
   SET_ACTIVITIES($state, activities) {
     $state.activities = activities;

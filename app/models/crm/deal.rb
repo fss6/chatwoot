@@ -11,6 +11,7 @@ module Crm
 
     has_many :tasks, class_name: 'Crm::Task', foreign_key: :deal_id, dependent: :nullify
     has_many :activities, class_name: 'Crm::Activity', foreign_key: :deal_id, dependent: :destroy
+    has_many :notes, class_name: 'Crm::Note', foreign_key: :deal_id, dependent: :destroy
 
     enum status: { open: 0, won: 1, lost: 2, archived: 3 }
     enum lead_temperature: { cold: 0, warm: 1, hot: 2 }

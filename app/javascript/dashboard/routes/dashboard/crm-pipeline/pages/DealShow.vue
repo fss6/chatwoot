@@ -11,6 +11,7 @@ import CrmPipelineDealSummaryMetrics from 'dashboard/components/crm-pipeline/Crm
 import CrmPipelineDealTasksSection from 'dashboard/components/crm-pipeline/CrmPipelineDealTasksSection.vue';
 import CrmPipelineDealDetailSidebar from 'dashboard/components/crm-pipeline/CrmPipelineDealDetailSidebar.vue';
 import CrmPipelineDealDescriptionCard from 'dashboard/components/crm-pipeline/CrmPipelineDealDescriptionCard.vue';
+import CrmPipelineDealNotesSection from 'dashboard/components/crm-pipeline/CrmPipelineDealNotesSection.vue';
 import CrmPipelineTaskModal from 'dashboard/components/crm-pipeline/CrmPipelineTaskModal.vue';
 import CrmPipelineLoseDealModal from 'dashboard/components/crm-pipeline/CrmPipelineLoseDealModal.vue';
 
@@ -41,6 +42,7 @@ const loadDeal = async () => {
     store.commit('crmPipeline/SET_SELECTED_PIPELINE_ID', loaded.pipeline.id);
   }
   await store.dispatch('crmPipeline/fetchDealTasks', dealId.value);
+  await store.dispatch('crmPipeline/fetchDealNotes', dealId.value);
 };
 
 const refreshDeal = async () => {
@@ -142,11 +144,13 @@ const onCancelTask = async task => {
       {{ $t('CRM_PIPELINE.LOADING') }}
     </div>
 
-    <div v-else-if="deal" class="grid h-full min-h-0 gap-6 lg:grid-cols-12">
+    <div v-else-if="deal" class="grid gap-6 lg:grid-cols-12">
       <div class="flex flex-col gap-5 min-w-0 pb-6 lg:col-span-6 xl:col-span-7">
         <CrmPipelineDealSummaryMetrics :deal="deal" />
 
         <CrmPipelineDealDescriptionCard :deal="deal" />
+
+        <CrmPipelineDealNotesSection :deal-id="deal.id" />
 
         <CrmPipelineDealDetailSidebar :deal="deal" />
       </div>

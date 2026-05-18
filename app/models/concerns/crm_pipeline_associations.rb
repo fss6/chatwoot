@@ -8,6 +8,7 @@ module CrmPipelineAssociations
       has_many :crm_deals, class_name: 'Crm::Deal', dependent: :destroy_async
       has_many :crm_tasks, class_name: 'Crm::Task', dependent: :destroy_async
       has_many :crm_activities, class_name: 'Crm::Activity', dependent: :destroy_async
+      has_many :crm_notes, class_name: 'Crm::Note', dependent: :destroy_async
     when 'Contact'
       has_many :crm_deals, class_name: 'Crm::Deal', dependent: :nullify
       has_many :crm_tasks, class_name: 'Crm::Task', dependent: :nullify

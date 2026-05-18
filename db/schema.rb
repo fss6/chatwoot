@@ -807,6 +807,19 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_18_120003) do
     t.index ["stage_id"], name: "index_crm_deals_on_stage_id"
   end
 
+  create_table "crm_notes", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "deal_id", null: false
+    t.bigint "user_id"
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "deal_id", "created_at"], name: "index_crm_notes_on_account_id_and_deal_id_and_created_at"
+    t.index ["account_id"], name: "index_crm_notes_on_account_id"
+    t.index ["deal_id"], name: "index_crm_notes_on_deal_id"
+    t.index ["user_id"], name: "index_crm_notes_on_user_id"
+  end
+
   create_table "crm_pipelines", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.string "name", null: false
@@ -1550,6 +1563,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_18_120003) do
   add_foreign_key "crm_deals", "crm_pipelines", column: "pipeline_id"
   add_foreign_key "crm_deals", "crm_stages", column: "stage_id"
   add_foreign_key "crm_deals", "users", column: "assigned_user_id"
+  add_foreign_key "crm_notes", "accounts"
+  add_foreign_key "crm_notes", "crm_deals", column: "deal_id"
+  add_foreign_key "crm_notes", "users"
   add_foreign_key "crm_pipelines", "accounts"
   add_foreign_key "crm_stages", "accounts"
   add_foreign_key "crm_stages", "crm_pipelines", column: "pipeline_id"

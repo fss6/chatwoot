@@ -44,7 +44,7 @@ defineProps({
         </div>
       </header>
 
-      <main class="flex-1 min-h-0 overflow-hidden px-6">
+      <main class="flex-1 min-h-0 overflow-y-auto px-6">
         <div
           class="w-full h-full mx-auto py-4"
           :class="fullWidth ? 'max-w-full' : 'max-w-7xl'"
