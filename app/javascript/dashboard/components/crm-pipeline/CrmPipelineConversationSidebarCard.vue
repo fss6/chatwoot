@@ -7,7 +7,7 @@ import { frontendURL } from 'dashboard/helper/URLHelper';
 import { useRouter } from 'vue-router';
 import CrmPipelineDealModal from './CrmPipelineDealModal.vue';
 import CrmPipelineTaskModal from './CrmPipelineTaskModal.vue';
-import Button from 'dashboard/components-next/button/Button.vue';
+import NextButton from 'dashboard/components-next/button/Button.vue';
 import CrmDealsAPI from 'dashboard/api/crm/deals';
 
 const props = defineProps({
@@ -77,54 +77,58 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="isEnabled" class="space-y-2">
+  <div v-if="isEnabled" class="p-3 flex flex-col gap-3">
     <template v-if="primaryDeal">
-      <p class="text-sm font-medium text-n-slate-12">{{ primaryDeal.title }}</p>
-      <p class="text-xs text-n-slate-11">
-        {{ $t('CRM_PIPELINE.SIDEBAR.STAGE') }}: {{ primaryDeal.stage?.name }}
-      </p>
-      <p v-if="primaryDeal.amount" class="text-xs text-n-slate-11">
-        {{ primaryDeal.amount }} {{ primaryDeal.currency }}
-      </p>
-      <div class="flex flex-wrap gap-2 pt-1">
+      <div class="flex flex-col gap-1 min-w-0">
+        <p class="text-sm font-medium text-n-slate-12 truncate">
+          {{ primaryDeal.title }}
+        </p>
+        <p class="text-xs text-n-slate-11">
+          {{ $t('CRM_PIPELINE.SIDEBAR.STAGE') }}: {{ primaryDeal.stage?.name }}
+        </p>
+        <p v-if="primaryDeal.amount" class="text-xs text-n-slate-11">
+          {{ primaryDeal.amount }} {{ primaryDeal.currency }}
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
         <router-link
           :to="crmDealsUrl"
-          class="text-xs text-n-brand hover:underline"
+          class="inline-flex items-center text-xs text-n-brand hover:underline"
         >
           {{ $t('CRM_PIPELINE.SIDEBAR.VIEW_CRM') }}
         </router-link>
-        <button
-          type="button"
-          class="text-xs text-n-brand hover:underline"
-          @click="
-            router.push(
-              accountScopedRoute('crm_pipeline_deal_show', {
-                dealId: primaryDeal.id,
-              })
-            )
+        <router-link
+          :to="
+            accountScopedRoute('crm_pipeline_deal_show', {
+              dealId: primaryDeal.id,
+            })
           "
+          class="inline-flex items-center text-xs text-n-brand hover:underline"
         >
           {{ $t('CRM_PIPELINE.SIDEBAR.VIEW_DEAL') }}
-        </button>
+        </router-link>
       </div>
-      <Button
-        sm
+      <NextButton
         faded
-        class="mt-1"
+        xs
+        icon="i-lucide-plus"
         :label="$t('CRM_PIPELINE.TASKS.ADD_TASK')"
         @click="showTaskModal = true"
       />
     </template>
     <template v-else>
-      <p class="text-xs text-n-slate-11">
-        {{ $t('CRM_PIPELINE.SIDEBAR.NO_DEAL') }}
-      </p>
-      <Button
-        sm
-        faded
-        :label="$t('CRM_PIPELINE.SIDEBAR.CREATE_DEAL')"
-        @click="openCreate"
-      />
+      <div class="flex flex-col items-center gap-3 text-center">
+        <p class="text-sm text-n-slate-11">
+          {{ $t('CRM_PIPELINE.SIDEBAR.NO_DEAL') }}
+        </p>
+        <NextButton
+          faded
+          xs
+          icon="i-lucide-plus"
+          :label="$t('CRM_PIPELINE.SIDEBAR.CREATE_DEAL')"
+          @click="openCreate"
+        />
+      </div>
     </template>
 
     <CrmPipelineDealModal
