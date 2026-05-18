@@ -26,7 +26,11 @@ module Crm
         if @stage.won?
           @deal.update!(status: :won, closed_at: Time.current, lost_reason: nil)
         elsif @stage.lost?
-          @deal.update!(status: :lost, closed_at: Time.current)
+          if @deal.open?
+            raise ArgumentError, 'use lose action to mark deal as lost with a reason'
+          end
+
+          @deal.update!(status: :lost, closed_at: Time.current) unless @deal.lost?
         elsif @deal.won? || @deal.lost?
           @deal.update!(status: :open, closed_at: nil, lost_reason: nil)
         end

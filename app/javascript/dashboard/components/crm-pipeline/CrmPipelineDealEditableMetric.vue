@@ -25,6 +25,7 @@ const props = defineProps({
       ['amount', 'lead_temperature', 'assigned_user'].includes(value),
   },
   label: { type: String, required: true },
+  readOnly: { type: Boolean, default: false },
 });
 
 const store = useStore();
@@ -56,12 +57,19 @@ const assigneeOptions = computed(() => [
   })),
 ]);
 
+const temperatureLabels = {
+  cold: () => t('CRM_PIPELINE.DEAL.COLD'),
+  warm: () => t('CRM_PIPELINE.DEAL.WARM'),
+  hot: () => t('CRM_PIPELINE.DEAL.HOT'),
+};
+
 const temperatureBadge = computed(() => {
   const key = props.deal.lead_temperature;
   const config = temperatureConfig[key];
-  if (!config) return null;
+  const label = temperatureLabels[key]?.();
+  if (!config || !label) return null;
   return {
-    label: t(`CRM_PIPELINE.DEAL.${config.labelKey}`),
+    label,
     badgeClass: config.badgeClass,
     icon: config.icon,
   };
@@ -119,6 +127,7 @@ watch(
 );
 
 const startEdit = () => {
+  if (props.readOnly) return;
   syncDraftFromDeal();
   if (props.field === 'assigned_user' && !agents.value?.length) {
     store.dispatch('agents/get');
@@ -228,7 +237,7 @@ const save = async () => {
         {{ label }}
       </p>
       <button
-        v-if="!isEditing"
+        v-if="!isEditing && !readOnly"
         type="button"
         class="inline-flex items-center gap-1 text-xs text-n-slate-11 transition-colors hover:text-n-slate-12 shrink-0"
         @click="startEdit"
@@ -318,7 +327,9 @@ const save = async () => {
         />
         {{ temperatureBadge.label }}
       </span>
-      <p v-else class="mt-1 text-sm font-medium text-n-slate-12">—</p>
+      <p v-else class="mt-1 text-sm font-medium text-n-slate-12">
+        {{ $t('CRM_PIPELINE.DEAL.EMPTY_VALUE') }}
+      </p>
     </template>
     <template v-else-if="field === 'assigned_user'">
       <p class="mt-1 text-sm font-medium text-n-slate-12 truncate">

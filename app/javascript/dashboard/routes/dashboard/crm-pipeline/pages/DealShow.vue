@@ -1,12 +1,13 @@
 <script setup>
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useStore, useMapGetter } from 'dashboard/composables/store';
 import { useAccount } from 'dashboard/composables/useAccount';
 import { useAlert } from 'dashboard/composables';
 import { useI18n } from 'vue-i18n';
 import CrmPipelinePageLayout from 'dashboard/components/crm-pipeline/CrmPipelinePageLayout.vue';
 import CrmPipelineDealDetailHeader from 'dashboard/components/crm-pipeline/CrmPipelineDealDetailHeader.vue';
+import CrmPipelineDealClosedStatusBanner from 'dashboard/components/crm-pipeline/CrmPipelineDealClosedStatusBanner.vue';
 import CrmPipelineDealSummaryMetrics from 'dashboard/components/crm-pipeline/CrmPipelineDealSummaryMetrics.vue';
 import CrmPipelineDealTasksSection from 'dashboard/components/crm-pipeline/CrmPipelineDealTasksSection.vue';
 import CrmPipelineDealDescriptionCard from 'dashboard/components/crm-pipeline/CrmPipelineDealDescriptionCard.vue';
@@ -15,7 +16,6 @@ import CrmPipelineTaskModal from 'dashboard/components/crm-pipeline/CrmPipelineT
 import CrmPipelineLoseDealModal from 'dashboard/components/crm-pipeline/CrmPipelineLoseDealModal.vue';
 
 const route = useRoute();
-const router = useRouter();
 const store = useStore();
 const { accountScopedRoute } = useAccount();
 const { t } = useI18n();
@@ -23,6 +23,7 @@ const { t } = useI18n();
 const showLoseModal = ref(false);
 const showTaskModal = ref(false);
 const editingTask = ref(null);
+const isReopening = ref(false);
 
 const dealId = computed(() => Number(route.params.dealId));
 const deal = computed(() => store.getters['crmPipeline/getCurrentDeal']);
@@ -32,6 +33,15 @@ const agents = useMapGetter('agents/getAgents');
 
 const pipelineDealsRoute = computed(() =>
   accountScopedRoute('crm_pipeline_deals')
+);
+
+const stages = computed(() => store.getters['crmPipeline/getStages']);
+
+const firstOpenStage = computed(
+  () =>
+    [...stages.value]
+      .filter(stage => stage.stage_type === 'open')
+      .sort((a, b) => a.position - b.position)[0]
 );
 
 const loadDeal = async () => {
@@ -67,8 +77,9 @@ const onWin = async () => {
   await store.dispatch('crmPipeline/winDeal', {
     id: deal.value.id,
     pipelineId: deal.value.pipeline.id,
+    refreshDeal: true,
   });
-  router.push(pipelineDealsRoute.value);
+  useAlert(t('CRM_PIPELINE.DEAL.WON_SUCCESS'));
 };
 
 const onLoseConfirm = async lostReason => {
@@ -77,9 +88,32 @@ const onLoseConfirm = async lostReason => {
     id: deal.value.id,
     lostReason,
     pipelineId: deal.value.pipeline.id,
+    refreshDeal: true,
   });
   showLoseModal.value = false;
-  router.push(pipelineDealsRoute.value);
+  useAlert(t('CRM_PIPELINE.DEAL.LOST_SUCCESS'));
+};
+
+const onReopen = async () => {
+  if (!deal.value || !firstOpenStage.value) return;
+
+  isReopening.value = true;
+  try {
+    const dealsInStage = store.getters['crmPipeline/getDealsByStage'](
+      firstOpenStage.value.id
+    );
+    await store.dispatch('crmPipeline/moveDeal', {
+      id: deal.value.id,
+      stageId: firstOpenStage.value.id,
+      position: dealsInStage.length,
+      pipelineId: deal.value.pipeline.id,
+      refreshDeal: true,
+    });
+    await store.dispatch('crmPipeline/fetchDealTasks', dealId.value);
+    useAlert(t('CRM_PIPELINE.DEAL.REOPEN_SUCCESS'));
+  } finally {
+    isReopening.value = false;
+  }
 };
 
 const openTaskModal = () => {
@@ -128,8 +162,10 @@ const onCancelTask = async task => {
         v-if="deal"
         :deal="deal"
         :pipeline-deals-route="pipelineDealsRoute"
+        :is-reopening="isReopening"
         @win="onWin"
         @lose="showLoseModal = true"
+        @reopen="onReopen"
       />
       <p v-else class="text-sm text-n-slate-11">
         {{ $t('CRM_PIPELINE.LOADING') }}
@@ -145,6 +181,8 @@ const onCancelTask = async task => {
 
     <div v-else-if="deal" class="grid gap-6 lg:grid-cols-12">
       <div class="flex flex-col gap-5 min-w-0 pb-6 lg:col-span-6 xl:col-span-7">
+        <CrmPipelineDealClosedStatusBanner :deal="deal" />
+
         <CrmPipelineDealSummaryMetrics :deal="deal" />
 
         <CrmPipelineDealDescriptionCard :deal="deal" />

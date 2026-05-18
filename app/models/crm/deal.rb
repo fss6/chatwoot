@@ -9,7 +9,7 @@
 #  description         :text
 #  expected_close_date :date
 #  lead_temperature    :integer          default("warm"), not null
-#  lost_reason         :string
+#  lost_reason         :text
 #  position            :integer          default(0), not null
 #  source              :string
 #  status              :integer          default("open"), not null
@@ -68,6 +68,7 @@ module Crm
 
     validates :title, presence: true
     validates :amount, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+    validates :lost_reason, length: { maximum: 10_000 }, allow_nil: true
 
     scope :ordered, -> { order(:position, :id) }
     scope :for_pipeline, ->(pipeline_id) { where(pipeline_id: pipeline_id) }

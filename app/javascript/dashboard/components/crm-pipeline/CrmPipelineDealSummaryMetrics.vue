@@ -1,11 +1,14 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useCrmDealClosedState } from 'dashboard/composables/useCrmDealClosedState';
 import CrmPipelineDealEditableMetric from './CrmPipelineDealEditableMetric.vue';
 
 const props = defineProps({
   deal: { type: Object, required: true },
 });
+
+const { isReadOnly } = useCrmDealClosedState(toRef(props, 'deal'));
 
 const { t } = useI18n();
 
@@ -23,16 +26,19 @@ const staticMetrics = computed(() => [
       :deal="deal"
       field="amount"
       :label="$t('CRM_PIPELINE.DEAL.AMOUNT')"
+      :read-only="isReadOnly"
     />
     <CrmPipelineDealEditableMetric
       :deal="deal"
       field="lead_temperature"
       :label="$t('CRM_PIPELINE.DEAL.TEMPERATURE')"
+      :read-only="isReadOnly"
     />
     <CrmPipelineDealEditableMetric
       :deal="deal"
       field="assigned_user"
       :label="$t('CRM_PIPELINE.DEAL.ASSIGNEE')"
+      :read-only="isReadOnly"
     />
     <div
       v-for="metric in staticMetrics"

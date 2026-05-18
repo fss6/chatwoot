@@ -1,14 +1,17 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, toRef } from 'vue';
 import { useStore } from 'dashboard/composables/store';
 import { useAlert } from 'dashboard/composables';
 import { useI18n } from 'vue-i18n';
+import { useCrmDealClosedState } from 'dashboard/composables/useCrmDealClosedState';
 import CrmPipelineDealPanelCard from './CrmPipelineDealPanelCard.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
 
 const props = defineProps({
   deal: { type: Object, required: true },
 });
+
+const { isReadOnly } = useCrmDealClosedState(toRef(props, 'deal'));
 
 const store = useStore();
 const { t } = useI18n();
@@ -36,6 +39,7 @@ watch(
 );
 
 const startEdit = () => {
+  if (isReadOnly.value) return;
   draft.value = props.deal.description || '';
   isEditing.value = true;
 };
@@ -69,7 +73,7 @@ const save = async () => {
         {{ $t('CRM_PIPELINE.DEAL.DESCRIPTION') }}
       </h3>
       <button
-        v-if="!isEditing"
+        v-if="!isEditing && !isReadOnly"
         type="button"
         class="inline-flex items-center gap-1 text-xs text-n-slate-11 transition-colors hover:text-n-slate-12 shrink-0"
         @click="startEdit"

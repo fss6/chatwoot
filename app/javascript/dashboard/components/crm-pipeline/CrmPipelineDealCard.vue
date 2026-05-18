@@ -4,6 +4,7 @@ import { useCrmDealCardPresentation } from 'dashboard/composables/useCrmDealCard
 
 const props = defineProps({
   deal: { type: Object, required: true },
+  draggable: { type: Boolean, default: true },
 });
 
 const emit = defineEmits(['click']);
@@ -25,10 +26,16 @@ const onActivate = () => emit('click', props.deal);
 <template>
   <button
     type="button"
-    class="group relative w-full text-left rounded-2xl border border-n-weak bg-n-solid-1 p-3 shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-n-strong hover:shadow-md cursor-grab active:cursor-grabbing active:scale-[0.99]"
+    class="group relative w-full text-left rounded-2xl border border-n-weak bg-n-solid-1 p-3 shadow-sm transition-all duration-150"
+    :class="
+      draggable
+        ? 'cursor-grab hover:-translate-y-0.5 hover:border-n-strong hover:shadow-md active:cursor-grabbing active:scale-[0.99]'
+        : 'crm-deal-card--no-drag cursor-pointer'
+    "
     @click="onActivate"
   >
     <span
+      v-if="draggable"
       class="absolute top-2 ltr:right-2 rtl:left-2 i-lucide-grip-vertical size-4 text-n-slate-10 opacity-0 transition-opacity group-hover:opacity-40 pointer-events-none"
       aria-hidden="true"
     />

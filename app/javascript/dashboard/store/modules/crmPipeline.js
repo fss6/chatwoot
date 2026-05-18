@@ -160,15 +160,20 @@ export const actions = {
   },
 
   moveDeal: async (
-    { commit, dispatch },
-    { id, stageId, position, pipelineId }
+    { commit, dispatch, state: storeState },
+    { id, stageId, position, pipelineId, refreshDeal = false }
   ) => {
     commit('SET_UI_FLAG', { isSaving: true });
     try {
-      await CrmDealsAPI.move(id, { stageId, position });
+      const { data } = await CrmDealsAPI.move(id, { stageId, position });
+      if (refreshDeal || storeState.currentDeal?.id === id) {
+        commit('SET_CURRENT_DEAL', data.payload);
+      }
       await dispatch('fetchDeals', { pipeline_id: pipelineId });
+      return data.payload;
     } catch (error) {
       throwErrorMessage(error);
+      throw error;
     } finally {
       commit('SET_UI_FLAG', { isSaving: false });
     }
@@ -196,14 +201,28 @@ export const actions = {
     }
   },
 
-  winDeal: async ({ dispatch }, { id, pipelineId }) => {
-    await CrmDealsAPI.win(id);
+  winDeal: async (
+    { commit, dispatch, state: storeState },
+    { id, pipelineId, refreshDeal = false }
+  ) => {
+    const { data } = await CrmDealsAPI.win(id);
+    if (refreshDeal || storeState.currentDeal?.id === id) {
+      commit('SET_CURRENT_DEAL', data.payload);
+    }
     await dispatch('fetchDeals', { pipeline_id: pipelineId });
+    return data.payload;
   },
 
-  loseDeal: async ({ dispatch }, { id, lostReason, pipelineId }) => {
-    await CrmDealsAPI.lose(id, lostReason);
+  loseDeal: async (
+    { commit, dispatch, state: storeState },
+    { id, lostReason, pipelineId, refreshDeal = false }
+  ) => {
+    const { data } = await CrmDealsAPI.lose(id, lostReason);
+    if (refreshDeal || storeState.currentDeal?.id === id) {
+      commit('SET_CURRENT_DEAL', data.payload);
+    }
     await dispatch('fetchDeals', { pipeline_id: pipelineId });
+    return data.payload;
   },
 
   fetchTasks: async ({ commit }, params = {}) => {
