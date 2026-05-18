@@ -45,6 +45,10 @@ if (isLibraryMode) {
 
 export default defineConfig({
   plugins: plugins,
+  server: isLibraryMode || isTestMode ? undefined : {
+    // Vite 5 blocks Host: vite from the Rails container unless listed here (Docker Compose)
+    allowedHosts: ['vite', 'localhost', '127.0.0.1'],
+  },
   build: {
     rollupOptions: {
       output: {
