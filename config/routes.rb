@@ -202,6 +202,7 @@ Rails.application.routes.draw do
                 post :archive
               end
               resources :activities, only: [:index]
+              resources :labels, only: [:create, :index]
               resources :notes, only: [:index, :create, :destroy]
             end
             resources :tasks do

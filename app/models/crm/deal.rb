@@ -50,6 +50,8 @@
 #
 module Crm
   class Deal < ApplicationRecord
+    include Labelable
+
     self.table_name = 'crm_deals'
 
     belongs_to :account
@@ -79,6 +81,18 @@ module Crm
 
     def no_next_step?
       open? && tasks.pending.where('due_at IS NULL OR due_at >= ?', Time.current).none?
+    end
+
+    def reconcile_status_with_stage!
+      return unless stage
+
+      if stage.open? && (won? || lost?)
+        update!(status: :open, closed_at: nil, lost_reason: nil)
+      elsif stage.won? && !won?
+        update!(status: :won, closed_at: closed_at || Time.current, lost_reason: nil)
+      elsif stage.lost? && !lost? && lost_reason.present?
+        update!(status: :lost, closed_at: closed_at || Time.current)
+      end
     end
   end
 end

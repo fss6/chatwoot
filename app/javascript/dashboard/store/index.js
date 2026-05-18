@@ -16,6 +16,7 @@ import cannedResponse from './modules/cannedResponse';
 import categories from './modules/helpCenterCategories';
 import contactConversations from './modules/contactConversations';
 import contactLabels from './modules/contactLabels';
+import dealLabels from './modules/dealLabels';
 import contactNotes from './modules/contactNotes';
 import contacts from './modules/contacts';
 import conversationLabels from './modules/conversationLabels';
@@ -80,6 +81,7 @@ export default createStore({
     categories,
     contactConversations,
     contactLabels,
+    dealLabels,
     contactNotes,
     contacts,
     conversationLabels,

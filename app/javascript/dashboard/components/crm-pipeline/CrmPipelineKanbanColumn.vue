@@ -51,6 +51,13 @@ const canMoveDeal = evt =>
 
 const isClosedStageColumn = computed(() => !isCrmStageDropTarget(props.stage));
 
+const stageBorderClass = computed(() => {
+  const type = props.stage?.stage_type;
+  if (type === 'won') return 'border-t-2 border-t-n-teal-8';
+  if (type === 'lost') return 'border-t-2 border-t-n-ruby-8';
+  return 'border-t-2 border-t-n-blue-8';
+});
+
 const stageTotal = computed(() => formatStageTotal(props.deals));
 
 const dealCountLabel = computed(() =>
@@ -61,7 +68,7 @@ const dealCountLabel = computed(() =>
 <template>
   <section
     class="flex flex-col w-[17.5rem] shrink-0 max-h-[calc(100vh-14rem)] rounded-2xl border border-n-weak bg-n-alpha-2 p-3"
-    :class="{ 'opacity-95': isClosedStageColumn }"
+    :class="[stageBorderClass, { 'opacity-95': isClosedStageColumn }]"
   >
     <header class="flex flex-col gap-0.5 px-1 pb-3 shrink-0">
       <div class="flex items-start justify-between gap-2">

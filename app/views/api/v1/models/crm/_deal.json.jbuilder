@@ -13,6 +13,7 @@ json.position deal.position
 json.created_at deal.created_at
 json.updated_at deal.updated_at
 json.no_next_step deal.no_next_step?
+json.labels deal.label_list
 
 json.pipeline do
   json.id deal.pipeline.id

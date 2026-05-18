@@ -17,6 +17,14 @@ class Labels::UpdateService
         contact.save!
       end
     end
+
+    tagged_deals.find_in_batches do |deal_batch|
+      deal_batch.each do |deal|
+        deal.label_list.remove(old_label_title)
+        deal.label_list.add(new_label_title)
+        deal.save!
+      end
+    end
   end
 
   private
@@ -27,6 +35,10 @@ class Labels::UpdateService
 
   def tagged_contacts
     account.contacts.tagged_with(old_label_title)
+  end
+
+  def tagged_deals
+    Crm::Deal.where(account_id: account.id).tagged_with(old_label_title)
   end
 
   def account

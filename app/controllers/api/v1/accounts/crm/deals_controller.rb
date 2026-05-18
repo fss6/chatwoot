@@ -6,9 +6,12 @@ class Api::V1::Accounts::Crm::DealsController < Api::V1::Accounts::Crm::BaseCont
     @deals = filtered_deals.includes(:stage, :pipeline, :contact, :conversation, :assigned_user, :tasks)
     ensure_default_pipeline! if @deals.empty? && params[:pipeline_id].blank?
     @deals = filtered_deals.includes(:stage, :pipeline, :contact, :conversation, :assigned_user, :tasks) if @deals.empty?
+    @deals.each(&:reconcile_status_with_stage!)
   end
 
-  def show; end
+  def show
+    @deal.reconcile_status_with_stage!
+  end
 
   def create
     @deal = Crm::Deals::CreateService.new(

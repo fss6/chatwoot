@@ -77,6 +77,7 @@ const onDealCreated = async deal => {
 
 onMounted(() => {
   store.dispatch('agents/get');
+  store.dispatch('labels/get');
   load();
 });
 </script>

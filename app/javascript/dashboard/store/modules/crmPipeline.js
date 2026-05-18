@@ -79,11 +79,16 @@ export const actions = {
     }
   },
 
-  fetchDeal: async ({ commit }, id) => {
+  fetchDeal: async ({ commit, dispatch }, id) => {
     commit('SET_UI_FLAG', { isFetchingDeal: true });
     try {
       const { data } = await CrmDealsAPI.show(id);
       commit('SET_CURRENT_DEAL', data.payload);
+      dispatch(
+        'dealLabels/set',
+        { dealId: id, labels: data.payload?.labels || [] },
+        { root: true }
+      );
       return data.payload;
     } catch (error) {
       throwErrorMessage(error);
@@ -223,6 +228,29 @@ export const actions = {
     }
     await dispatch('fetchDeals', { pipeline_id: pipelineId });
     return data.payload;
+  },
+
+  syncDealLabels: (
+    { commit, state: storeState },
+    { dealId, labels, pipelineId }
+  ) => {
+    const normalizedId = Number(dealId);
+    commit('SYNC_DEAL_LABELS', { dealId: normalizedId, labels });
+
+    if (storeState.currentDeal?.id === normalizedId) {
+      commit('SET_CURRENT_DEAL', {
+        ...storeState.currentDeal,
+        labels,
+      });
+    }
+
+    if (pipelineId) {
+      commit('SYNC_DEAL_LABELS_IN_LIST', {
+        dealId: normalizedId,
+        labels,
+        pipelineId,
+      });
+    }
   },
 
   fetchTasks: async ({ commit }, params = {}) => {
@@ -423,6 +451,16 @@ export const mutations = {
   },
   SET_UI_FLAG($state, flags) {
     $state.uiFlags = { ...$state.uiFlags, ...flags };
+  },
+  SYNC_DEAL_LABELS($state, { dealId, labels }) {
+    if ($state.currentDeal?.id === dealId) {
+      $state.currentDeal = { ...$state.currentDeal, labels };
+    }
+  },
+  SYNC_DEAL_LABELS_IN_LIST($state, { dealId, labels }) {
+    $state.deals = $state.deals.map(deal =>
+      deal.id === dealId ? { ...deal, labels } : deal
+    );
   },
 };
 

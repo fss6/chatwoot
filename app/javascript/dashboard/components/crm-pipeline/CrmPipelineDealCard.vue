@@ -1,6 +1,7 @@
 <script setup>
 import { toRef } from 'vue';
 import { useCrmDealCardPresentation } from 'dashboard/composables/useCrmDealCardPresentation';
+import CrmPipelineDealCardLabels from './CrmPipelineDealCardLabels.vue';
 
 const props = defineProps({
   deal: { type: Object, required: true },
@@ -71,6 +72,8 @@ const onActivate = () => emit('click', props.deal);
         {{ temperature.label }}
       </span>
     </div>
+
+    <CrmPipelineDealCardLabels :label-titles="deal.labels || []" />
 
     <div class="mt-3 border-t border-n-weak pt-2">
       <div class="flex items-center justify-between gap-2">

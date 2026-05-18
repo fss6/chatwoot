@@ -32,6 +32,14 @@ class CrmDealsAPI extends ApiClient {
   getActivities(dealId) {
     return axios.get(`${this.url}/${dealId}/activities`);
   }
+
+  getLabels(dealId) {
+    return axios.get(`${this.url}/${dealId}/labels`);
+  }
+
+  updateLabels(dealId, labels) {
+    return axios.post(`${this.url}/${dealId}/labels`, { labels });
+  }
 }
 
 export default new CrmDealsAPI();

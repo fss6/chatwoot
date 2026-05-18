@@ -11,6 +11,7 @@ import CrmPipelineDealClosedStatusBanner from 'dashboard/components/crm-pipeline
 import CrmPipelineDealSummaryMetrics from 'dashboard/components/crm-pipeline/CrmPipelineDealSummaryMetrics.vue';
 import CrmPipelineDealTasksSection from 'dashboard/components/crm-pipeline/CrmPipelineDealTasksSection.vue';
 import CrmPipelineDealDescriptionCard from 'dashboard/components/crm-pipeline/CrmPipelineDealDescriptionCard.vue';
+import CrmPipelineDealLabelsCard from 'dashboard/components/crm-pipeline/CrmPipelineDealLabelsCard.vue';
 import CrmPipelineDealNotesSection from 'dashboard/components/crm-pipeline/CrmPipelineDealNotesSection.vue';
 import CrmPipelineTaskModal from 'dashboard/components/crm-pipeline/CrmPipelineTaskModal.vue';
 import CrmPipelineLoseDealModal from 'dashboard/components/crm-pipeline/CrmPipelineLoseDealModal.vue';
@@ -184,6 +185,11 @@ const onCancelTask = async task => {
         <CrmPipelineDealClosedStatusBanner :deal="deal" />
 
         <CrmPipelineDealSummaryMetrics :deal="deal" />
+
+        <CrmPipelineDealLabelsCard
+          :deal-id="deal.id"
+          :pipeline-id="deal.pipeline?.id"
+        />
 
         <CrmPipelineDealDescriptionCard :deal="deal" />
 

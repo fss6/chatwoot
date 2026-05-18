@@ -20,14 +20,24 @@ export const isCrmClosedStage = stage =>
 
 export const isCrmStageDropTarget = stage => !isCrmClosedStage(stage);
 
-export const isCrmDealDraggable = deal =>
-  deal?.status !== 'lost' && deal?.status !== 'won';
+const closedStageType = deal => deal?.stage?.stage_type;
+
+export const isCrmDealDraggable = deal => !isCrmClosedStage(deal?.stage);
 
 export const useCrmDealClosedState = dealRef => {
+  const stageType = computed(() => closedStageType(unref(dealRef)));
   const status = computed(() => unref(dealRef)?.status);
 
-  const isWon = computed(() => status.value === 'won');
-  const isLost = computed(() => status.value === 'lost');
+  const isWon = computed(() => {
+    if (stageType.value) return stageType.value === 'won';
+    return status.value === 'won';
+  });
+
+  const isLost = computed(() => {
+    if (stageType.value) return stageType.value === 'lost';
+    return status.value === 'lost';
+  });
+
   const isClosed = computed(() => isWon.value || isLost.value);
   const isReadOnly = computed(() => isClosed.value);
 
