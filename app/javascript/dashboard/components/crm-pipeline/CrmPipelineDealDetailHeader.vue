@@ -1,12 +1,32 @@
 <script setup>
+import { useRouter } from 'vue-router';
+import { useAccount } from 'dashboard/composables/useAccount';
+import { frontendURL, conversationUrl } from 'dashboard/helper/URLHelper';
 import Button from 'dashboard/components-next/button/Button.vue';
 
-defineProps({
+const props = defineProps({
   deal: { type: Object, required: true },
   pipelineDealsRoute: { type: Object, required: true },
 });
 
 const emit = defineEmits(['win', 'lose']);
+
+const router = useRouter();
+const { accountId } = useAccount();
+
+const openConversation = () => {
+  const conversation = props.deal.conversation;
+  if (!conversation) return;
+  router.push(
+    frontendURL(
+      conversationUrl({
+        accountId: accountId.value,
+        activeInbox: conversation.inbox_id,
+        id: conversation.display_id || conversation.id,
+      })
+    )
+  );
+};
 </script>
 
 <template>
@@ -43,6 +63,15 @@ const emit = defineEmits(['win', 'lose']);
     </h1>
 
     <div class="flex flex-wrap items-center gap-2">
+      <Button
+        v-if="deal.conversation"
+        sm
+        faded
+        slate
+        icon="i-lucide-message-square"
+        :label="$t('CRM_PIPELINE.DEAL.OPEN_CONVERSATION')"
+        @click="openConversation"
+      />
       <Button
         sm
         faded

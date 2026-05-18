@@ -68,6 +68,14 @@ export const formatDealAmount = (amount, currency = 'BRL') => {
   }).format(Number(amount));
 };
 
+export const maskAmountInput = (value, currency = 'BRL') => {
+  const digits = String(value ?? '').replace(/\D/g, '');
+  if (!digits) return '';
+
+  const amount = Number(digits) / 100;
+  return formatAmountForInput(amount, currency);
+};
+
 export const parseAmountFromInput = (value, currency = 'BRL') => {
   if (!value?.trim()) return null;
 

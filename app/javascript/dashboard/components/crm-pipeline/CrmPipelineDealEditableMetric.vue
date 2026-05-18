@@ -8,6 +8,7 @@ import {
   getCurrencySymbol,
   formatAmountForInput,
   formatDealAmount,
+  maskAmountInput,
   parseAmountFromInput,
 } from 'dashboard/composables/useCrmDealCardPresentation';
 import Select from 'dashboard/components-next/select/Select.vue';
@@ -100,13 +101,55 @@ const cancelEdit = () => {
   isEditing.value = false;
 };
 
-const normalizeAmountDisplay = () => {
-  const parsed = parseAmountFromInput(
-    draftAmountDisplay.value,
-    currencyCode.value
+const applyAmountMask = rawValue => {
+  return maskAmountInput(rawValue, currencyCode.value);
+};
+
+const onAmountInput = event => {
+  const masked = applyAmountMask(event.target.value);
+  if (event.target.value !== masked) {
+    event.target.value = masked;
+  }
+  draftAmountDisplay.value = masked;
+};
+
+const onAmountKeydown = event => {
+  if (event.ctrlKey || event.metaKey || event.altKey) return;
+
+  const allowedKeys = [
+    'Backspace',
+    'Delete',
+    'Tab',
+    'ArrowLeft',
+    'ArrowRight',
+    'Home',
+    'End',
+  ];
+  if (allowedKeys.includes(event.key)) return;
+
+  if (/^\d$/.test(event.key)) return;
+
+  event.preventDefault();
+};
+
+const onAmountPaste = event => {
+  event.preventDefault();
+  const pasted = event.clipboardData?.getData('text') || '';
+  const { selectionStart, selectionEnd, value } = event.target;
+  const nextValue = `${value.slice(0, selectionStart)}${pasted}${value.slice(selectionEnd)}`;
+  const masked = applyAmountMask(nextValue);
+  event.target.value = masked;
+  draftAmountDisplay.value = masked;
+};
+
+const normalizeAmountDisplay = event => {
+  const masked = applyAmountMask(
+    event?.target?.value ?? draftAmountDisplay.value
   );
-  draftAmountDisplay.value =
-    parsed === null ? '' : formatAmountForInput(parsed, currencyCode.value);
+  if (event?.target && event.target.value !== masked) {
+    event.target.value = masked;
+  }
+  draftAmountDisplay.value = masked;
 };
 
 const saveParams = () => {
@@ -161,12 +204,16 @@ const save = async () => {
     <template v-if="isEditing">
       <Input
         v-if="field === 'amount'"
-        v-model="draftAmountDisplay"
+        :model-value="draftAmountDisplay"
         type="text"
-        inputmode="decimal"
+        inputmode="numeric"
+        autocomplete="off"
         size="sm"
         class="mt-2 w-full [&>input]:!bg-n-surface-1 [&>input]:ltr:!pl-9 [&>input]:rtl:!pr-9"
         :placeholder="formatAmountForInput(0, currencyCode)"
+        @input="onAmountInput"
+        @keydown="onAmountKeydown"
+        @paste="onAmountPaste"
         @blur="normalizeAmountDisplay"
       >
         <template #prefix>

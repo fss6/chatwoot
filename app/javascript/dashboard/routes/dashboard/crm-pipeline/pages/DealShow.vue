@@ -9,7 +9,6 @@ import CrmPipelinePageLayout from 'dashboard/components/crm-pipeline/CrmPipeline
 import CrmPipelineDealDetailHeader from 'dashboard/components/crm-pipeline/CrmPipelineDealDetailHeader.vue';
 import CrmPipelineDealSummaryMetrics from 'dashboard/components/crm-pipeline/CrmPipelineDealSummaryMetrics.vue';
 import CrmPipelineDealTasksSection from 'dashboard/components/crm-pipeline/CrmPipelineDealTasksSection.vue';
-import CrmPipelineDealDetailSidebar from 'dashboard/components/crm-pipeline/CrmPipelineDealDetailSidebar.vue';
 import CrmPipelineDealDescriptionCard from 'dashboard/components/crm-pipeline/CrmPipelineDealDescriptionCard.vue';
 import CrmPipelineDealNotesSection from 'dashboard/components/crm-pipeline/CrmPipelineDealNotesSection.vue';
 import CrmPipelineTaskModal from 'dashboard/components/crm-pipeline/CrmPipelineTaskModal.vue';
@@ -151,8 +150,6 @@ const onCancelTask = async task => {
         <CrmPipelineDealDescriptionCard :deal="deal" />
 
         <CrmPipelineDealNotesSection :deal-id="deal.id" />
-
-        <CrmPipelineDealDetailSidebar :deal="deal" />
       </div>
 
       <aside
