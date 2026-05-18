@@ -1,3 +1,46 @@
+# == Schema Information
+#
+# Table name: crm_tasks
+#
+#  id               :bigint           not null, primary key
+#  cancelled_at     :datetime
+#  completed_at     :datetime
+#  description      :text
+#  due_at           :datetime
+#  priority         :integer          default("normal"), not null
+#  status           :integer          default("pending"), not null
+#  task_type        :integer          default("follow_up"), not null
+#  title            :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  account_id       :bigint           not null
+#  assigned_user_id :bigint
+#  contact_id       :bigint
+#  conversation_id  :bigint
+#  deal_id          :bigint
+#
+# Indexes
+#
+#  index_crm_tasks_on_account_id                                  (account_id)
+#  index_crm_tasks_on_account_id_and_assigned_user_id_and_status  (account_id,assigned_user_id,status)
+#  index_crm_tasks_on_account_id_and_contact_id                   (account_id,contact_id)
+#  index_crm_tasks_on_account_id_and_conversation_id              (account_id,conversation_id)
+#  index_crm_tasks_on_account_id_and_deal_id                      (account_id,deal_id)
+#  index_crm_tasks_on_account_id_and_due_at                       (account_id,due_at)
+#  index_crm_tasks_on_account_id_and_task_type                    (account_id,task_type)
+#  index_crm_tasks_on_assigned_user_id                            (assigned_user_id)
+#  index_crm_tasks_on_contact_id                                  (contact_id)
+#  index_crm_tasks_on_conversation_id                             (conversation_id)
+#  index_crm_tasks_on_deal_id                                     (deal_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (account_id => accounts.id)
+#  fk_rails_...  (assigned_user_id => users.id)
+#  fk_rails_...  (contact_id => contacts.id)
+#  fk_rails_...  (conversation_id => conversations.id)
+#  fk_rails_...  (deal_id => crm_deals.id)
+#
 module Crm
   class Task < ApplicationRecord
     self.table_name = 'crm_tasks'

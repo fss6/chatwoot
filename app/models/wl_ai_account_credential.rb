@@ -2,18 +2,22 @@
 #
 # Table name: wl_ai_account_credentials
 #
-#  id         :bigint           not null, primary key
-#  account_id :bigint           not null
-#  api_base      :string
-#  api_token     :string
-#  default_model         :string
-#  system_instructions   :text
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id                  :bigint           not null, primary key
+#  api_base            :string
+#  api_token           :string
+#  default_model       :string
+#  system_instructions :text
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  account_id          :integer          not null
 #
 # Indexes
 #
 #  index_wl_ai_account_credentials_on_account_id  (account_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (account_id => accounts.id)
 #
 
 class WlAiAccountCredential < ApplicationRecord

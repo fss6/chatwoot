@@ -4,14 +4,24 @@
 #
 # Table name: wl_ai_faq_entries
 #
-#  id                  :bigint           not null, primary key
-#  account_id          :integer          not null
-#  wl_ai_assistant_id  :bigint           not null
-#  question            :string           not null
-#  answer              :text             not null
-#  position            :integer          default(0), not null
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
+#  id                 :bigint           not null, primary key
+#  answer             :text             not null
+#  position           :integer          default(0), not null
+#  question           :string           not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  account_id         :integer          not null
+#  wl_ai_assistant_id :bigint           not null
+#
+# Indexes
+#
+#  index_wl_ai_faq_entries_on_account_id          (account_id)
+#  index_wl_ai_faq_entries_on_wl_ai_assistant_id  (wl_ai_assistant_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (account_id => accounts.id)
+#  fk_rails_...  (wl_ai_assistant_id => wl_ai_assistants.id)
 #
 
 class WlAiFaqEntry < ApplicationRecord

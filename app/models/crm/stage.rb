@@ -1,3 +1,30 @@
+# == Schema Information
+#
+# Table name: crm_stages
+#
+#  id          :bigint           not null, primary key
+#  active      :boolean          default(TRUE), not null
+#  color       :string
+#  name        :string           not null
+#  position    :integer          default(0), not null
+#  stage_type  :integer          default("open"), not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  account_id  :bigint           not null
+#  pipeline_id :bigint           not null
+#
+# Indexes
+#
+#  index_crm_stages_on_account_id                               (account_id)
+#  index_crm_stages_on_account_id_and_pipeline_id_and_position  (account_id,pipeline_id,position)
+#  index_crm_stages_on_account_id_and_stage_type                (account_id,stage_type)
+#  index_crm_stages_on_pipeline_id                              (pipeline_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (account_id => accounts.id)
+#  fk_rails_...  (pipeline_id => crm_pipelines.id)
+#
 module Crm
   class Stage < ApplicationRecord
     self.table_name = 'crm_stages'

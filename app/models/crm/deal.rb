@@ -1,3 +1,53 @@
+# == Schema Information
+#
+# Table name: crm_deals
+#
+#  id                  :bigint           not null, primary key
+#  amount              :decimal(12, 2)
+#  closed_at           :datetime
+#  currency            :string           default("BRL"), not null
+#  description         :text
+#  expected_close_date :date
+#  lead_temperature    :integer          default("warm"), not null
+#  lost_reason         :string
+#  position            :integer          default(0), not null
+#  source              :string
+#  status              :integer          default("open"), not null
+#  title               :string           not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  account_id          :bigint           not null
+#  assigned_user_id    :bigint
+#  contact_id          :bigint           not null
+#  conversation_id     :bigint
+#  pipeline_id         :bigint           not null
+#  stage_id            :bigint           not null
+#
+# Indexes
+#
+#  index_crm_deals_on_account_id                            (account_id)
+#  index_crm_deals_on_account_id_and_assigned_user_id       (account_id,assigned_user_id)
+#  index_crm_deals_on_account_id_and_contact_id             (account_id,contact_id)
+#  index_crm_deals_on_account_id_and_conversation_id        (account_id,conversation_id)
+#  index_crm_deals_on_account_id_and_expected_close_date    (account_id,expected_close_date)
+#  index_crm_deals_on_account_id_and_pipeline_id            (account_id,pipeline_id)
+#  index_crm_deals_on_account_id_and_stage_id_and_position  (account_id,stage_id,position)
+#  index_crm_deals_on_account_id_and_status                 (account_id,status)
+#  index_crm_deals_on_assigned_user_id                      (assigned_user_id)
+#  index_crm_deals_on_contact_id                            (contact_id)
+#  index_crm_deals_on_conversation_id                       (conversation_id)
+#  index_crm_deals_on_pipeline_id                           (pipeline_id)
+#  index_crm_deals_on_stage_id                              (stage_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (account_id => accounts.id)
+#  fk_rails_...  (assigned_user_id => users.id)
+#  fk_rails_...  (contact_id => contacts.id)
+#  fk_rails_...  (conversation_id => conversations.id)
+#  fk_rails_...  (pipeline_id => crm_pipelines.id)
+#  fk_rails_...  (stage_id => crm_stages.id)
+#
 module Crm
   class Deal < ApplicationRecord
     self.table_name = 'crm_deals'

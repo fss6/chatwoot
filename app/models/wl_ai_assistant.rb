@@ -5,14 +5,22 @@
 # Table name: wl_ai_assistants
 #
 #  id           :bigint           not null, primary key
-#  account_id   :integer          not null
-#  name         :string           not null
-#  description  :text             not null
-#  product_name :string
-#  instructions :text
 #  config       :jsonb            not null
+#  description  :text             not null
+#  instructions :text
+#  name         :string           not null
+#  product_name :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  account_id   :bigint           not null
+#
+# Indexes
+#
+#  index_wl_ai_assistants_on_account_id  (account_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (account_id => accounts.id)
 #
 class WlAiAssistant < ApplicationRecord
   belongs_to :account
