@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
-import { useStore } from 'dashboard/composables/store';
+import { useStore, useMapGetter } from 'dashboard/composables/store';
 import { useAlert } from 'dashboard/composables';
 import { useI18n } from 'vue-i18n';
 import {
@@ -12,6 +12,7 @@ import {
   parseAmountFromInput,
 } from 'dashboard/composables/useCrmDealCardPresentation';
 import Select from 'dashboard/components-next/select/Select.vue';
+import ComboBox from 'dashboard/components-next/combobox/ComboBox.vue';
 import Input from 'dashboard/components-next/input/Input.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
 
@@ -20,7 +21,8 @@ const props = defineProps({
   field: {
     type: String,
     required: true,
-    validator: value => ['amount', 'lead_temperature'].includes(value),
+    validator: value =>
+      ['amount', 'lead_temperature', 'assigned_user'].includes(value),
   },
   label: { type: String, required: true },
 });
@@ -32,6 +34,9 @@ const isEditing = ref(false);
 const isSaving = ref(false);
 const draftAmountDisplay = ref('');
 const draftTemperature = ref('warm');
+const draftAssigneeId = ref('');
+
+const agents = useMapGetter('agents/getAgents');
 
 const currencyCode = computed(() => props.deal.currency || 'BRL');
 
@@ -41,6 +46,14 @@ const temperatureOptions = computed(() => [
   { value: 'cold', label: t('CRM_PIPELINE.DEAL.COLD') },
   { value: 'warm', label: t('CRM_PIPELINE.DEAL.WARM') },
   { value: 'hot', label: t('CRM_PIPELINE.DEAL.HOT') },
+]);
+
+const assigneeOptions = computed(() => [
+  { value: '', label: t('CRM_PIPELINE.DEAL.UNASSIGNED') },
+  ...(agents.value || []).map(agent => ({
+    value: String(agent.id),
+    label: agent.name,
+  })),
 ]);
 
 const temperatureBadge = computed(() => {
@@ -61,6 +74,10 @@ const formattedAmount = computed(() => {
   return formatDealAmount(props.deal.amount, currencyCode.value);
 });
 
+const assigneeDisplay = computed(
+  () => props.deal.assigned_user?.name || t('CRM_PIPELINE.DEAL.UNASSIGNED')
+);
+
 const syncDraftFromDeal = () => {
   if (props.field === 'amount') {
     draftAmountDisplay.value = formatAmountForInput(
@@ -71,10 +88,20 @@ const syncDraftFromDeal = () => {
   if (props.field === 'lead_temperature') {
     draftTemperature.value = props.deal.lead_temperature || 'warm';
   }
+  if (props.field === 'assigned_user') {
+    draftAssigneeId.value = props.deal.assigned_user?.id
+      ? String(props.deal.assigned_user.id)
+      : '';
+  }
 };
 
 watch(
-  () => [props.deal?.id, props.deal?.amount, props.deal?.lead_temperature],
+  () => [
+    props.deal?.id,
+    props.deal?.amount,
+    props.deal?.lead_temperature,
+    props.deal?.assigned_user?.id,
+  ],
   () => {
     if (!isEditing.value) {
       syncDraftFromDeal();
@@ -93,6 +120,9 @@ watch(
 
 const startEdit = () => {
   syncDraftFromDeal();
+  if (props.field === 'assigned_user' && !agents.value?.length) {
+    store.dispatch('agents/get');
+  }
   isEditing.value = true;
 };
 
@@ -160,6 +190,13 @@ const saveParams = () => {
         currencyCode.value
       ),
       currency: currencyCode.value,
+    };
+  }
+  if (props.field === 'assigned_user') {
+    return {
+      assigned_user_id: draftAssigneeId.value
+        ? Number(draftAssigneeId.value)
+        : null,
     };
   }
   return { lead_temperature: draftTemperature.value };
@@ -233,6 +270,16 @@ const save = async () => {
         class="mt-2"
       />
 
+      <ComboBox
+        v-else-if="field === 'assigned_user'"
+        v-model="draftAssigneeId"
+        :options="assigneeOptions"
+        class="mt-2"
+        :placeholder="$t('CRM_PIPELINE.DEAL.UNASSIGNED')"
+        :search-placeholder="$t('CRM_PIPELINE.DEAL.ASSIGNEE_SEARCH')"
+        :empty-state="$t('CRM_PIPELINE.DEAL.ASSIGNEE_EMPTY')"
+      />
+
       <div class="flex justify-end gap-2 mt-3">
         <Button
           faded
@@ -272,6 +319,11 @@ const save = async () => {
         {{ temperatureBadge.label }}
       </span>
       <p v-else class="mt-1 text-sm font-medium text-n-slate-12">—</p>
+    </template>
+    <template v-else-if="field === 'assigned_user'">
+      <p class="mt-1 text-sm font-medium text-n-slate-12 truncate">
+        {{ assigneeDisplay }}
+      </p>
     </template>
   </div>
 </template>

@@ -28,6 +28,8 @@
       "AMOUNT_PLACEHOLDER": "0",
       "STAGE": "Stage",
       "ASSIGNEE": "Assignee",
+      "ASSIGNEE_SEARCH": "Search assignees...",
+      "ASSIGNEE_EMPTY": "No assignees found",
       "UNASSIGNED": "Unassigned",
       "TEMPERATURE": "Temperature",
       "COLD": "Cold",

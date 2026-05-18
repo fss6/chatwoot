@@ -76,7 +76,7 @@ const openConversation = () => {
         sm
         faded
         teal
-        icon="i-lucide-check-circle-2"
+        icon="i-lucide-check"
         :label="$t('CRM_PIPELINE.DEAL.WIN')"
         @click="emit('win')"
       />
@@ -84,7 +84,7 @@ const openConversation = () => {
         sm
         faded
         ruby
-        icon="i-lucide-x-circle"
+        icon="i-lucide-x"
         :label="$t('CRM_PIPELINE.DEAL.LOSE')"
         @click="emit('lose')"
       />

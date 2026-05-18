@@ -14,10 +14,6 @@ const staticMetrics = computed(() => [
     label: t('CRM_PIPELINE.DEAL.CONTACT'),
     value: props.deal.contact?.name || '—',
   },
-  {
-    label: t('CRM_PIPELINE.DEAL.ASSIGNEE'),
-    value: props.deal.assigned_user?.name || t('CRM_PIPELINE.DEAL.UNASSIGNED'),
-  },
 ]);
 </script>
 
@@ -32,6 +28,11 @@ const staticMetrics = computed(() => [
       :deal="deal"
       field="lead_temperature"
       :label="$t('CRM_PIPELINE.DEAL.TEMPERATURE')"
+    />
+    <CrmPipelineDealEditableMetric
+      :deal="deal"
+      field="assigned_user"
+      :label="$t('CRM_PIPELINE.DEAL.ASSIGNEE')"
     />
     <div
       v-for="metric in staticMetrics"
